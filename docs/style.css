@@ -23,6 +23,7 @@
     --sidebar-width: 280px;
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', Consolas, monospace;
+    --font-fa: 'Vazirmatn', 'Tahoma', 'Arial', sans-serif;
 }
 
 html {
@@ -37,6 +38,84 @@ body {
     background: var(--bg);
     display: flex;
     min-height: 100vh;
+}
+
+/* === RTL Support === */
+[dir="rtl"] body {
+    font-family: var(--font-fa);
+}
+
+[dir="rtl"] .sidebar {
+    border-right: none;
+    border-left: 1px solid var(--border);
+}
+
+[dir="rtl"] .nav-list li a {
+    padding: 6px 28px 6px 20px;
+    border-left: none;
+    border-right: 3px solid transparent;
+}
+
+[dir="rtl"] .nav-list li a.active {
+    border-left-color: transparent;
+    border-right-color: var(--accent);
+}
+
+[dir="rtl"] .content {
+    margin-left: 0;
+    margin-right: var(--sidebar-width);
+}
+
+[dir="rtl"] .info-box,
+[dir="rtl"] .warning-box {
+    border-left: none;
+    border-right: 4px solid var(--accent);
+    border-radius: 8px 0 0 8px;
+}
+
+[dir="rtl"] .warning-box {
+    border-right-color: var(--orange);
+}
+
+[dir="rtl"] ul, [dir="rtl"] ol {
+    padding-left: 0;
+    padding-right: 24px;
+}
+
+[dir="rtl"] .code-block code,
+[dir="rtl"] .param-table td:first-child,
+[dir="rtl"] .param-table td:nth-child(2) {
+    direction: ltr;
+    text-align: left;
+}
+
+/* === Language Switcher === */
+.lang-switcher {
+    display: flex;
+    gap: 4px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.lang-switcher a {
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text-muted);
+    transition: all 0.15s ease;
+}
+
+.lang-switcher a:hover {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.lang-switcher a.active {
+    background: var(--accent);
+    color: #fff;
 }
 
 /* === Sidebar === */
@@ -388,12 +467,17 @@ li {
         transition: transform 0.3s ease;
     }
 
+    [dir="rtl"] .sidebar {
+        transform: translateX(100%);
+    }
+
     .sidebar.open {
         transform: translateX(0);
     }
 
     .content {
         margin-left: 0;
+        margin-right: 0;
         padding: 24px 20px 60px;
     }
 

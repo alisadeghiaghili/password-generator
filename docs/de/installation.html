@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation — Passwort-Generator</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">فارسی</a><a href="../de/index.html" class="active">DE</a></div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li>
+            <li><a href="index.html">Willkommen</a></li>
+            <li><a href="installation.html" class="active">Installation</a></li>
+            <li class="nav-section">Generieren</li>
+            <li><a href="passwords.html">Zufällige Passwörter</a></li>
+            <li><a href="passphrases.html">Passphrasen</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analysieren</li>
+            <li><a href="strength.html">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li>
+            <li><a href="clipboard.html">Zwischenablage</a></li>
+            <li><a href="cli.html">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li>
+            <li><a href="api.html">API-Referenz</a></li>
+            <li><a href="usecases.html">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="index.html">← Willkommen</a><a href="passwords.html">Zufällige Passwörter →</a></div>
+        <h1>Installation</h1>
+        <h2>Anforderungen</h2>
+        <ul>
+            <li>Python 3.10 oder höher</li>
+            <li>Keine externen Abhängigkeiten — verwendet nur Pythons Standardbibliothek</li>
+            <li>Linux-Zwischenablage erfordert <code>xclip</code> oder <code>xsel</code></li>
+        </ul>
+        <h2>Über PyPI</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>pip install password-generator</code></pre></div>
+        <h2>Aus Quellcode</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>git clone https://github.com/alisadeghiaghili/password-generator.git
+cd password-generator
+pip install -e .</code></pre></div>
+        <h2>Entwicklungsinstallation</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>git clone https://github.com/alisadeghiaghili/password-generator.git
+cd password-generator
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
+pip install -e ".[dev]"
+pytest</code></pre></div>
+        <h2>Überprüfung</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate
+print(generate(length=16))</code></pre></div>
+        <div class="info-box"><strong>Tipp:</strong> Für Clipboard-Unterstützung unter Linux installieren Sie <code>xclip</code>: <code>sudo apt install xclip</code></div>
+        <div class="chapter-nav"><a href="index.html">← Willkommen</a><a href="passwords.html">Zufällige Passwörter →</a></div>
+    </main>
+</body>
+</html>

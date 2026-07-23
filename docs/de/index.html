@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passwort-Generator — Dokumentation</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher">
+            <a href="../index.html">EN</a>
+            <a href="../fa/index.html">فارسی</a>
+            <a href="../de/index.html" class="active">DE</a>
+        </div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li>
+            <li><a href="index.html" class="active">Willkommen</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generieren</li>
+            <li><a href="passwords.html">Zufällige Passwörter</a></li>
+            <li><a href="passphrases.html">Passphrasen</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analysieren</li>
+            <li><a href="strength.html">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li>
+            <li><a href="clipboard.html">Zwischenablage</a></li>
+            <li><a href="cli.html">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li>
+            <li><a href="api.html">API-Referenz</a></li>
+            <li><a href="usecases.html">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <span></span>
+            <a href="installation.html">Installation →</a>
+        </div>
+
+        <h1>Willkommen</h1>
+
+        <p class="lead">
+            Ein sicheres, konfigurierbares Passwort-Generierungs-Toolkit für Python.
+            Erstellen Sie zufällige Passwörter, XKCD-style Passphrasen, numerische PINs
+            und analysieren Sie Passwortstärke — alles über eine einfache API oder ein interaktives CLI.
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Zufällige Passwörter</h3>
+                <p>Kryptographisch sichere Passwörter mit vollständig anpassbaren Zeichensätzen. Länge von 4 bis 256 Zeichen.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🐴</div>
+                <h3>Passphrasen</h3>
+                <p>XKCD-style einprägsame Passphrasen aus einer 2048-Wörter-Liste. "correct-horse-battery-staple" Stil.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔢</div>
+                <h3>PINs</h3>
+                <p>Numerische Codes mit Wiederholungs- und Sequenzvermeidung. Perfekt für 2FA-Backup-Codes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Stärkeanalyse</h3>
+                <p>Entropie-Bewertung, Knackzeit-Schätzungen, Mustererkennung. Wissen Sie, wie stark Ihre Passwörter wirklich sind.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Zwischenablage</h3>
+                <p>Automatisches Kopieren mit zeitgesteuerter Löschung. Plattformübergreifende Unterstützung.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⌨️</div>
+                <h3>Interaktives CLI</h3>
+                <p>Menügesteuerter Assistent für technische Laien. JSON-Ausgabe für Skripting und Automatisierung.</p>
+            </div>
+        </div>
+
+        <h2>Schnellstart</h2>
+
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate, generate_passphrase, generate_pin, analyze
+
+# Ein zufälliges 20-Zeichen-Passwort generieren
+password = generate(length=20)
+print(password)  # z.B. "k8#Qx!2mNp@Lw9Rz"
+
+# Eine 5-Wörter-Passphrase generieren
+passphrase = generate_passphrase(words=5, separator=" ", capitalize=True)
+print(passphrase)  # z.B. "Correct Horse Battery Staple Moon"
+
+# Eine 6-stellige PIN generieren
+pin = generate_pin(length=6, avoid_repeats=True, avoid_sequential=True)
+print(pin)  # z.B. "849205"
+
+# Passwortstärke analysieren
+report = analyze("P@ssw0rd123")
+print(f"Bewertung: {report.score}/4")  # 0=Sehr schwach ... 4=Sehr stark</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>Keine Abhängigkeiten</strong> — Verwendet nur Pythons Standardbibliothek (<code>secrets</code>, <code>string</code>, <code>math</code>). Keine externen Pakete erforderlich.
+        </div>
+
+        <h2>Warum Password Generator?</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Funktion</th>
+                    <th>Password Generator</th>
+                    <th>random Modul</th>
+                    <th>Andere Tools</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Kryptographisch sicher</td><td>✅</td><td>❌</td><td>⚠️ Variiert</td></tr>
+                <tr><td>Passphrase-Generierung</td><td>✅</td><td>❌</td><td>❌</td></tr>
+                <tr><td>PIN-Generierung</td><td>✅</td><td>❌</td><td>❌</td></tr>
+                <tr><td>Stärkeanalyse</td><td>✅</td><td>❌</td><td>⚠️ Begrenzt</td></tr>
+                <tr><td>Zwischenablage mit Autolöschung</td><td>✅</td><td>❌</td><td>❌</td></tr>
+                <tr><td>Keine Abhängigkeiten</td><td>✅</td><td>✅</td><td>❌</td></tr>
+                <tr><td>Interaktives CLI</td><td>✅</td><td>❌</td><td>⚠️ Variiert</td></tr>
+            </tbody>
+        </table>
+
+        <div class="chapter-nav">
+            <span></span>
+            <a href="installation.html">Installation →</a>
+        </div>
+    </main>
+</body>
+</html>

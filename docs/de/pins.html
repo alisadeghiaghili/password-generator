@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>PINs — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">فارسی</a><a href="../de/index.html" class="active">DE</a></div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li><li><a href="index.html">Willkommen</a></li><li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generieren</li><li><a href="passwords.html">Zufällige Passwörter</a></li><li><a href="passphrases.html">Passphrasen</a></li><li><a href="pins.html" class="active">PINs</a></li>
+            <li class="nav-section">Analysieren</li><li><a href="strength.html">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li><li><a href="clipboard.html">Zwischenablage</a></li><li><a href="cli.html">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li><li><a href="api.html">API-Referenz</a></li><li><a href="usecases.html">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="passphrases.html">← Passphrasen</a><a href="strength.html">Stärkeanalyse →</a></div>
+        <h1>PINs</h1>
+        <p class="lead">Generieren Sie zufällige numerische PINs mit optionaler Wiederholungs- und Sequenzvermeidung. Perfekt für 2FA-Backup-Codes.</p>
+        <h2>Grundlegende Verwendung</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_pin
+pin = generate_pin()  # Standard: 4-stellig
+print(pin)  # z.B. "8492"</code></pre></div>
+        <h2>Benutzerdefinierte Länge</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=6)  # 6-stellig
+generate_pin(length=8)  # 8-stellig</code></pre></div>
+        <h2>Wiederholungen vermeiden</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=6, avoid_repeats=True)
+# Nie: 111234, 999888</code></pre></div>
+        <h2>Sequenzen vermeiden</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=4, avoid_sequential=True)
+# Nie: 1234, 4321, 5678</code></pre></div>
+        <h2>Beide Einschränkungen kombinieren</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=6, avoid_repeats=True, avoid_sequential=True)</code></pre></div>
+        <h2>Parameter</h2>
+        <table class="param-table">
+            <thead><tr><th>Parameter</th><th>Typ</th><th>Standard</th><th>Beschreibung</th></tr></thead>
+            <tbody>
+                <tr><td>length</td><td>int</td><td>4</td><td>PIN-Länge (1–12)</td></tr>
+                <tr><td>avoid_repeats</td><td>bool</td><td>False</td><td>3+ identische Ziffern vermeiden</td></tr>
+                <tr><td>avoid_sequential</td><td>bool</td><td>False</td><td>Auf-/absteigende Sequenzen vermeiden</td></tr>
+            </tbody>
+        </table>
+        <h2>Mögliche Kombinationen</h2>
+        <table>
+            <thead><tr><th>Länge</th><th>Mögliche PINs</th><th>Entropie</th></tr></thead>
+            <tbody>
+                <tr><td>4</td><td>10.000</td><td>~13 Bits</td></tr>
+                <tr><td>6</td><td>1.000.000</td><td>~20 Bits</td></tr>
+                <tr><td>8</td><td>100.000.000</td><td>~27 Bits</td></tr>
+                <tr><td>12</td><td>1.000.000.000.000</td><td>~40 Bits</td></tr>
+            </tbody>
+        </table>
+        <div class="warning-box"><strong>Warnung:</strong> PINs haben begrenzte Entropie. Verwenden Sie 6+ Ziffern für sensible Anwendungen.</div>
+        <div class="chapter-nav"><a href="passphrases.html">← Passphrasen</a><a href="strength.html">Stärkeanalyse →</a></div>
+    </main>
+</body>
+</html>

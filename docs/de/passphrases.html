@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passphrasen — Passwort-Generator</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">فارسی</a><a href="../de/index.html" class="active">DE</a></div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li>
+            <li><a href="index.html">Willkommen</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generieren</li>
+            <li><a href="passwords.html">Zufällige Passwörter</a></li>
+            <li><a href="passphrases.html" class="active">Passphrasen</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analysieren</li>
+            <li><a href="strength.html">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li>
+            <li><a href="clipboard.html">Zwischenablage</a></li>
+            <li><a href="cli.html">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li>
+            <li><a href="api.html">API-Referenz</a></li>
+            <li><a href="usecases.html">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="passwords.html">← Zufällige Passwörter</a><a href="pins.html">PINs →</a></div>
+        <h1>Passphrasen</h1>
+        <p class="lead">Generieren Sie einprägsame XKCD-style Passphrasen aus einer 2048-Wörter-Liste. Leicht zu merken, schwer zu knacken.</p>
+        <h2>Grundlegende Verwendung</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase
+
+# Standard: 4 Wörter, mit Bindestrich getrennt
+passphrase = generate_passphrase()
+print(passphrase)  # z.B. "correct-horse-battery-staple"</code></pre></div>
+        <h2>Benutzerdefinierte Wortanzahl</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(words=3)   # ~33 Bits
+generate_passphrase(words=4)   # ~44 Bits (Standard)
+generate_passphrase(words=5)   # ~55 Bits
+generate_passphrase(words=6)   # ~66 Bits</code></pre></div>
+        <h2>Benutzerdefiniertes Trennzeichen</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(separator="-")   # correct-horse-battery-staple
+generate_passphrase(separator=" ")   # correct horse battery staple
+generate_passphrase(separator=".")   # correct.horse.battery.staple
+generate_passphrase(separator="")    # correcthorsebatterystaple</code></pre></div>
+        <h2>Großschreibung</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(capitalize=True, separator=" ")
+# z.B. "Correct Horse Battery Staple"</code></pre></div>
+        <h2>Benutzerdefinierte Wortliste</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase, PassphraseConfig
+
+config = PassphraseConfig(words=4, wordlist_path="/pfad/zur/wortliste.txt")
+passphrase = generate_passphrase(config)</code></pre></div>
+        <h2>Entropie nach Wortanzahl</h2>
+        <table>
+            <thead><tr><th>Wörter</th><th>Entropie</th><th>Beispiel</th></tr></thead>
+            <tbody>
+                <tr><td>2</td><td>~22 Bits</td><td>correct-horse</td></tr>
+                <tr><td>3</td><td>~33 Bits</td><td>correct-horse-battery</td></tr>
+                <tr><td>4</td><td>~44 Bits</td><td>correct-horse-battery-staple</td></tr>
+                <tr><td>6</td><td>~66 Bits</td><td>correct-horse-battery-staple-moon-river</td></tr>
+                <tr><td>8</td><td>~88 Bits</td><td>8 Wörter</td></tr>
+                <tr><td>10</td><td>~110 Bits</td><td>10 Wörter</td></tr>
+            </tbody>
+        </table>
+        <div class="info-box"><strong>Empfehlung:</strong> Verwenden Sie mindestens 4 Wörter (~44 Bits) für den allgemeinen Gebrauch oder 6+ Wörter (~66 Bits) für hochsichere Anwendungen.</div>
+        <div class="chapter-nav"><a href="passwords.html">← Zufällige Passwörter</a><a href="pins.html">PINs →</a></div>
+    </main>
+</body>
+</html>
