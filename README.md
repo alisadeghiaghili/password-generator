@@ -4,7 +4,7 @@
 
 A secure, configurable password generation toolkit for Python. Generate random passwords, XKCD-style passphrases, numeric PINs, and analyze password strength — all from a simple API or an interactive CLI.
 
-**Version:** 2.0.0 | **License:** MIT | **Python:** 3.10+
+**Version:** 2.0.0 | **License:** Apache 2.0 | **Python:** 3.10+
 
 ---
 
@@ -516,7 +516,9 @@ pytest tests/test_all.py::TestGenerate -v
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+Apache License 2.0 - see [LICENSE](LICENSE) for details.
+
+Copyright 2024-2026 Ali Sadeghi Aghili. You may not use this work except in compliance with the License.
 
 ---
 
