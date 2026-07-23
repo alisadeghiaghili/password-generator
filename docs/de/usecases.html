@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Anwendungsfälle — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">فارسی</a><a href="../de/index.html" class="active">DE</a></div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li><li><a href="index.html">Willkommen</a></li><li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generieren</li><li><a href="passwords.html">Zufällige Passwörter</a></li><li><a href="passphrases.html">Passphrasen</a></li><li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analysieren</li><li><a href="strength.html">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li><li><a href="clipboard.html">Zwischenablage</a></li><li><a href="cli.html">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li><li><a href="api.html">API-Referenz</a></li><li><a href="usecases.html" class="active">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="api.html">← API-Referenz</a><span></span></div>
+        <h1>Anwendungsfälle</h1>
+        <p class="lead">Praxisbeispiele für die Verwendung in Anwendungen, Skripten und Workflows.</p>
+        <h2>1. Passwortspeicherung in Anwendungen</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate
+for name in ["email", "bank", "social"]:
+    print(f"{name}: {generate(length=20)}")</code></pre></div>
+        <h2>2. Verschlüsselungs-Passphrasen</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase
+phrase = generate_passphrase(words=6, capitalize=True, separator=" ")
+print(f"Verschlüsselungsschlüssel: {phrase}")</code></pre></div>
+        <h2>3. 2FA-Backup-Codes</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_pin
+for i in range(10):
+    print(f"Code {i+1}: {generate_pin(length=6, avoid_repeats=True)}")</code></pre></div>
+        <h2>4. DevOps-Infrastruktur</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, generate_pin
+config = {
+    "db_password": generate(length=32, exclude_ambiguous=True),
+    "api_key": generate(length=48, symbols=False),
+    "admin_pin": generate_pin(length=8, avoid_sequential=True),
+}</code></pre></div>
+        <h2>5. Passwort-Stärke-Audit</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import analyze
+for pwd in ["password123", "Tr0ub4dor&3", "k8#Qx!2mNp@Lw9Rz"]:
+    r = analyze(pwd)
+    print(f"[Score {r.score}] {r.feedback[0] if r.feedback else 'OK'}")</code></pre></div>
+        <h2>6. Passwort-Manager-Export</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate
+import json
+entries = [{"service": s, "password": generate(length=20)} for s in ["github", "aws"]]
+with open("passwords.json", "w") as f:
+    json.dump(entries, f, indent=2)</code></pre></div>
+        <h2>7. CI/CD-Secrets</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>export SECRET_KEY=$(python cli.py --length 48 --json | jq -r '.passwords[0]')</code></pre></div>
+        <h2>8. Sichere Clipboard-Workflow</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, analyze, copy_to_clipboard
+pwd = generate(length=24)
+if analyze(pwd).score >= 3:
+    copy_to_clipboard(pwd, auto_clear_seconds=30)</code></pre></div>
+        <h2>9. Benutzerdefinierte Wortliste</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase, PassphraseConfig
+config = PassphraseConfig(words=4, wordlist_path="meine_wortliste.txt")
+print(generate_passphrase(config))</code></pre></div>
+        <h2>10. Stapelgenerierung mit Bericht</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, analyze
+results = [(generate(length=20), analyze(generate(length=20))) for _ in range(10)]
+avg = sum(r.score for _, r in results) / len(results)
+print(f"Durchschnittliche Bewertung: {avg:.1f}/4")</code></pre></div>
+        <div class="chapter-nav"><a href="api.html">← API-Referenz</a><span></span></div>
+    </main>
+</body>
+</html>

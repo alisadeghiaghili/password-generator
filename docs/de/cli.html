@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CLI-Anleitung — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">فارسی</a><a href="../de/index.html" class="active">DE</a></div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li><li><a href="index.html">Willkommen</a></li><li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generieren</li><li><a href="passwords.html">Zufällige Passwörter</a></li><li><a href="passphrases.html">Passphrasen</a></li><li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analysieren</li><li><a href="strength.html">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li><li><a href="clipboard.html">Zwischenablage</a></li><li><a href="cli.html" class="active">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li><li><a href="api.html">API-Referenz</a></li><li><a href="usecases.html">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="clipboard.html">← Zwischenablage</a><a href="api.html">API-Referenz →</a></div>
+        <h1>CLI-Anleitung</h1>
+        <p class="lead">Interaktiver Assistent für technische Laien und leistungsstarke Kommandozeilen-Argumente für Skripting und Automatisierung.</p>
+        <h2>Interaktiver Modus</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py</code></pre></div>
+        <h2>Passwörter generieren</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --length 16
+python cli.py --length 20 --count 5
+python cli.py --length 12 --no-lowercase --no-symbols
+python cli.py --length 20 --exclude-ambiguous</code></pre></div>
+        <h2>Passphrasen generieren</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --passphrase
+python cli.py --passphrase --words 6 --separator " " --capitalize</code></pre></div>
+        <h2>PINs generieren</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --pin
+python cli.py --pin --pin-length 6
+python cli.py --pin --pin-length 8 --avoid-repeats --avoid-sequential</code></pre></div>
+        <h2>Analysieren</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --analyze "MyP@ssw0rd"
+python cli.py --analyze "Tr0ub4dor&3" --json</code></pre></div>
+        <h2>JSON-Ausgabe</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --length 20 --json
+python cli.py --passphrase --words 4 --json</code></pre></div>
+        <h2>Vollständige Referenz</h2>
+        <table class="param-table">
+            <thead><tr><th>Argument</th><th>Beschreibung</th><th>Standard</th></tr></thead>
+            <tbody>
+                <tr><td>--length N</td><td>Passwortlänge (4–256)</td><td>16</td></tr>
+                <tr><td>--count N</td><td>Anzahl</td><td>1</td></tr>
+                <tr><td>--uppercase / --no-uppercase</td><td>Großbuchstaben</td><td>True</td></tr>
+                <tr><td>--lowercase / --no-lowercase</td><td>Kleinbuchstaben</td><td>True</td></tr>
+                <tr><td>--digits / --no-digits</td><td>Ziffern</td><td>True</td></tr>
+                <tr><td>--no-symbols</td><td>Symbole ausschließen</td><td>False</td></tr>
+                <tr><td>--exclude-ambiguous</td><td>Mehrdeutige Zeichen</td><td>False</td></tr>
+                <tr><td>--passphrase</td><td>Passphrase-Modus</td><td>—</td></tr>
+                <tr><td>--words N</td><td>Wortanzahl (2–10)</td><td>4</td></tr>
+                <tr><td>--separator CHAR</td><td>Trennzeichen</td><td>-</td></tr>
+                <tr><td>--capitalize</td><td>Großschreiben</td><td>False</td></tr>
+                <tr><td>--pin</td><td>PIN-Modus</td><td>—</td></tr>
+                <tr><td>--pin-length N</td><td>PIN-Länge (1–12)</td><td>4</td></tr>
+                <tr><td>--avoid-repeats</td><td>Wiederholungen vermeiden</td><td>False</td></tr>
+                <tr><td>--avoid-sequential</td><td>Sequenzen vermeiden</td><td>False</td></tr>
+                <tr><td>--analyze PASSWORD</td><td>Passwort analysieren</td><td>—</td></tr>
+                <tr><td>--json</td><td>JSON-Ausgabe</td><td>False</td></tr>
+                <tr><td>--clipboard</td><td>In Zwischenablage</td><td>False</td></tr>
+                <tr><td>--clipboard-clear N</td><td>Autolöschung (Sek.)</td><td>30</td></tr>
+            </tbody>
+        </table>
+        <div class="chapter-nav"><a href="clipboard.html">← Zwischenablage</a><a href="api.html">API-Referenz →</a></div>
+    </main>
+</body>
+</html>

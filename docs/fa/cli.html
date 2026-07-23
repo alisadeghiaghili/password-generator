@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>راهنمای CLI — پسورد جنریتور</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html" class="active">فارسی</a><a href="../de/index.html">DE</a></div>
+        <div class="sidebar-header"><h2>پسورد جنریتور</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">شروع سریع</li><li><a href="index.html">خانه</a></li><li><a href="installation.html">نصب</a></li>
+            <li class="nav-section">تولید</li><li><a href="passwords.html">پسورد تصادفی</a></li><li><a href="passphrases.html">عبارت عبور</a></li><li><a href="pins.html">کد PIN</a></li>
+            <li class="nav-section">تحلیل</li><li><a href="strength.html">تحلیل قوت</a></li>
+            <li class="nav-section">ابزارها</li><li><a href="clipboard.html">کلیپ‌بورد</a></li><li><a href="cli.html" class="active">راهنمای CLI</a></li>
+            <li class="nav-section">مرجع</li><li><a href="api.html">مرجع API</a></li><li><a href="usecases.html">موارد استفاده</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="clipboard.html">کلیپ‌بورد ←</a><a href="api.html">مرجع API →</a></div>
+        <h1>راهنمای CLI</h1>
+        <p class="lead">راهنمای تعاملی و آرگومان‌های خط فرمان برای اسکریپت‌نویسی و اتوماسیون.</p>
+        <h2>حالت تعاملی</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py</code></pre></div>
+        <h2>تولید پسورد</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --length 16
+python cli.py --length 20 --count 5
+python cli.py --length 12 --no-lowercase --no-symbols</code></pre></div>
+        <h2>تولید عبارت عبور</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --passphrase
+python cli.py --passphrase --words 6 --separator " " --capitalize</code></pre></div>
+        <h2>تولید PIN</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --pin
+python cli.py --pin --pin-length 6 --avoid-repeats --avoid-sequential</code></pre></div>
+        <h2>تحلیل</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --analyze "MyP@ssw0rd"
+python cli.py --analyze "Tr0ub4dor&3" --json</code></pre></div>
+        <h2>مرجع کامل</h2>
+        <table class="param-table">
+            <thead><tr><th>آرگومان</th><th>توضیح</th><th>پیش‌فرض</th></tr></thead>
+            <tbody>
+                <tr><td>--length N</td><td>طول (4–256)</td><td>16</td></tr>
+                <tr><td>--count N</td><td>تعداد</td><td>1</td></tr>
+                <tr><td>--uppercase/--no-uppercase</td><td>حروف بزرگ</td><td>True</td></tr>
+                <tr><td>--lowercase/--no-lowercase</td><td>حروف کوچک</td><td>True</td></tr>
+                <tr><td>--digits/--no-digits</td><td>اعداد</td><td>True</td></tr>
+                <tr><td>--no-symbols</td><td>بدون نماد</td><td>False</td></tr>
+                <tr><td>--exclude-ambiguous</td><td>حذف مبهم</td><td>False</td></tr>
+                <tr><td>--passphrase</td><td>حالت عبارت عبور</td><td>—</td></tr>
+                <tr><td>--words N</td><td>تعداد کلمات (2–10)</td><td>4</td></tr>
+                <tr><td>--separator CHAR</td><td>جداکننده</td><td>-</td></tr>
+                <tr><td>--capitalize</td><td>بزرگ‌نویسی</td><td>False</td></tr>
+                <tr><td>--pin</td><td>حالت PIN</td><td>—</td></tr>
+                <tr><td>--pin-length N</td><td>طول PIN (1–12)</td><td>4</td></tr>
+                <tr><td>--avoid-repeats</td><td>بدون تکرار</td><td>False</td></tr>
+                <tr><td>--avoid-sequential</td><td>بدون توالی</td><td>False</td></tr>
+                <tr><td>--analyze PWD</td><td>تحلیل</td><td>—</td></tr>
+                <tr><td>--json</td><td>خروجی JSON</td><td>False</td></tr>
+                <tr><td>--clipboard</td><td>کپی</td><td>False</td></tr>
+                <tr><td>--clipboard-clear N</td><td>پاکسازی (ثانیه)</td><td>30</td></tr>
+            </tbody>
+        </table>
+        <div class="chapter-nav"><a href="clipboard.html">کلیپ‌بورد ←</a><a href="api.html">مرجع API →</a></div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>عبارت عبور — پسورد جنریتور</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html" class="active">فارسی</a><a href="../de/index.html">DE</a></div>
+        <div class="sidebar-header"><h2>پسورد جنریتور</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">شروع سریع</li><li><a href="index.html">خانه</a></li><li><a href="installation.html">نصب</a></li>
+            <li class="nav-section">تولید</li><li><a href="passwords.html">پسورد تصادفی</a></li><li><a href="passphrases.html" class="active">عبارت عبور</a></li><li><a href="pins.html">کد PIN</a></li>
+            <li class="nav-section">تحلیل</li><li><a href="strength.html">تحلیل قوت</a></li>
+            <li class="nav-section">ابزارها</li><li><a href="clipboard.html">کلیپ‌بورد</a></li><li><a href="cli.html">راهنمای CLI</a></li>
+            <li class="nav-section">مرجع</li><li><a href="api.html">مرجع API</a></li><li><a href="usecases.html">موارد استفاده</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="passwords.html">پسورد تصادفی ←</a><a href="pins.html">کد PIN →</a></div>
+        <h1>عبارت عبور</h1>
+        <p class="lead">تولید عبارات عبور XKCD از لیست 2048 کلمه‌ای. به یادماندنی و امن.</p>
+        <h2>استفاده پایه</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase
+phrase = generate_passphrase()  # 4 کلمه، خط تیره
+print(phrase)  # مثلاً: "correct-horse-battery-staple"</code></pre></div>
+        <h2>تعداد کلمات</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(words=3)   # ~33 بیت
+generate_passphrase(words=4)   # ~44 بیت (پیش‌فرض)
+generate_passphrase(words=6)   # ~66 بیت</code></pre></div>
+        <h2>جداکننده سفارشی</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(separator=" ")   # فاصله
+generate_passphrase(separator=".")   # نقطه
+generate_passphrase(separator="")    # بدون جداکننده</code></pre></div>
+        <h2>بزرگ‌نویسی</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(capitalize=True, separator=" ")</code></pre></div>
+        <h2>لیست کلمات سفارشی</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase, PassphraseConfig
+config = PassphraseConfig(words=4, wordlist_path="wordlist.txt")
+print(generate_passphrase(config))</code></pre></div>
+        <h2>آنتروپی</h2>
+        <table>
+            <thead><tr><th>کلمات</th><th>آنتروپی</th><th>مثال</th></tr></thead>
+            <tbody>
+                <tr><td>2</td><td>~22 بیت</td><td>correct-horse</td></tr>
+                <tr><td>4</td><td>~44 بیت</td><td>correct-horse-battery-staple</td></tr>
+                <tr><td>6</td><td>~66 بیت</td><td>6 کلمه</td></tr>
+                <tr><td>10</td><td>~110 بیت</td><td>10 کلمه</td></tr>
+            </tbody>
+        </table>
+        <div class="info-box"><strong>توصیه:</strong> حداقل 4 کلمه (~44 بیت) برای استفاده عمومی، 6+ کلمه (~66 بیت) برای امنیت بالا.</div>
+        <div class="chapter-nav"><a href="passwords.html">پسورد تصادفی ←</a><a href="pins.html">کد PIN →</a></div>
+    </main>
+</body>
+</html>

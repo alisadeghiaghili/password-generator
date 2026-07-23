@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>مرجع API — پسورد جنریتور</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html" class="active">فارسی</a><a href="../de/index.html">DE</a></div>
+        <div class="sidebar-header"><h2>پسورد جنریتور</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">شروع سریع</li><li><a href="index.html">خانه</a></li><li><a href="installation.html">نصب</a></li>
+            <li class="nav-section">تولید</li><li><a href="passwords.html">پسورد تصادفی</a></li><li><a href="passphrases.html">عبارت عبور</a></li><li><a href="pins.html">کد PIN</a></li>
+            <li class="nav-section">تحلیل</li><li><a href="strength.html">تحلیل قوت</a></li>
+            <li class="nav-section">ابزارها</li><li><a href="clipboard.html">کلیپ‌بورد</a></li><li><a href="cli.html">راهنمای CLI</a></li>
+            <li class="nav-section">مرجع</li><li><a href="api.html" class="active">مرجع API</a></li><li><a href="usecases.html">موارد استفاده</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="cli.html">راهنمای CLI ←</a><a href="usecases.html">موارد استفاده →</a></div>
+        <h1>مرجع API</h1>
+        <p class="lead">مرجع کامل تمام توابع، کلاس‌ها و گزینه‌های پیکربندی عمومی.</p>
+        <h2>ایمپورت‌ها</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import (
+    generate, generate_passphrase, generate_pin, analyze,
+    copy_to_clipboard, clear_clipboard,
+    GeneratorConfig, PassphraseConfig, PinConfig, StrengthReport,
+)</code></pre></div>
+        <hr>
+        <h2><code>generate()</code></h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate(config: GeneratorConfig | None = None, **kwargs) -> str</code></pre></div>
+        <table class="param-table">
+            <thead><tr><th>پارامتر</th><th>نوع</th><th>پیش‌فرض</th><th>توضیح</th></tr></thead>
+            <tbody>
+                <tr><td>config</td><td>GeneratorConfig</td><td>None</td><td>شیء پیکربندی</td></tr>
+                <tr><td>length</td><td>int</td><td>16</td><td>طول (4–256)</td></tr>
+                <tr><td>uppercase</td><td>bool</td><td>True</td><td>حروف بزرگ</td></tr>
+                <tr><td>lowercase</td><td>bool</td><td>True</td><td>حروف کوچک</td></tr>
+                <tr><td>digits</td><td>bool</td><td>True</td><td>اعداد</td></tr>
+                <tr><td>symbols</td><td>bool</td><td>True</td><td>نمادها</td></tr>
+                <tr><td>exclude_ambiguous</td><td>bool</td><td>False</td><td>حذف مبهم</td></tr>
+            </tbody>
+        </table>
+        <hr>
+        <h2><code>generate_passphrase()</code></h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate_passphrase(config=None, **kwargs) -> str</code></pre></div>
+        <table class="param-table">
+            <thead><tr><th>پارامتر</th><th>نوع</th><th>پیش‌فرض</th><th>توضیح</th></tr></thead>
+            <tbody>
+                <tr><td>words</td><td>int</td><td>4</td><td>تعداد کلمات (2–10)</td></tr>
+                <tr><td>separator</td><td>str</td><td>-</td><td>جداکننده</td></tr>
+                <tr><td>capitalize</td><td>bool</td><td>False</td><td>بزرگ‌نویسی</td></tr>
+                <tr><td>wordlist_path</td><td>str</td><td>None</td><td>لیست کلمات سفارشی</td></tr>
+            </tbody>
+        </table>
+        <hr>
+        <h2><code>generate_pin()</code></h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate_pin(config=None, **kwargs) -> str</code></pre></div>
+        <table class="param-table">
+            <thead><tr><th>پارامتر</th><th>نوع</th><th>پیش‌فرض</th><th>توضیح</th></tr></thead>
+            <tbody>
+                <tr><td>length</td><td>int</td><td>4</td><td>طول (1–12)</td></tr>
+                <tr><td>avoid_repeats</td><td>bool</td><td>False</td><td>جلوگیری تکرار</td></tr>
+                <tr><td>avoid_sequential</td><td>bool</td><td>False</td><td>جلوگیری توالی</td></tr>
+            </tbody>
+        </table>
+        <hr>
+        <h2><code>analyze()</code></h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def analyze(password: str) -> StrengthReport</code></pre></div>
+        <h3>فیلدهای StrengthReport</h3>
+        <table class="param-table">
+            <thead><tr><th>فیلد</th><th>نوع</th><th>توضیح</th></tr></thead>
+            <tbody>
+                <tr><td>password</td><td>str</td><td>مخفی شده</td></tr>
+                <tr><td>score</td><td>int</td><td>0–4</td></tr>
+                <tr><td>guesses</td><td>float</td><td>حدس‌های تخمینی</td></tr>
+                <tr><td>entropy</td><td>float</td><td>آنتروپی بیت</td></tr>
+                <tr><td>crack_times</td><td>dict</td><td>زمان شکستن</td></tr>
+                <tr><td>feedback</td><td>list</td><td>بازخورد</td></tr>
+                <tr><td>patterns</td><td>list</td><td>الگوها</td></tr>
+            </tbody>
+        </table>
+        <hr>
+        <h2><code>copy_to_clipboard()</code></h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool</code></pre></div>
+        <hr>
+        <h2><code>clear_clipboard()</code></h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def clear_clipboard() -> bool</code></pre></div>
+        <div class="chapter-nav"><a href="cli.html">راهنمای CLI ←</a><a href="usecases.html">موارد استفاده →</a></div>
+    </main>
+</body>
+</html>

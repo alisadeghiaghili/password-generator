@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Zwischenablage — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">فارسی</a><a href="../de/index.html" class="active">DE</a></div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li><li><a href="index.html">Willkommen</a></li><li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generieren</li><li><a href="passwords.html">Zufällige Passwörter</a></li><li><a href="passphrases.html">Passphrasen</a></li><li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analysieren</li><li><a href="strength.html">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li><li><a href="clipboard.html" class="active">Zwischenablage</a></li><li><a href="cli.html">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li><li><a href="api.html">API-Referenz</a></li><li><a href="usecases.html">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="strength.html">← Stärkeanalyse</a><a href="cli.html">CLI-Anleitung →</a></div>
+        <h1>Zwischenablage</h1>
+        <p class="lead">Plattformübergreifende Clipboard-Unterstützung mit automatischer Löschung. Kopieren Sie Passwörter sicher — sie verschwinden nach einer konfigurierbaren Zeitspanne.</p>
+        <h2>Grundlegende Verwendung</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, copy_to_clipboard
+password = generate(length=24)
+copy_to_clipboard(password)</code></pre></div>
+        <h2>Automatische Löschung</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>copy_to_clipboard(password, auto_clear_seconds=30)   # 30 Sekunden
+copy_to_clipboard(password, auto_clear_seconds=120)  # 2 Minuten</code></pre></div>
+        <h2>Manuelles Löschen</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import clear_clipboard
+clear_clipboard()</code></pre></div>
+        <h2>Plattformunterstützung</h2>
+        <table>
+            <thead><tr><th>Plattform</th><th>Werkzeug</th><th>Autolöschung</th></tr></thead>
+            <tbody>
+                <tr><td>Windows</td><td><code>clip</code></td><td>✅</td></tr>
+                <tr><td>macOS</td><td><code>pbcopy</code></td><td>✅</td></tr>
+                <tr><td>Linux</td><td><code>xclip</code> oder <code>xsel</code></td><td>✅</td></tr>
+            </tbody>
+        </table>
+        <div class="info-box"><strong>Linux-Einrichtung:</strong> <code>sudo apt install xclip</code></div>
+        <div class="warning-box"><strong>Sicherheit:</strong> Verwenden Sie immer Autolöschung bei sensiblen Daten.</div>
+        <div class="chapter-nav"><a href="strength.html">← Stärkeanalyse</a><a href="cli.html">CLI-Anleitung →</a></div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>تحلیل قوت — پسورد جنریتور</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html" class="active">فارسی</a><a href="../de/index.html">DE</a></div>
+        <div class="sidebar-header"><h2>پسورد جنریتور</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">شروع سریع</li><li><a href="index.html">خانه</a></li><li><a href="installation.html">نصب</a></li>
+            <li class="nav-section">تولید</li><li><a href="passwords.html">پسورد تصادفی</a></li><li><a href="passphrases.html">عبارت عبور</a></li><li><a href="pins.html">کد PIN</a></li>
+            <li class="nav-section">تحلیل</li><li><a href="strength.html" class="active">تحلیل قوت</a></li>
+            <li class="nav-section">ابزارها</li><li><a href="clipboard.html">کلیپ‌بورد</a></li><li><a href="cli.html">راهنمای CLI</a></li>
+            <li class="nav-section">مرجع</li><li><a href="api.html">مرجع API</a></li><li><a href="usecases.html">موارد استفاده</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="pins.html">کد PIN ←</a><a href="clipboard.html">کلیپ‌بورد →</a></div>
+        <h1>تحلیل قوت</h1>
+        <p class="lead">تحلیل قوت رمز عبور با امتیازدهی آنتروپی، برآورد زمان شکستن و تشخیص الگو.</p>
+        <h2>استفاده پایه</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import analyze
+report = analyze("MyP@ssw0rd123!")
+print(f"امتیاز: {report.score}/4")
+print(f"آنتروپی: {report.entropy:.0f} بیت")</code></pre></div>
+        <h2>درک امتیاز</h2>
+        <table>
+            <thead><tr><th>امتیاز</th><th>برچسب</th><th>حدس‌ها</th><th>توضیح</th></tr></thead>
+            <tbody>
+                <tr><td><span class="score score-0">0</span></td><td>خیلی ضعیف</td><td>&lt; 1,000</td><td>فوراً شکسته</td></tr>
+                <tr><td><span class="score score-1">1</span></td><td>ضعیف</td><td>&lt; 1M</td><td>دقیقه تا ساعت</td></tr>
+                <tr><td><span class="score score-2">2</span></td><td>متوسط</td><td>&lt; 100M</td><td>روز تا ماه</td></tr>
+                <tr><td><span class="score score-3">3</span></td><td>قوی</td><td>&lt; 10B</td><td>دهه‌ها</td></tr>
+                <tr><td><span class="score score-4">4</span></td><td>خیلی قوی</td><td>≥ 10B</td><td>قرن‌ها+</td></tr>
+            </tbody>
+        </table>
+        <h2>تشخیص الگو</h2>
+        <table>
+            <thead><tr><th>الگو</th><th>مثال</th><th>جریمه</th></tr></thead>
+            <tbody>
+                <tr><td><code>common_password</code></td><td>password, 123456</td><td>امتیاز = 0</td></tr>
+                <tr><td><code>keyboard_pattern</code></td><td>qwerty, asdf</td><td>×0.01</td></tr>
+                <tr><td><code>sequence</code></td><td>abc, 123</td><td>×0.1</td></tr>
+                <tr><td><code>repetition</code></td><td>aaa, 111111</td><td>×0.1</td></tr>
+                <tr><td><code>date</code></td><td>2024, 01/15</td><td>×0.5</td></tr>
+            </tbody>
+        </table>
+        <h2>گزارش کامل</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>report = analyze("k8#Qx!2mNp@Lw9Rz")
+print(report.password)         # "****************" (مخفی)
+print(report.score)            # 4
+print(report.crack_times)      # دیکشنری زمان شکستن
+print(report.feedback)         # ["Good password!"]
+print(report.patterns)         # []</code></pre></div>
+        <div class="info-box"><strong>امنیت:</strong> رمز عبور در گزارش مخفی می‌شود.</div>
+        <div class="chapter-nav"><a href="pins.html">کد PIN ←</a><a href="clipboard.html">کلیپ‌بورد →</a></div>
+    </main>
+</body>
+</html>

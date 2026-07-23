@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Stärkeanalyse — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">فارسی</a><a href="../de/index.html" class="active">DE</a></div>
+        <div class="sidebar-header"><h2>Passwort-Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Erste Schritte</li><li><a href="index.html">Willkommen</a></li><li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generieren</li><li><a href="passwords.html">Zufällige Passwörter</a></li><li><a href="passphrases.html">Passphrasen</a></li><li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analysieren</li><li><a href="strength.html" class="active">Stärkeanalyse</a></li>
+            <li class="nav-section">Werkzeuge</li><li><a href="clipboard.html">Zwischenablage</a></li><li><a href="cli.html">CLI-Anleitung</a></li>
+            <li class="nav-section">Referenz</li><li><a href="api.html">API-Referenz</a></li><li><a href="usecases.html">Anwendungsfälle</a></li>
+        </ul>
+        <div class="sidebar-footer"><a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a><a href="https://pypi.org/project/password-generator/">PyPI</a></div>
+    </nav>
+    <main class="content">
+        <div class="chapter-nav"><a href="pins.html">← PINs</a><a href="clipboard.html">Zwischenablage →</a></div>
+        <h1>Stärkeanalyse</h1>
+        <p class="lead">Analysieren Sie Passwortstärke mit Entropie-Bewertung, Knackzeit-Schätzungen und Mustererkennung.</p>
+        <h2>Grundlegende Verwendung</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import analyze
+report = analyze("MyP@ssw0rd123!")
+print(f"Bewertung: {report.score}/4")
+print(f"Entropie: {report.entropy:.0f} Bits")</code></pre></div>
+        <h2>Bewertung verstehen</h2>
+        <table>
+            <thead><tr><th>Wert</th><th>Beschriftung</th><th>Versuche</th><th>Beschreibung</th></tr></thead>
+            <tbody>
+                <tr><td><span class="score score-0">0</span></td><td>Sehr schwach</td><td>&lt; 1.000</td><td>Sofort geknackt</td></tr>
+                <tr><td><span class="score score-1">1</span></td><td>Schwach</td><td>&lt; 1.000.000</td><td>Minuten bis Stunden</td></tr>
+                <tr><td><span class="score score-2">2</span></td><td>Fair</td><td>&lt; 100.000.000</td><td>Tage bis Monate</td></tr>
+                <tr><td><span class="score score-3">3</span></td><td>Stark</td><td>&lt; 10.000.000.000</td><td>Jahrzehnte</td></tr>
+                <tr><td><span class="score score-4">4</span></td><td>Sehr stark</td><td>≥ 10.000.000.000</td><td>Jahrhunderte+</td></tr>
+            </tbody>
+        </table>
+        <h2>Knackzeit-Schätzungen</h2>
+        <table>
+            <thead><tr><th>Szenario</th><th>Geschwindigkeit</th><th>Beschreibung</th></tr></thead>
+            <tbody>
+                <tr><td>online_throttled</td><td>100/Stunde</td><td>Login mit Ratenbegrenzung</td></tr>
+                <tr><td>online_no_throttling</td><td>10/Sekunde</td><td>Login ohne Ratenbegrenzung</td></tr>
+                <tr><td>offline_slow_hashing</td><td>10K/Sekunde</td><td>Gestohlener Hash, langsamer Algorithmus</td></tr>
+                <tr><td>offline_fast_hashing</td><td>10B/Sekunde</td><td>Gestohlener Hash, schneller Algorithmus</td></tr>
+            </tbody>
+        </table>
+        <h2>Mustererkennung</h2>
+        <table>
+            <thead><tr><th>Muster</th><th>Beispiele</th><th>Strafe</th></tr></thead>
+            <tbody>
+                <tr><td><code>common_password</code></td><td>password, 123456</td><td>Wert auf 0 gezwungen</td></tr>
+                <tr><td><code>keyboard_pattern</code></td><td>qwerty, asdf</td><td>×0,01 Versuche</td></tr>
+                <tr><td><code>sequence</code></td><td>abc, 123</td><td>×0,1 Versuche</td></tr>
+                <tr><td><code>repetition</code></td><td>aaa, 111111</td><td>×0,1 Versuche</td></tr>
+                <tr><td><code>date</code></td><td>2024, 01/15</td><td>×0,5 Versuche</td></tr>
+            </tbody>
+        </table>
+        <h2>Vollständiger Bericht</h2>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>report = analyze("k8#Qx!2mNp@Lw9Rz")
+print(report.password)         # "****************" (maskiert)
+print(report.score)            # 4
+print(report.entropy)          # ~106
+print(report.crack_times)      # dict mit Szenario → Zeit
+print(report.feedback)         # ["Good password!"]
+print(report.patterns)         # [] (keine schwachen Muster)</code></pre></div>
+        <div class="info-box"><strong>Sicherheitshinweis:</strong> Das Passwort wird im Bericht maskiert (als Sterne) um eine versehentliche Offenlegung zu verhindern.</div>
+        <div class="chapter-nav"><a href="pins.html">← PINs</a><a href="clipboard.html">Zwischenablage →</a></div>
+    </main>
+</body>
+</html>
