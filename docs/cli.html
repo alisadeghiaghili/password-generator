@@ -73,23 +73,45 @@
             <li>Optionally copying to clipboard</li>
         </ol>
 
-        <h2>Rich Terminal Output</h2>
-        <p>With <code>rich</code> installed, the CLI outputs beautiful colored panels, strength bars, and formatted tables:</p>
+        <h2>Rich CLI (Beautiful Terminal Output)</h2>
+        <p>The CLI supports <a href="https://github.com/Textualize/rich">Rich</a> for beautiful colored terminal output. When installed, you get:</p>
+        <ul>
+            <li><strong>Colored panels</strong> — generated passwords and results displayed in styled bordered boxes</li>
+            <li><strong>Strength bars</strong> — visual <code>████░░░░</code> bars colored by score (red → yellow → green)</li>
+            <li><strong>Formatted tables</strong> — crack time estimates in clean bordered tables</li>
+            <li><strong>Colored feedback</strong> — strength warnings and suggestions in yellow/green</li>
+            <li><strong>Interactive prompts</strong> — styled yes/no and text inputs</li>
+        </ul>
 
-        <div class="terminal-screenshot">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
-                <span class="terminal-title">terminal — password-gen</span>
-            </div>
-            <div class="terminal-body"><span class="t-green t-bold">┌──────────────────── Generated 3 password(s) (20 chars) ─────────────────────┐</span>
-<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
-<span class="t-green">│</span>   <span class="t-cyan t-bold">1      NA||v?S![2<!3.|^@9iG</span>                                               <span class="t-green">│</span>
-<span class="t-green">│</span>   <span class="t-cyan t-bold">2      8&lt;As5}pY&lt;P$%Bv2Yz1Ze</span>                                               <span class="t-green">│</span>
-<span class="t-green">│</span>   <span class="t-cyan t-bold">3      uIQ1@cA6GgxW}_,xg3R+</span>                                               <span class="t-green">│</span>
-<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
-<span class="t-green t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span></div>
+        <h3>Installation</h3>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code class="language-bash"># Install with rich CLI support
+pip install password-generator[cli]
+
+# Or from source
+pip install -e ".[cli]"</code></pre>
+        </div>
+
+        <h3>Without Rich</h3>
+        <p>The CLI works without <code>rich</code> too — it falls back to plain text output. Install the base package only:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code class="language-bash">pip install password-generator</code></pre>
+        </div>
+
+        <h3>Examples</h3>
+        <p>Generate passwords with rich output:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code class="language-bash"># Generate 3 passwords — shown in a green panel
+python cli.py --length 20 --count 3
+
+# Analyze a password — shown with colored strength bar and crack time table
+python cli.py --analyze "MyP@ssw0rd123!"
+
+# Generate a passphrase — shown in a green panel
+python cli.py --passphrase --words 4</code></pre>
         </div>
 
         <h2>Generate Passwords</h2>
@@ -121,20 +143,6 @@ python cli.py --passphrase --words 6 --separator " " --capitalize
 python cli.py --passphrase --words 4 --count 5</code></pre>
         </div>
 
-        <div class="terminal-screenshot">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
-                <span class="terminal-title">terminal — password-gen --passphrase</span>
-            </div>
-            <div class="terminal-body"><span class="t-green t-bold">┌──────────────────── Generated 1 passphrase(s) (4 words) ────────────────────┐</span>
-<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
-<span class="t-green">│</span>   <span class="t-cyan t-bold">1      opera-macro-speak-pinch</span>                                            <span class="t-green">│</span>
-<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
-<span class="t-green t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span></div>
-        </div>
-
         <h2>Generate PINs</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
@@ -159,35 +167,6 @@ python cli.py --analyze "MyP@ssw0rd"
 
 # Analyze with JSON output
 python cli.py --analyze "Tr0ub4dor&3" --json</code></pre>
-        </div>
-
-        <div class="terminal-screenshot">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
-                <span class="terminal-title">terminal — password-gen --analyze</span>
-            </div>
-            <div class="terminal-body"><span class="t-blue t-bold">┌───────────────────────────── Password Analysis ─────────────────────────────┐</span>
-<span class="t-blue">│</span>                                                                             <span class="t-blue">│</span>
-<span class="t-blue">│</span>    <span class="t-dim">Strength</span>     <span class="t-green t-bold">4/4 — VERY STRONG</span>                                           <span class="t-blue">│</span>
-<span class="t-blue">│</span>    <span class="t-dim">Bar</span>          <span class="t-green t-bold">█████</span><span class="t-dim">░░░░░</span>                                                       <span class="t-blue">│</span>
-<span class="t-blue">│</span>    <span class="t-dim">Entropy</span>      ~89 bits                                                    <span class="t-blue">│</span>
-<span class="t-blue">│</span>    <span class="t-dim">Guesses</span>      5e+26                                                       <span class="t-blue">│</span>
-<span class="t-blue">│</span>                                                                             <span class="t-blue">│</span>
-<span class="t-blue t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span>
-                       <span class="t-bold">Crack Time Estimates</span>
-<span class="t-cyan t-bold">┌────────────────────────────────────┬────────────────────────────┐</span>
-<span class="t-cyan">│</span> <span class="t-dim">Scenario</span>                          <span class="t-cyan">│</span> <span class="t-dim">Time</span>                       <span class="t-cyan">│</span>
-<span class="t-cyan t-bold">├────────────────────────────────────┼────────────────────────────┤</span>
-<span class="t-cyan">│</span> online throttled 100 / hour        <span class="t-cyan">│</span> 278353298582 billion years <span class="t-cyan">│</span>
-<span class="t-cyan">│</span> online no throttling 10 / second   <span class="t-cyan">│</span> 773203607 billion years    <span class="t-cyan">│</span>
-<span class="t-cyan">│</span> offline slow hashing 1e4 / second  <span class="t-cyan">│</span> 773204 billion years       <span class="t-cyan">│</span>
-<span class="t-cyan">│</span> offline fast hashing 1e10 / second <span class="t-cyan">│</span> 773 million years          <span class="t-cyan">│</span>
-<span class="t-cyan t-bold">└────────────────────────────────────┴────────────────────────────┘</span>
-<span class="t-yellow t-bold">┌───────────────────────────────── Feedback ──────────────────────────────────┐</span>
-<span class="t-yellow">│</span>   ▸ Contains sequential characters (e.g., abc, 123)                         <span class="t-yellow">│</span>
-<span class="t-yellow t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span></div>
         </div>
 
         <h2>JSON Output</h2>
