@@ -36,6 +36,7 @@ Issues = "https://github.com/alisadeghiaghili/password-generator/issues"
 password-gen = "cli:main"
 
 [project.optional-dependencies]
+cli = ["rich>=13.0"]
 dev = ["pytest>=7.0"]
 
 [tool.setuptools.packages.find]
