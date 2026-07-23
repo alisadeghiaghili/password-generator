@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "password-generator"
+version = "2.0.0"
+description = "A secure, configurable password generation toolkit for Python"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Ali Sadeghi Aghili", email = "alisadeghiaghili@gmail.com"}
+]
+keywords = ["password", "generator", "security", "passphrase", "pin", "cli"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/alisadeghiaghili/password-generator"
+Repository = "https://github.com/alisadeghiaghili/password-generator"
+Issues = "https://github.com/alisadeghiaghili/password-generator/issues"
+
+[project.scripts]
+password-gen = "cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+include = ["password_generator*"]
+
+[tool.setuptools.package-data]
+password_generator = ["*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
