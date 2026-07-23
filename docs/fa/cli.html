@@ -32,15 +32,71 @@
         <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --length 16
 python cli.py --length 20 --count 5
 python cli.py --length 12 --no-lowercase --no-symbols</code></pre></div>
+        <div class="terminal-screenshot">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">terminal — password-gen</span>
+            </div>
+            <div class="terminal-body"><span class="t-green t-bold">┌──────────────────── Generated 3 password(s) (20 chars) ─────────────────────┐</span>
+<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
+<span class="t-green">│</span>   <span class="t-cyan t-bold">1      NA||v?S![2<!3.|^@9iG</span>                                               <span class="t-green">│</span>
+<span class="t-green">│</span>   <span class="t-cyan t-bold">2      8&lt;As5}pY&lt;P$%Bv2Yz1Ze</span>                                               <span class="t-green">│</span>
+<span class="t-green">│</span>   <span class="t-cyan t-bold">3      uIQ1@cA6GgxW}_,xg3R+</span>                                               <span class="t-green">│</span>
+<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
+<span class="t-green t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span></div>
+        </div>
         <h2>تولید عبارت عبور</h2>
         <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --passphrase
 python cli.py --passphrase --words 6 --separator " " --capitalize</code></pre></div>
+        <div class="terminal-screenshot">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">terminal — password-gen --passphrase</span>
+            </div>
+            <div class="terminal-body"><span class="t-green t-bold">┌──────────────────── Generated 1 passphrase(s) (4 words) ────────────────────┐</span>
+<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
+<span class="t-green">│</span>   <span class="t-cyan t-bold">1      opera-macro-speak-pinch</span>                                            <span class="t-green">│</span>
+<span class="t-green">│</span>                                                                             <span class="t-green">│</span>
+<span class="t-green t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span></div>
+        </div>
         <h2>تولید PIN</h2>
         <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --pin
 python cli.py --pin --pin-length 6 --avoid-repeats --avoid-sequential</code></pre></div>
         <h2>تحلیل</h2>
         <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --analyze "MyP@ssw0rd"
 python cli.py --analyze "Tr0ub4dor&3" --json</code></pre></div>
+        <div class="terminal-screenshot">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">terminal — password-gen --analyze</span>
+            </div>
+            <div class="terminal-body"><span class="t-blue t-bold">┌───────────────────────────── Password Analysis ─────────────────────────────┐</span>
+<span class="t-blue">│</span>                                                                             <span class="t-blue">│</span>
+<span class="t-blue">│</span>    <span class="t-dim">Strength</span>     <span class="t-green t-bold">4/4 — VERY STRONG</span>                                           <span class="t-blue">│</span>
+<span class="t-blue">│</span>    <span class="t-dim">Bar</span>          <span class="t-green t-bold">█████</span><span class="t-dim">░░░░░</span>                                                       <span class="t-blue">│</span>
+<span class="t-blue">│</span>    <span class="t-dim">Entropy</span>      ~89 bits                                                    <span class="t-blue">│</span>
+<span class="t-blue">│</span>    <span class="t-dim">Guesses</span>      5e+26                                                       <span class="t-blue">│</span>
+<span class="t-blue">│</span>                                                                             <span class="t-blue">│</span>
+<span class="t-blue t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span>
+                       <span class="t-bold">Crack Time Estimates</span>
+<span class="t-cyan t-bold">┌────────────────────────────────────┬────────────────────────────┐</span>
+<span class="t-cyan">│</span> <span class="t-dim">Scenario</span>                          <span class="t-cyan">│</span> <span class="t-dim">Time</span>                       <span class="t-cyan">│</span>
+<span class="t-cyan t-bold">├────────────────────────────────────┼────────────────────────────┤</span>
+<span class="t-cyan">│</span> online throttled 100 / hour        <span class="t-cyan">│</span> 278353298582 billion years <span class="t-cyan">│</span>
+<span class="t-cyan">│</span> online no throttling 10 / second   <span class="t-cyan">│</span> 773203607 billion years    <span class="t-cyan">│</span>
+<span class="t-cyan">│</span> offline slow hashing 1e4 / second  <span class="t-cyan">│</span> 773204 billion years       <span class="t-cyan">│</span>
+<span class="t-cyan">│</span> offline fast hashing 1e10 / second <span class="t-cyan">│</span> 773 million years          <span class="t-cyan">│</span>
+<span class="t-cyan t-bold">└────────────────────────────────────┴────────────────────────────┘</span>
+<span class="t-yellow t-bold">┌───────────────────────────────── Feedback ──────────────────────────────────┐</span>
+<span class="t-yellow">│</span>   ▸ Contains sequential characters (e.g., abc, 123)                         <span class="t-yellow">│</span>
+<span class="t-yellow t-bold">└─────────────────────────────────────────────────────────────────────────────┘</span></div>
+        </div>
         <h2>مرجع کامل</h2>
         <table class="param-table">
             <thead><tr><th>آرگومان</th><th>توضیح</th><th>پیش‌فرض</th></tr></thead>
