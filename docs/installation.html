@@ -54,6 +54,7 @@
         <ul>
             <li>Python 3.10 or higher</li>
             <li>No external dependencies — uses only Python's standard library</li>
+            <li>Optional: <code>rich</code> for beautiful CLI output</li>
             <li>Linux clipboard requires <code>xclip</code> or <code>xsel</code></li>
         </ul>
 
@@ -61,7 +62,15 @@
         <p>The easiest way to install:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
-            <pre><code class="language-bash">pip install password-generator</code></pre>
+            <pre><code class="language-bash"># Core library (zero dependencies)
+pip install password-generator
+
+# With beautiful CLI output (rich terminal UI)
+pip install password-generator[cli]</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>Tip:</strong> The <code>[cli]</code> extra installs <code>rich</code> for colored panels, strength bars, and formatted tables in the terminal. The CLI works without it too, just with plain text output.
         </div>
 
         <h2>From Source</h2>
@@ -70,7 +79,7 @@
             <div class="code-header"><span class="lang">bash</span></div>
             <pre><code class="language-bash">git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
-pip install -e .</code></pre>
+pip install -e ".[cli]"</code></pre>
         </div>
 
         <h2>Development Install</h2>
@@ -86,8 +95,8 @@ python -m venv venv
 source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate     # Windows
 
-# Install with dev dependencies
-pip install -e ".[dev]"
+# Install with dev and CLI dependencies
+pip install -e ".[dev,cli]"
 
 # Verify installation
 pytest</code></pre>

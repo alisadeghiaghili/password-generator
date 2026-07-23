@@ -15,7 +15,7 @@ Ein sicheres, konfigurierbares Passwort-Generierungs-Toolkit für Python. Erstel
 - **PINs** — Numerische Codes mit Wiederholungs-/Sequenzvermeidung
 - **Stärkeanalyse** — Entropie-Bewertung, Knackzeit-Schätzungen, Mustererkennung
 - **Zwischenablage** — Automatisches Kopieren mit zeitgesteuerter Löschung (plattformübergreifend)
-- **Interaktives CLI** — Menügesteuerter Assistent für technische Laien
+- **Interaktives CLI** — Schöne Rich Terminal UI mit farbigen Panels und Stärkebalken
 - **JSON-Ausgabe** — Maschinenlesbare Ausgabe für Skripting und Automatisierung
 - **Plattformübergreifend** — Windows, macOS, Linux
 
@@ -26,7 +26,11 @@ Ein sicheres, konfigurierbares Passwort-Generierungs-Toolkit für Python. Erstel
 ### Über PyPI (empfohlen)
 
 ```bash
+# Kernbibliothek (keine Abhängigkeiten)
 pip install password-generator
+
+# Mit schöner CLI-Ausgabe (Rich Terminal UI)
+pip install password-generator[cli]
 ```
 
 ### Aus Quellcode
@@ -34,13 +38,13 @@ pip install password-generator
 ```bash
 git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
-pip install -e .
+pip install -e ".[cli]"
 ```
 
 ### Entwicklung
 
 ```bash
-pip install -e ".[dev]"
+pip install -e ".[dev,cli]"
 pytest
 ```
 

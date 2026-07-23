@@ -15,7 +15,7 @@ A secure, configurable password generation toolkit for Python. Generate random p
 - **PINs** — Numeric codes with repeat/sequence avoidance
 - **Strength Analysis** — Entropy scoring, crack-time estimates, pattern detection
 - **Clipboard Integration** — Auto-copy with timed auto-clear (cross-platform)
-- **Interactive CLI** — Menu-driven wizard for non-technical users
+- **Interactive CLI** — Beautiful rich terminal UI with colored panels and strength bars
 - **JSON Output** — Machine-readable output for scripting and automation
 - **Cross-Platform** — Windows, macOS, Linux
 
@@ -26,7 +26,11 @@ A secure, configurable password generation toolkit for Python. Generate random p
 ### From PyPI (recommended)
 
 ```bash
+# Core library (zero dependencies)
 pip install password-generator
+
+# With beautiful CLI output (rich terminal UI)
+pip install password-generator[cli]
 ```
 
 ### From Source
@@ -34,13 +38,13 @@ pip install password-generator
 ```bash
 git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
-pip install -e .
+pip install -e ".[cli]"
 ```
 
 ### Development
 
 ```bash
-pip install -e ".[dev]"
+pip install -e ".[dev,cli]"
 pytest
 ```
 
@@ -500,6 +504,7 @@ pytest tests/test_all.py::TestGenerate -v
 
 - Python 3.10 or higher
 - No external dependencies (uses only stdlib: `secrets`, `string`, `math`, `re`, `dataclasses`, `subprocess`)
+- Optional: `rich` for beautiful CLI output (`pip install password-generator[cli]`)
 - Linux clipboard requires `xclip` or `xsel`
 
 ---

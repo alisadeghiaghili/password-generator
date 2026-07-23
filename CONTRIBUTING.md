@@ -98,7 +98,7 @@ git clone https://github.com/YOUR_USERNAME/password-generator.git
 cd password-generator
 
 # Install in development mode
-pip install -e ".[dev]"
+pip install -e ".[dev,cli]"
 
 # Verify installation
 pytest
@@ -117,7 +117,7 @@ venv\Scripts\activate
 source venv/bin/activate
 
 # Install dependencies
-pip install -e ".[dev]"
+pip install -e ".[dev,cli]"
 ```
 
 ---

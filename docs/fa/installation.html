@@ -28,16 +28,22 @@
         <ul>
             <li>پایتون 3.10 یا بالاتر</li>
             <li>بدون وابستگی خارجی — فقط کتابخانه استاندارد</li>
+            <li>اختیاری: <code>rich</code> برای خروجی زیبای CLI</li>
             <li>کلیپ‌بورد لینوکس نیاز به <code>xclip</code> دارد</li>
         </ul>
         <h2>از PyPI</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">pip install password-generator</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash"># کتابخانه اصلی (بدون وابستگی)
+pip install password-generator
+
+# با خروجی زیبای CLI (رابط ترمینال ریچ)
+pip install password-generator[cli]</code></pre></div>
+        <div class="info-box"><strong>نکته:</strong> افزونه <code>[cli]</code> کتابخانه <code>rich</code> را نصب می‌کند برای پنل‌های رنگی، نوارهای قوت و جدول‌های قالب‌بندی شده در ترمینال.</div>
         <h2>از سورس</h2>
         <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
-pip install -e .</code></pre></div>
+pip install -e ".[cli]"</code></pre></div>
         <h2>نصب توسعه</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">pip install -e ".[dev]"
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">pip install -e ".[dev,cli]"
 pytest</code></pre></div>
         <h2>بررسی</h2>
         <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate

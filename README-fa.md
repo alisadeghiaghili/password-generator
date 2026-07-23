@@ -15,7 +15,7 @@
 - **کدهای PIN** — کدهای عددی با جلوگیری از تکرار و توالی
 - **تحلیل قوت** — امتیازدهی آنتروپی، برآورد زمان شکستن، تشخیص الگو
 - **ادغام کلیپ‌بورد** — کپی خودکار با پاکسازی زمان‌بندی‌شده (چندپلتفرمی)
-- **CLI تعاملی** — راهنمای منویی برای کاربران غیرفنی
+- **CLI تعاملی** — رابط ترمینال زیبا با پنل‌های رنگی و نوارهای قوت
 - **خروجی JSON** — خروجی خوانا توسط ماشین برای اسکریپت‌نویسی و اتوماسیون
 - **چندپلتفرمی** — ویندوز، macOS، لینوکس
 
@@ -26,7 +26,11 @@
 ### از PyPI (توصیه‌شده)
 
 ```bash
+# کتابخانه اصلی (بدون وابستگی)
 pip install password-generator
+
+# با خروجی زیبای CLI (رابط ترمینال ریچ)
+pip install password-generator[cli]
 ```
 
 ### از سورس
@@ -34,13 +38,13 @@ pip install password-generator
 ```bash
 git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
-pip install -e .
+pip install -e ".[cli]"
 ```
 
 ### توسعه
 
 ```bash
-pip install -e ".[dev]"
+pip install -e ".[dev,cli]"
 pytest
 ```
 

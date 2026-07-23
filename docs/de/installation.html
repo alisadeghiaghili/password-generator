@@ -41,21 +41,27 @@
         <ul>
             <li>Python 3.10 oder höher</li>
             <li>Keine externen Abhängigkeiten — verwendet nur Pythons Standardbibliothek</li>
+            <li>Optional: <code>rich</code> für schöne CLI-Ausgabe</li>
             <li>Linux-Zwischenablage erfordert <code>xclip</code> oder <code>xsel</code></li>
         </ul>
         <h2>Über PyPI</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">pip install password-generator</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash"># Kernbibliothek (keine Abhängigkeiten)
+pip install password-generator
+
+# Mit schöner CLI-Ausgabe (Rich Terminal UI)
+pip install password-generator[cli]</code></pre></div>
+        <div class="info-box"><strong>Tipp:</strong> Das <code>[cli]</code>-Extra installiert <code>rich</code> für farbige Panels, Stärkebalken und formatierte Tabellen im Terminal.</div>
         <h2>Aus Quellcode</h2>
         <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
-pip install -e .</code></pre></div>
+pip install -e ".[cli]"</code></pre></div>
         <h2>Entwicklungsinstallation</h2>
         <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
 python -m venv venv
 source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate     # Windows
-pip install -e ".[dev]"
+pip install -e ".[dev,cli]"
 pytest</code></pre></div>
         <h2>Überprüfung</h2>
         <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate
