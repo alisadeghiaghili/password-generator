@@ -43,11 +43,14 @@ body {
 /* === RTL Support === */
 [dir="rtl"] body {
     font-family: var(--font-fa);
+    direction: rtl;
 }
 
 [dir="rtl"] .sidebar {
     border-right: none;
     border-left: 1px solid var(--border);
+    left: auto;
+    right: 0;
 }
 
 [dir="rtl"] .nav-list li a {
@@ -64,6 +67,25 @@ body {
 [dir="rtl"] .content {
     margin-left: 0;
     margin-right: var(--sidebar-width);
+}
+
+/* === Code blocks always LTR === */
+.code-block,
+.code-block pre,
+.code-block code,
+.code-block pre code,
+.param-table td:first-child,
+.param-table td:nth-child(2) {
+    direction: ltr;
+    text-align: left;
+}
+
+[dir="rtl"] .code-block,
+[dir="rtl"] .code-block pre,
+[dir="rtl"] .code-block code,
+[dir="rtl"] .code-block pre code {
+    direction: ltr;
+    text-align: left;
 }
 
 [dir="rtl"] .info-box,
@@ -454,6 +476,11 @@ tbody tr:hover {
 ul, ol {
     margin: 12px 0;
     padding-left: 24px;
+}
+
+[dir="rtl"] ul, [dir="rtl"] ol {
+    padding-left: 0;
+    padding-right: 24px;
 }
 
 li {
