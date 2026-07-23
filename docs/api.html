@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html">Passphrases</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html">Clipboard</a></li>
+            <li><a href="cli.html">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html" class="active">API Reference</a></li>
+            <li><a href="usecases.html">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="cli.html">← CLI Guide</a>
+            <a href="usecases.html">Use Cases →</a>
+        </div>
+
+        <h1>API Reference</h1>
+
+        <p class="lead">
+            Complete reference for all public functions, classes, and configuration options.
+        </p>
+
+        <h2>Imports</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import (
+    generate,
+    generate_passphrase,
+    generate_pin,
+    analyze,
+    copy_to_clipboard,
+    clear_clipboard,
+    GeneratorConfig,
+    PassphraseConfig,
+    PinConfig,
+    StrengthReport,
+)</code></pre>
+        </div>
+
+        <hr>
+
+        <h2><code>generate()</code></h2>
+        <p>Generate a cryptographically secure random password.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>def generate(config: GeneratorConfig | None = None, **kwargs) -> str</code></pre>
+        </div>
+
+        <h3>Parameters</h3>
+        <table class="param-table">
+            <thead>
+                <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>config</td><td>GeneratorConfig</td><td>None</td><td>Configuration object (overrides kwargs)</td></tr>
+                <tr><td>length</td><td>int</td><td>16</td><td>Password length (4–256)</td></tr>
+                <tr><td>uppercase</td><td>bool</td><td>True</td><td>Include A–Z</td></tr>
+                <tr><td>lowercase</td><td>bool</td><td>True</td><td>Include a–z</td></tr>
+                <tr><td>digits</td><td>bool</td><td>True</td><td>Include 0–9</td></tr>
+                <tr><td>symbols</td><td>bool</td><td>True</td><td>Include symbols</td></tr>
+                <tr><td>symbol_chars</td><td>str</td><td>!@#$%^&*…</td><td>Custom symbol characters</td></tr>
+                <tr><td>exclude_ambiguous</td><td>bool</td><td>False</td><td>Exclude l, I, 1, O, 0, o</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Returns</h3>
+        <p><code>str</code> — A random password string of the specified length.</p>
+
+        <h3>Raises</h3>
+        <ul>
+            <li><code>ValueError</code> — If length is outside 4–256</li>
+            <li><code>ValueError</code> — If no character categories are enabled</li>
+            <li><code>ValueError</code> — If length is too short for enabled categories</li>
+        </ul>
+
+        <h3>Examples</h3>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>generate()                                          # 16 chars, all types
+generate(length=24)                                 # 24 chars
+generate(length=12, symbols=False)                  # No symbols
+generate(GeneratorConfig(length=32, exclude_ambiguous=True))</code></pre>
+        </div>
+
+        <hr>
+
+        <h2><code>generate_passphrase()</code></h2>
+        <p>Generate an XKCD-style memorable passphrase.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>def generate_passphrase(
+    config: PassphraseConfig | None = None, **kwargs
+) -> str</code></pre>
+        </div>
+
+        <h3>Parameters</h3>
+        <table class="param-table">
+            <thead>
+                <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>config</td><td>PassphraseConfig</td><td>None</td><td>Configuration object</td></tr>
+                <tr><td>words</td><td>int</td><td>4</td><td>Number of words (2–10)</td></tr>
+                <tr><td>separator</td><td>str</td><td>-</td><td>Word separator</td></tr>
+                <tr><td>capitalize</td><td>bool</td><td>False</td><td>Capitalize first letter</td></tr>
+                <tr><td>wordlist_path</td><td>str</td><td>None</td><td>Custom wordlist (min 100 words)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Returns</h3>
+        <p><code>str</code> — A passphrase string like <code>"correct-horse-battery-staple"</code>.</p>
+
+        <h3>Examples</h3>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>generate_passphrase()                               # 4 words, hyphen
+generate_passphrase(words=6, separator=" ")          # 6 words, space
+generate_passphrase(capitalize=True)                 # Capitalized</code></pre>
+        </div>
+
+        <hr>
+
+        <h2><code>generate_pin()</code></h2>
+        <p>Generate a random numeric PIN.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>def generate_pin(config: PinConfig | None = None, **kwargs) -> str</code></pre>
+        </div>
+
+        <h3>Parameters</h3>
+        <table class="param-table">
+            <thead>
+                <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>config</td><td>PinConfig</td><td>None</td><td>Configuration object</td></tr>
+                <tr><td>length</td><td>int</td><td>4</td><td>PIN length (1–12)</td></tr>
+                <tr><td>avoid_repeats</td><td>bool</td><td>False</td><td>Avoid 3+ identical digits</td></tr>
+                <tr><td>avoid_sequential</td><td>bool</td><td>False</td><td>Avoid ascending/descending</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Returns</h3>
+        <p><code>str</code> — A numeric PIN string.</p>
+
+        <hr>
+
+        <h2><code>analyze()</code></h2>
+        <p>Analyze password strength with detailed feedback.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>def analyze(password: str) -> StrengthReport</code></pre>
+        </div>
+
+        <h3>Parameters</h3>
+        <table class="param-table">
+            <thead>
+                <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>password</td><td>str</td><td>The password to analyze</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Returns</h3>
+        <p><code>StrengthReport</code> — See below.</p>
+
+        <hr>
+
+        <h2><code>StrengthReport</code></h2>
+        <p>Dataclass returned by <code>analyze()</code>.</p>
+
+        <h3>Fields</h3>
+        <table class="param-table">
+            <thead>
+                <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>password</td><td>str</td><td>Masked password (asterisks)</td></tr>
+                <tr><td>score</td><td>int</td><td>0–4 (Very Weak to Very Strong)</td></tr>
+                <tr><td>guesses</td><td>float</td><td>Estimated guesses to crack</td></tr>
+                <tr><td>entropy</td><td>float</td><td>Entropy in bits</td></tr>
+                <tr><td>crack_times</td><td>dict[str, str]</td><td>Human-readable crack times</td></tr>
+                <tr><td>crack_times_seconds</td><td>dict[str, float]</td><td>Crack times in seconds</td></tr>
+                <tr><td>feedback</td><td>list[str]</td><td>Actionable improvement tips</td></tr>
+                <tr><td>patterns</td><td>list[str]</td><td>Detected weak patterns</td></tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h2><code>copy_to_clipboard()</code></h2>
+        <p>Copy text to clipboard with optional auto-clear.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool</code></pre>
+        </div>
+
+        <h3>Parameters</h3>
+        <table class="param-table">
+            <thead>
+                <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>text</td><td>str</td><td>—</td><td>Text to copy</td></tr>
+                <tr><td>auto_clear_seconds</td><td>int</td><td>0</td><td>Auto-clear timeout (0 = disabled)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Returns</h3>
+        <p><code>bool</code> — <code>True</code> if successful, <code>False</code> otherwise.</p>
+
+        <hr>
+
+        <h2><code>clear_clipboard()</code></h2>
+        <p>Clear the clipboard immediately.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>def clear_clipboard() -> bool</code></pre>
+        </div>
+
+        <h3>Returns</h3>
+        <p><code>bool</code> — <code>True</code> if successful, <code>False</code> otherwise.</p>
+
+        <hr>
+
+        <h2><code>calculate_entropy()</code></h2>
+        <p>Calculate password entropy in bits.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator.generator import calculate_entropy
+
+entropy = calculate_entropy(pool_size=26, length=8)  # ~37 bits</code></pre>
+        </div>
+
+        <hr>
+
+        <h2><code>passphrase_entropy()</code></h2>
+        <p>Calculate passphrase entropy in bits.</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator.passphrase import passphrase_entropy
+
+entropy = passphrase_entropy(word_count=4)  # ~44 bits</code></pre>
+        </div>
+
+        <div class="chapter-nav">
+            <a href="cli.html">← CLI Guide</a>
+            <a href="usecases.html">Use Cases →</a>
+        </div>
+    </main>
+</body>
+</html>

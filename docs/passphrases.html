@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passphrases — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html" class="active">Passphrases</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html">Clipboard</a></li>
+            <li><a href="cli.html">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html">API Reference</a></li>
+            <li><a href="usecases.html">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="passwords.html">← Random Passwords</a>
+            <a href="pins.html">PINs →</a>
+        </div>
+
+        <h1>Passphrases</h1>
+
+        <p class="lead">
+            Generate memorable XKCD-style passphrases from a 2048-word list.
+            Easy to remember, hard to crack.
+        </p>
+
+        <h2>Basic Usage</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_passphrase
+
+# Default: 4 words, hyphen-separated
+passphrase = generate_passphrase()
+print(passphrase)  # e.g. "correct-horse-battery-staple"</code></pre>
+        </div>
+
+        <h2>Custom Word Count</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># More words = more entropy
+three = generate_passphrase(words=3)   # ~33 bits
+four = generate_passphrase(words=4)    # ~44 bits (default)
+five = generate_passphrase(words=5)    # ~55 bits
+six = generate_passphrase(words=6)     # ~66 bits</code></pre>
+        </div>
+
+        <h2>Custom Separator</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># Hyphen (default)
+generate_passphrase(separator="-")      # correct-horse-battery-staple
+
+# Space
+generate_passphrase(separator=" ")      # correct horse battery staple
+
+# Period
+generate_passphrase(separator=".")      # correct.horse.battery.staple
+
+# Underscore
+generate_passphrase(separator="_")      # correct_horse_battery_staple
+
+# No separator
+generate_passphrase(separator="")       # correcthorsebatterystaple</code></pre>
+        </div>
+
+        <h2>Capitalization</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># Capitalize first letter of each word
+passphrase = generate_passphrase(capitalize=True, separator=" ")
+print(passphrase)  # e.g. "Correct Horse Battery Staple"</code></pre>
+        </div>
+
+        <h2>Custom Wordlist</h2>
+        <p>Use your own word list (minimum 100 words):</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_passphrase, PassphraseConfig
+
+config = PassphraseConfig(
+    words=4,
+    separator="-",
+    wordlist_path="/path/to/my/wordlist.txt"
+)
+passphrase = generate_passphrase(config)</code></pre>
+        </div>
+        <p>Your wordlist file should have one word per line:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">wordlist.txt</span></div>
+            <pre><code>apple
+banana
+cherry
+delta
+echo
+...</code></pre>
+        </div>
+
+        <h2>Using PassphraseConfig</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_passphrase, PassphraseConfig
+
+# Reusable config
+config = PassphraseConfig(
+    words=6,
+    separator=" ",
+    capitalize=True,
+)
+
+for i in range(3):
+    print(generate_passphrase(config))
+# Correct Horse Battery Staple Moon River
+# Lucky Forest Jump Dark Ocean Stone
+# ...</code></pre>
+        </div>
+
+        <h2>Parameters</h2>
+        <table class="param-table">
+            <thead>
+                <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>words</td><td>int</td><td>4</td><td>Number of words (2–10)</td></tr>
+                <tr><td>separator</td><td>str</td><td>-</td><td>Word separator</td></tr>
+                <tr><td>capitalize</td><td>bool</td><td>False</td><td>Capitalize first letter</td></tr>
+                <tr><td>wordlist_path</td><td>str</td><td>None</td><td>Custom wordlist file (min 100 words)</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Entropy by Word Count</h2>
+        <table>
+            <thead>
+                <tr><th>Words</th><th>Entropy</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>2</td><td>~22 bits</td><td>correct-horse</td></tr>
+                <tr><td>3</td><td>~33 bits</td><td>correct-horse-battery</td></tr>
+                <tr><td>4</td><td>~44 bits</td><td>correct-horse-battery-staple</td></tr>
+                <tr><td>5</td><td>~55 bits</td><td>correct-horse-battery-staple-moon</td></tr>
+                <tr><td>6</td><td>~66 bits</td><td>correct-horse-battery-staple-moon-river</td></tr>
+                <tr><td>8</td><td>~88 bits</td><td>8 words</td></tr>
+                <tr><td>10</td><td>~110 bits</td><td>10 words</td></tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <strong>Recommendation:</strong> Use at least 4 words (~44 bits) for general use, or 6+ words (~66 bits) for high-security applications like encryption keys.
+        </div>
+
+        <div class="chapter-nav">
+            <a href="passwords.html">← Random Passwords</a>
+            <a href="pins.html">PINs →</a>
+        </div>
+    </main>
+</body>
+</html>

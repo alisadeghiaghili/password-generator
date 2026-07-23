@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLI Guide — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html">Passphrases</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html">Clipboard</a></li>
+            <li><a href="cli.html" class="active">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html">API Reference</a></li>
+            <li><a href="usecases.html">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="clipboard.html">← Clipboard</a>
+            <a href="api.html">API Reference →</a>
+        </div>
+
+        <h1>CLI Guide</h1>
+
+        <p class="lead">
+            Interactive wizard for non-technical users and powerful command-line arguments for scripting and automation.
+        </p>
+
+        <h2>Interactive Mode</h2>
+        <p>Run without arguments to start the guided wizard:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code>python cli.py</code></pre>
+        </div>
+        <p>The wizard guides you through:</p>
+        <ol>
+            <li>Choosing generation type (password / passphrase / PIN / analyze)</li>
+            <li>Configuring options with simple yes/no prompts</li>
+            <li>Viewing results with strength analysis</li>
+            <li>Optionally copying to clipboard</li>
+        </ol>
+
+        <h2>Generate Passwords</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Default: 16-character password
+python cli.py --length 16
+
+# 5 passwords of 20 characters
+python cli.py --length 20 --count 5
+
+# Uppercase + digits only
+python cli.py --length 12 --no-lowercase --no-symbols
+
+# Exclude ambiguous characters
+python cli.py --length 20 --exclude-ambiguous</code></pre>
+        </div>
+
+        <h2>Generate Passphrases</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># 4-word passphrase (default)
+python cli.py --passphrase
+
+# 6 words, space-separated, capitalized
+python cli.py --passphrase --words 6 --separator " " --capitalize
+
+# 5 passphrases at once
+python cli.py --passphrase --words 4 --count 5</code></pre>
+        </div>
+
+        <h2>Generate PINs</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># 4-digit PIN (default)
+python cli.py --pin
+
+# 6-digit PIN
+python cli.py --pin --pin-length 6
+
+# 8-digit, no repeats, no sequences
+python cli.py --pin --pin-length 8 --avoid-repeats --avoid-sequential
+
+# 5 backup codes
+python cli.py --pin --pin-length 6 --avoid-repeats --count 5</code></pre>
+        </div>
+
+        <h2>Analyze Passwords</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Analyze a password
+python cli.py --analyze "MyP@ssw0rd"
+
+# Analyze with JSON output
+python cli.py --analyze "Tr0ub4dor&3" --json</code></pre>
+        </div>
+
+        <h2>JSON Output</h2>
+        <p>For scripting and automation:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Generate as JSON
+python cli.py --length 20 --json
+# {
+#   "type": "password",
+#   "count": 1,
+#   "passwords": ["k8#Qx!2mNp@Lw9Rz"]
+# }
+
+# Passphrase as JSON
+python cli.py --passphrase --words 4 --json
+
+# PIN as JSON
+python cli.py --pin --pin-length 6 --json</code></pre>
+        </div>
+
+        <h2>Clipboard</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Generate and copy to clipboard
+python cli.py --length 24 --clipboard
+
+# Copy with custom auto-clear (60 seconds)
+python cli.py --length 24 --clipboard --clipboard-clear 60</code></pre>
+        </div>
+
+        <h2>Full Reference</h2>
+        <table class="param-table">
+            <thead>
+                <tr><th>Argument</th><th>Description</th><th>Default</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>--length N</td><td>Password length (4–256)</td><td>16</td></tr>
+                <tr><td>--count N</td><td>Number to generate</td><td>1</td></tr>
+                <tr><td>--uppercase / --no-uppercase</td><td>Include/exclude uppercase</td><td>True</td></tr>
+                <tr><td>--lowercase / --no-lowercase</td><td>Include/exclude lowercase</td><td>True</td></tr>
+                <tr><td>--digits / --no-digits</td><td>Include/exclude digits</td><td>True</td></tr>
+                <tr><td>--no-symbols</td><td>Exclude symbols</td><td>False</td></tr>
+                <tr><td>--exclude-ambiguous</td><td>Exclude l, I, 1, O, 0</td><td>False</td></tr>
+                <tr><td>--passphrase</td><td>Passphrase mode</td><td>—</td></tr>
+                <tr><td>--words N</td><td>Passphrase word count (2–10)</td><td>4</td></tr>
+                <tr><td>--separator CHAR</td><td>Passphrase separator</td><td>-</td></tr>
+                <tr><td>--capitalize</td><td>Capitalize passphrase words</td><td>False</td></tr>
+                <tr><td>--pin</td><td>PIN mode</td><td>—</td></tr>
+                <tr><td>--pin-length N</td><td>PIN length (1–12)</td><td>4</td></tr>
+                <tr><td>--avoid-repeats</td><td>Avoid repeated digits</td><td>False</td></tr>
+                <tr><td>--avoid-sequential</td><td>Avoid sequential digits</td><td>False</td></tr>
+                <tr><td>--analyze PASSWORD</td><td>Analyze a password</td><td>—</td></tr>
+                <tr><td>--json</td><td>JSON output</td><td>False</td></tr>
+                <tr><td>--clipboard</td><td>Copy to clipboard</td><td>False</td></tr>
+                <tr><td>--clipboard-clear N</td><td>Auto-clear seconds</td><td>30</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Piping & Automation</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Generate and extract with jq
+python cli.py --length 16 --json | jq '.passwords[0]'
+
+# Generate multiple and save to file
+python cli.py --length 20 --count 10 --json > passwords.json
+
+# Use in a script
+DB_PASS=$(python cli.py --length 32 --no-symbols --json | jq -r '.passwords[0]')</code></pre>
+        </div>
+
+        <div class="chapter-nav">
+            <a href="clipboard.html">← Clipboard</a>
+            <a href="api.html">API Reference →</a>
+        </div>
+    </main>
+</body>
+</html>

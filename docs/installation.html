@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html" class="active">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html">Passphrases</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html">Clipboard</a></li>
+            <li><a href="cli.html">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html">API Reference</a></li>
+            <li><a href="usecases.html">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="index.html">← Welcome</a>
+            <a href="passwords.html">Random Passwords →</a>
+        </div>
+
+        <h1>Installation</h1>
+
+        <h2>Requirements</h2>
+        <ul>
+            <li>Python 3.10 or higher</li>
+            <li>No external dependencies — uses only Python's standard library</li>
+            <li>Linux clipboard requires <code>xclip</code> or <code>xsel</code></li>
+        </ul>
+
+        <h2>From PyPI</h2>
+        <p>The easiest way to install:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code>pip install password-generator</code></pre>
+        </div>
+
+        <h2>From Source</h2>
+        <p>Install directly from GitHub:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code>git clone https://github.com/alisadeghiaghili/password-generator.git
+cd password-generator
+pip install -e .</code></pre>
+        </div>
+
+        <h2>Development Install</h2>
+        <p>For contributing or running tests:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Clone and enter the repo
+git clone https://github.com/alisadeghiaghili/password-generator.git
+cd password-generator
+
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
+
+# Install with dev dependencies
+pip install -e ".[dev]"
+
+# Verify installation
+pytest</code></pre>
+        </div>
+
+        <h2>Verify It Works</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate
+print(generate(length=16))  # e.g. "k8#Qx!2mNp@Lw9Rz"</code></pre>
+        </div>
+
+        <h2>CLI Verification</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Interactive mode
+python cli.py
+
+# Quick generation
+python cli.py --length 16 --count 3</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>Tip:</strong> If you plan to use clipboard features on Linux, install <code>xclip</code>:
+            <code>sudo apt install xclip</code> (Debian/Ubuntu) or <code>sudo dnf install xclip</code> (Fedora).
+        </div>
+
+        <div class="chapter-nav">
+            <a href="index.html">← Welcome</a>
+            <a href="passwords.html">Random Passwords →</a>
+        </div>
+    </main>
+</body>
+</html>

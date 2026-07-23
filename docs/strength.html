@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strength Analysis — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html">Passphrases</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html" class="active">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html">Clipboard</a></li>
+            <li><a href="cli.html">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html">API Reference</a></li>
+            <li><a href="usecases.html">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="pins.html">← PINs</a>
+            <a href="clipboard.html">Clipboard →</a>
+        </div>
+
+        <h1>Strength Analysis</h1>
+
+        <p class="lead">
+            Analyze password strength with entropy scoring, crack-time estimates, and pattern detection. Know exactly how strong your passwords are.
+        </p>
+
+        <h2>Basic Usage</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import analyze
+
+report = analyze("MyP@ssw0rd123!")
+print(f"Score: {report.score}/4")       # 0=Very Weak ... 4=Very Strong
+print(f"Entropy: {report.entropy:.0f} bits")
+print(f"Feedback: {report.feedback}")</code></pre>
+        </div>
+
+        <h2>Understanding the Score</h2>
+        <table>
+            <thead>
+                <tr><th>Score</th><th>Label</th><th>Guesses</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><span class="score score-0">0</span></td><td>Very Weak</td><td>&lt; 1,000</td><td>Cracked instantly</td></tr>
+                <tr><td><span class="score score-1">1</span></td><td>Weak</td><td>&lt; 1,000,000</td><td>Minutes to hours</td></tr>
+                <tr><td><span class="score score-2">2</span></td><td>Fair</td><td>&lt; 100,000,000</td><td>Days to months</td></tr>
+                <tr><td><span class="score score-3">3</span></td><td>Strong</td><td>&lt; 10,000,000,000</td><td>Years to decades</td></tr>
+                <tr><td><span class="score score-4">4</span></td><td>Very Strong</td><td>≥ 10,000,000,000</td><td>Centuries+</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Crack Time Estimates</h2>
+        <p>The analyzer estimates crack times for four attack scenarios:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>report = analyze("correct-horse-battery-staple")
+
+for scenario, time_str in report.crack_times.items():
+    print(f"{scenario}: {time_str}")
+
+# Output:
+# online_throttled_100_per_hour: centuries
+# online_no_throttling_10_per_second: decades
+# offline_slow_hashing_1e4_per_second: hours
+# offline_fast_hashing_1e10_per_second: seconds</code></pre>
+        </div>
+
+        <h3>Attack Scenarios</h3>
+        <table>
+            <thead>
+                <tr><th>Scenario</th><th>Rate</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>online_throttled</td><td>100/hour</td><td>Login with rate limiting</td></tr>
+                <tr><td>online_no_throttling</td><td>10/second</td><td>Login without rate limiting</td></tr>
+                <tr><td>offline_slow_hashing</td><td>10K/second</td><td>Stolen hash, slow algorithm (bcrypt)</td></tr>
+                <tr><td>offline_fast_hashing</td><td>10B/second</td><td>Stolen hash, fast algorithm (MD5/SHA)</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Pattern Detection</h2>
+        <p>The analyzer detects five types of weak patterns:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># Common passwords
+report = analyze("password")
+print(report.patterns)  # ["common_password"]
+
+# Keyboard patterns
+report = analyze("qwerty")
+print(report.patterns)  # ["keyboard_pattern"]
+
+# Sequences
+report = analyze("abcdef")
+print(report.patterns)  # ["sequence"]
+
+# Repeated characters
+report = analyze("aaa111")
+print(report.patterns)  # ["repetition"]
+
+# Date patterns
+report = analyze("2024-01-15")
+print(report.patterns)  # ["date"]</code></pre>
+        </div>
+
+        <h3>All Detected Patterns</h3>
+        <table>
+            <thead>
+                <tr><th>Pattern</th><th>Examples</th><th>Penalty</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>common_password</code></td><td>password, 123456, qwerty</td><td>Score forced to 0</td></tr>
+                <tr><td><code>keyboard_pattern</code></td><td>qwerty, asdf, zxcvbn</td><td>×0.01 guesses</td></tr>
+                <tr><td><code>sequence</code></td><td>abc, 123, cba</td><td>×0.1 guesses</td></tr>
+                <tr><td><code>repetition</code></td><td>aaa, 111111</td><td>×0.1 guesses</td></tr>
+                <tr><td><code>date</code></td><td>2024, 01/15/2024</td><td>×0.5 guesses</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Feedback</h2>
+        <p>Actionable feedback to help users improve their passwords:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>report = analyze("abc")
+for feedback in report.feedback:
+    print(f"- {feedback}")
+# - Contains sequential characters (e.g., abc, 123)
+# - Password is too short (minimum 8 characters)
+
+report = analyze("Tr0ub4dor&3")
+print(report.feedback)  # ["Good password!"]</code></pre>
+        </div>
+
+        <h2>Full Report</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>report = analyze("k8#Qx!2mNp@Lw9Rz")
+
+# All available fields
+print(report.password)              # "****************" (masked)
+print(report.score)                 # 4
+print(report.entropy)               # ~106
+print(report.guesses)               # ~8.5e+31
+print(report.crack_times)           # dict of scenario → human-readable time
+print(report.crack_times_seconds)   # dict of scenario → seconds
+print(report.feedback)              # ["Good password!"]
+print(report.patterns)              # [] (no weak patterns)</code></pre>
+        </div>
+
+        <div class="info-box">
+            <strong>Security note:</strong> The password is masked in the report (shown as asterisks) to prevent accidental exposure in logs.
+        </div>
+
+        <div class="chapter-nav">
+            <a href="pins.html">← PINs</a>
+            <a href="clipboard.html">Clipboard →</a>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PINs — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html">Passphrases</a></li>
+            <li><a href="pins.html" class="active">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html">Clipboard</a></li>
+            <li><a href="cli.html">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html">API Reference</a></li>
+            <li><a href="usecases.html">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="passphrases.html">← Passphrases</a>
+            <a href="strength.html">Strength Analysis →</a>
+        </div>
+
+        <h1>PINs</h1>
+
+        <p class="lead">
+            Generate random numeric PINs with optional repeat and sequence avoidance. Perfect for 2FA backup codes, device PINs, and verification codes.
+        </p>
+
+        <h2>Basic Usage</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_pin
+
+# Default: 4-digit PIN
+pin = generate_pin()
+print(pin)  # e.g. "8492"</code></pre>
+        </div>
+
+        <h2>Custom Length</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># Standard 6-digit PIN
+pin = generate_pin(length=6)
+
+# 8-digit strong PIN
+pin = generate_pin(length=8)
+
+# Single digit (1-12 supported)
+digit = generate_pin(length=1)</code></pre>
+        </div>
+
+        <h2>Avoid Repeated Digits</h2>
+        <p>Prevent 3+ identical digits in a row (no "1111", "000999"):</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># No repeated digits
+pin = generate_pin(length=6, avoid_repeats=True)
+# Never: 111234, 999888, 000111</code></pre>
+        </div>
+
+        <h2>Avoid Sequential Digits</h2>
+        <p>Prevent ascending or descending sequences (no "1234", "4321"):</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># No sequential digits
+pin = generate_pin(length=4, avoid_sequential=True)
+# Never: 1234, 4321, 5678, 8765</code></pre>
+        </div>
+
+        <h2>Combine Both Restrictions</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code># Maximum security: no repeats AND no sequences
+pin = generate_pin(
+    length=6,
+    avoid_repeats=True,
+    avoid_sequential=True,
+)</code></pre>
+        </div>
+
+        <h2>Using PinConfig</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_pin, PinConfig
+
+# Reusable config for 2FA backup codes
+backup_config = PinConfig(
+    length=6,
+    avoid_repeats=True,
+    avoid_sequential=True,
+)
+
+# Generate 5 backup codes
+for i in range(5):
+    print(f"Code {i+1}: {generate_pin(backup_config)}")</code></pre>
+        </div>
+
+        <h2>Parameters</h2>
+        <table class="param-table">
+            <thead>
+                <tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>length</td><td>int</td><td>4</td><td>PIN length (1–12)</td></tr>
+                <tr><td>avoid_repeats</td><td>bool</td><td>False</td><td>Avoid 3+ identical digits in a row</td></tr>
+                <tr><td>avoid_sequential</td><td>bool</td><td>False</td><td>Avoid ascending/descending sequences</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Possible Combinations</h2>
+        <table>
+            <thead>
+                <tr><th>Length</th><th>Possible PINs</th><th>Entropy</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>4</td><td>10,000</td><td>~13 bits</td></tr>
+                <tr><td>6</td><td>1,000,000</td><td>~20 bits</td></tr>
+                <tr><td>8</td><td>100,000,000</td><td>~27 bits</td></tr>
+                <tr><td>10</td><td>10,000,000,000</td><td>~33 bits</td></tr>
+                <tr><td>12</td><td>1,000,000,000,000</td><td>~40 bits</td></tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box">
+            <strong>Warning:</strong> PINs have limited entropy compared to passwords. Use 6+ digits for sensitive applications, and always enable rate limiting on your backend.
+        </div>
+
+        <div class="chapter-nav">
+            <a href="passphrases.html">← Passphrases</a>
+            <a href="strength.html">Strength Analysis →</a>
+        </div>
+    </main>
+</body>
+</html>

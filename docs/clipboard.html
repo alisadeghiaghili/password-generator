@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clipboard — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html">Passphrases</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html" class="active">Clipboard</a></li>
+            <li><a href="cli.html">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html">API Reference</a></li>
+            <li><a href="usecases.html">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="strength.html">← Strength Analysis</a>
+            <a href="cli.html">CLI Guide →</a>
+        </div>
+
+        <h1>Clipboard Integration</h1>
+
+        <p class="lead">
+            Cross-platform clipboard support with automatic clearing. Copy passwords safely — they disappear from your clipboard after a configurable timeout.
+        </p>
+
+        <h2>Basic Usage</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate, copy_to_clipboard
+
+# Generate and copy
+password = generate(length=24)
+copy_to_clipboard(password)
+print("Password copied to clipboard!")</code></pre>
+        </div>
+
+        <h2>Auto-Clear Clipboard</h2>
+        <p>Automatically clear the clipboard after a timeout to prevent password exposure:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate, copy_to_clipboard
+
+password = generate(length=24)
+
+# Copy and auto-clear after 30 seconds
+copy_to_clipboard(password, auto_clear_seconds=30)
+print("Password copied! Clipboard clears in 30 seconds.")
+
+# Or use a longer timeout
+copy_to_clipboard(password, auto_clear_seconds=120)  # 2 minutes</code></pre>
+        </div>
+
+        <h2>Manual Clear</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import clear_clipboard
+
+# Clear clipboard immediately
+clear_clipboard()
+print("Clipboard cleared.")</code></pre>
+        </div>
+
+        <h2>Full Workflow</h2>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate, analyze, copy_to_clipboard
+
+# Generate
+password = generate(length=24)
+
+# Analyze
+report = analyze(password)
+print(f"Strength: {report.score}/4")
+
+# Copy with auto-clear
+if report.score >= 3:
+    copy_to_clipboard(password, auto_clear_seconds=30)
+    print("Strong password copied! Clears in 30s.")
+else:
+    print("Password too weak — not copying.")</code></pre>
+        </div>
+
+        <h2>Parameters</h2>
+        <table class="param-table">
+            <thead>
+                <tr><th>Function</th><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>copy_to_clipboard</code></td><td>text</td><td>str</td><td>—</td><td>Text to copy</td></tr>
+                <tr><td><code>copy_to_clipboard</code></td><td>auto_clear_seconds</td><td>int</td><td>0</td><td>Auto-clear timeout (0 = disabled)</td></tr>
+                <tr><td><code>clear_clipboard</code></td><td>—</td><td>—</td><td>—</td><td>No parameters</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Platform Support</h2>
+        <table>
+            <thead>
+                <tr><th>Platform</th><th>Tool Used</th><th>Auto-Clear</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Windows</td><td><code>clip</code></td><td>✅</td></tr>
+                <tr><td>macOS</td><td><code>pbcopy</code></td><td>✅</td></tr>
+                <tr><td>Linux</td><td><code>xclip</code> or <code>xsel</code></td><td>✅</td></tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <strong>Linux setup:</strong> Install <code>xclip</code> or <code>xsel</code> for clipboard support:
+            <br><code>sudo apt install xclip</code> (Debian/Ubuntu)
+            <br><code>sudo dnf install xclip</code> (Fedora)
+            <br><code>sudo pacman -S xclip</code> (Arch)
+        </div>
+
+        <div class="warning-box">
+            <strong>Security:</strong> Always use auto-clear when copying sensitive data. The clipboard can be read by other applications.
+        </div>
+
+        <div class="chapter-nav">
+            <a href="strength.html">← Strength Analysis</a>
+            <a href="cli.html">CLI Guide →</a>
+        </div>
+    </main>
+</body>
+</html>

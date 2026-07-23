@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Use Cases — Password Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <ul class="nav-list">
+            <li class="nav-section">Getting Started</li>
+            <li><a href="index.html">Welcome</a></li>
+            <li><a href="installation.html">Installation</a></li>
+            <li class="nav-section">Generate</li>
+            <li><a href="passwords.html">Random Passwords</a></li>
+            <li><a href="passphrases.html">Passphrases</a></li>
+            <li><a href="pins.html">PINs</a></li>
+            <li class="nav-section">Analyze</li>
+            <li><a href="strength.html">Strength Analysis</a></li>
+            <li class="nav-section">Tools</li>
+            <li><a href="clipboard.html">Clipboard</a></li>
+            <li><a href="cli.html">CLI Guide</a></li>
+            <li class="nav-section">Reference</li>
+            <li><a href="api.html">API Reference</a></li>
+            <li><a href="usecases.html" class="active">Use Cases</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="https://github.com/alisadeghiaghili/password-generator">GitHub</a>
+            <a href="https://pypi.org/project/password-generator/">PyPI</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="chapter-nav">
+            <a href="api.html">← API Reference</a>
+            <span></span>
+        </div>
+
+        <h1>Use Cases</h1>
+
+        <p class="lead">
+            Real-world examples showing how to use Password Generator in your applications, scripts, and workflows.
+        </p>
+
+        <h2>1. Application Password Storage</h2>
+        <p>Generate unique passwords for each account:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate
+
+accounts = {
+    "email": "user@gmail.com",
+    "bank": "user@bank.com",
+    "social": "user twitter",
+    "cloud": "user aws",
+}
+
+for name, username in accounts.items():
+    password = generate(length=20, symbols=True)
+    print(f"{name} ({username}): {password}")
+    # Save to your password manager!</code></pre>
+        </div>
+
+        <h2>2. Encryption Key Passphrases</h2>
+        <p>Generate memorable passphrases for disk encryption or GPG keys:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_passphrase
+
+# LUKS disk encryption passphrase (6 words = ~66 bits)
+phrase = generate_passphrase(words=6, capitalize=True, separator=" ")
+print(f"Encryption passphrase: {phrase}")
+# e.g. "Correct Horse Battery Staple Moon River"
+
+# GPG key passphrase (8 words = ~88 bits)
+gpg_pass = generate_passphrase(words=8, separator=".", capitalize=True)
+print(f"GPG passphrase: {gpg_pass}")</code></pre>
+        </div>
+
+        <h2>3. 2FA Backup Codes</h2>
+        <p>Generate secure backup codes for two-factor authentication:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_pin
+
+# Generate 10 backup codes (6 digits each)
+print("=== 2FA Backup Codes ===")
+print("Store these safely!\n")
+
+for i in range(10):
+    code = generate_pin(length=6, avoid_repeats=True, avoid_sequential=True)
+    print(f"  {i+1:2d}. {code}")
+
+# Output:
+# === 2FA Backup Codes ===
+# Store these safely!
+#
+#    1. 849205
+#    2. 301746
+#    ...</code></pre>
+        </div>
+
+        <h2>4. DevOps Infrastructure Secrets</h2>
+        <p>Generate credentials for databases, APIs, and services:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate, generate_pin
+import json
+
+# Generate infrastructure credentials
+config = {
+    "database": {
+        "password": generate(length=32, exclude_ambiguous=True),
+        "root_password": generate(length=48, symbols=False),
+    },
+    "api_keys": {
+        "stripe": generate(length=48, uppercase=True, lowercase=True, digits=True, symbols=False),
+        "sendgrid": generate(length=40),
+    },
+    "admin": {
+        "pin": generate_pin(length=8, avoid_sequential=True),
+        "ssh_key_passphrase": generate_passphrase(words=5, separator=" "),
+    }
+}
+
+# Save to .env file
+with open(".env", "w") as f:
+    for section, keys in config.items():
+        f.write(f"\n# {section.upper()}\n")
+        for key, value in keys.items():
+            f.write(f"{section.upper()}_{key.upper()}={value}\n")
+
+print(json.dumps(config, indent=2))</code></pre>
+        </div>
+
+        <h2>5. Password Strength Audit</h2>
+        <p>Audit existing passwords in your application:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import analyze, generate
+
+# Test common passwords
+test_passwords = [
+    "password123",
+    "Tr0ub4dor&3",
+    "correct-horse-battery-staple",
+    generate(length=20),
+    generate(length=24, exclude_ambiguous=True),
+]
+
+print(f"{'Password':<35} {'Score':>5} {'Entropy':>8} {'Feedback'}")
+print("-" * 80)
+
+for pwd in test_passwords:
+    report = analyze(pwd)
+    masked = pwd[:20] + "..." if len(pwd) > 20 else pwd
+    feedback = report.feedback[0] if report.feedback else "—"
+    print(f"{masked:<35} {report.score:>5} {report.entropy:>6.0f}b {feedback}")</code></pre>
+        </div>
+
+        <h2>6. Password Manager Export</h2>
+        <p>Export generated passwords as JSON for import into password managers:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate
+import json
+
+services = [
+    {"name": "GitHub", "url": "github.com", "length": 24},
+    {"name": "AWS", "url": "aws.amazon.com", "length": 32, "symbols": False},
+    {"name": "Netflix", "url": "netflix.com", "length": 20},
+    {"name": "Spotify", "url": "spotify.com", "length": 20},
+]
+
+entries = []
+for service in services:
+    entries.append({
+        "name": service["name"],
+        "url": f"https://{service['url']}",
+        "username": f"your_username",
+        "password": generate(
+            length=service.get("length", 20),
+            symbols=service.get("symbols", True),
+        ),
+    })
+
+# Export
+with open("passwords_export.json", "w") as f:
+    json.dump(entries, f, indent=2)
+
+print(f"Exported {len(entries)} passwords to passwords_export.json")</code></pre>
+        </div>
+
+        <h2>7. CI/CD Secret Generation</h2>
+        <p>Generate secrets in deployment scripts:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span></div>
+            <pre><code># Generate a secret and set as environment variable
+export SECRET_KEY=$(python cli.py --length 48 --no-symbols --json | jq -r '.passwords[0]')
+
+# Generate database password for Docker
+DB_PASS=$(python cli.py --length 32 --json | jq -r '.passwords[0]')
+docker run -e POSTGRES_PASSWORD=$DB_PASS postgres:15
+
+# Generate and store in AWS Secrets Manager
+aws secretsmanager create-secret \
+    --name prod/db/password \
+    --secret-string "$(python cli.py --length 40 --json | jq '.passwords[0]')"</code></pre>
+        </div>
+
+        <h2>8. Secure Clipboard Workflow</h2>
+        <p>Generate, copy, and auto-clear for maximum security:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate, analyze, copy_to_clipboard
+import time
+
+def secure_password_workflow():
+    """Generate and securely copy a password."""
+    # Generate
+    password = generate(length=24)
+
+    # Analyze
+    report = analyze(password)
+    print(f"Generated password (score: {report.score}/4)")
+
+    # Only copy strong passwords
+    if report.score < 3:
+        print("Password too weak, regenerating...")
+        return secure_password_workflow()
+
+    # Copy with 30-second auto-clear
+    if copy_to_clipboard(password, auto_clear_seconds=30):
+        print("Copied! Clipboard clears in 30 seconds.")
+        print("Paste your password now!")
+    else:
+        print("Clipboard unavailable. Password:", password)
+
+secure_password_workflow()</code></pre>
+        </div>
+
+        <h2>9. Custom Wordlist for Passphrases</h2>
+        <p>Use a domain-specific wordlist:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate_passphrase, PassphraseConfig
+
+# Create a themed wordlist (e.g., for a game)
+with open("fantasy_words.txt", "w") as f:
+    words = [
+        "dragon", "castle", "wizard", "sword", "shield",
+        "phoenix", "crystal", "shadow", "thunder", "flame",
+        # ... at least 100 words
+    ]
+    f.write("\n".join(words))
+
+# Generate a fantasy-themed passphrase
+config = PassphraseConfig(
+    words=4,
+    separator="-",
+    wordlist_path="fantasy_words.txt"
+)
+passphrase = generate_passphrase(config)
+print(passphrase)  # e.g. "dragon-crystal-thunder-flame"</code></pre>
+        </div>
+
+        <h2>10. Bulk Generation with Reporting</h2>
+        <p>Generate multiple passwords with a summary report:</p>
+        <div class="code-block">
+            <div class="code-header"><span class="lang">Python</span></div>
+            <pre><code>from password_generator import generate, analyze
+
+def generate_batch(count=10, length=20):
+    """Generate passwords with strength report."""
+    results = []
+
+    for i in range(count):
+        pwd = generate(length=length)
+        report = analyze(pwd)
+        results.append({
+            "password": pwd,
+            "score": report.score,
+            "entropy": report.entropy,
+        })
+
+    # Summary
+    avg_score = sum(r["score"] for r in results) / len(results)
+    avg_entropy = sum(r["entropy"] for r in results) / len(results)
+
+    print(f"Generated {count} passwords")
+    print(f"Average score: {avg_score:.1f}/4")
+    print(f"Average entropy: {avg_entropy:.0f} bits")
+    print(f"All score >= 3: {all(r['score'] >= 3 for r in results)}")
+
+    return results
+
+results = generate_batch()</code></pre>
+        </div>
+
+        <div class="chapter-nav">
+            <a href="api.html">← API Reference</a>
+            <span></span>
+        </div>
+    </main>
+</body>
+</html>
