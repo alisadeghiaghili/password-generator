@@ -2,6 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Zwischenablage — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,14 +26,14 @@
         <h1>Zwischenablage</h1>
         <p class="lead">Plattformübergreifende Clipboard-Unterstützung mit automatischer Löschung. Kopieren Sie Passwörter sicher — sie verschwinden nach einer konfigurierbaren Zeitspanne.</p>
         <h2>Grundlegende Verwendung</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, copy_to_clipboard
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate, copy_to_clipboard
 password = generate(length=24)
 copy_to_clipboard(password)</code></pre></div>
         <h2>Automatische Löschung</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>copy_to_clipboard(password, auto_clear_seconds=30)   # 30 Sekunden
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">copy_to_clipboard(password, auto_clear_seconds=30)   # 30 Sekunden
 copy_to_clipboard(password, auto_clear_seconds=120)  # 2 Minuten</code></pre></div>
         <h2>Manuelles Löschen</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import clear_clipboard
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import clear_clipboard
 clear_clipboard()</code></pre></div>
         <h2>Plattformunterstützung</h2>
         <table>

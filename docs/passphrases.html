@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passphrases — Password Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">`n        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">?????</a><a href="../de/index.html">DE</a></div>
@@ -48,7 +53,7 @@
         <h2>Basic Usage</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_passphrase
+            <pre><code class="language-python">from password_generator import generate_passphrase
 
 # Default: 4 words, hyphen-separated
 passphrase = generate_passphrase()
@@ -58,7 +63,7 @@ print(passphrase)  # e.g. "correct-horse-battery-staple"</code></pre>
         <h2>Custom Word Count</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># More words = more entropy
+            <pre><code class="language-python"># More words = more entropy
 three = generate_passphrase(words=3)   # ~33 bits
 four = generate_passphrase(words=4)    # ~44 bits (default)
 five = generate_passphrase(words=5)    # ~55 bits
@@ -68,7 +73,7 @@ six = generate_passphrase(words=6)     # ~66 bits</code></pre>
         <h2>Custom Separator</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># Hyphen (default)
+            <pre><code class="language-python"># Hyphen (default)
 generate_passphrase(separator="-")      # correct-horse-battery-staple
 
 # Space
@@ -87,7 +92,7 @@ generate_passphrase(separator="")       # correcthorsebatterystaple</code></pre>
         <h2>Capitalization</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># Capitalize first letter of each word
+            <pre><code class="language-python"># Capitalize first letter of each word
 passphrase = generate_passphrase(capitalize=True, separator=" ")
 print(passphrase)  # e.g. "Correct Horse Battery Staple"</code></pre>
         </div>
@@ -96,7 +101,7 @@ print(passphrase)  # e.g. "Correct Horse Battery Staple"</code></pre>
         <p>Use your own word list (minimum 100 words):</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_passphrase, PassphraseConfig
+            <pre><code class="language-python">from password_generator import generate_passphrase, PassphraseConfig
 
 config = PassphraseConfig(
     words=4,
@@ -108,7 +113,7 @@ passphrase = generate_passphrase(config)</code></pre>
         <p>Your wordlist file should have one word per line:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">wordlist.txt</span></div>
-            <pre><code>apple
+            <pre><code class="language-wordlist.txt">apple
 banana
 cherry
 delta
@@ -119,7 +124,7 @@ echo
         <h2>Using PassphraseConfig</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_passphrase, PassphraseConfig
+            <pre><code class="language-python">from password_generator import generate_passphrase, PassphraseConfig
 
 # Reusable config
 config = PassphraseConfig(

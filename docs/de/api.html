@@ -2,6 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>API-Referenz — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,14 +26,14 @@
         <h1>API-Referenz</h1>
         <p class="lead">Vollständige Referenz für alle öffentlichen Funktionen, Klassen und Konfigurationsoptionen.</p>
         <h2>Imports</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import (
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import (
     generate, generate_passphrase, generate_pin, analyze,
     copy_to_clipboard, clear_clipboard,
     GeneratorConfig, PassphraseConfig, PinConfig, StrengthReport,
 )</code></pre></div>
         <hr>
         <h2><code>generate()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate(config: GeneratorConfig | None = None, **kwargs) -> str</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def generate(config: GeneratorConfig | None = None, **kwargs) -> str</code></pre></div>
         <table class="param-table">
             <thead><tr><th>Parameter</th><th>Typ</th><th>Standard</th><th>Beschreibung</th></tr></thead>
             <tbody>
@@ -44,7 +49,7 @@
         </table>
         <hr>
         <h2><code>generate_passphrase()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate_passphrase(config: PassphraseConfig | None = None, **kwargs) -> str</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def generate_passphrase(config: PassphraseConfig | None = None, **kwargs) -> str</code></pre></div>
         <table class="param-table">
             <thead><tr><th>Parameter</th><th>Typ</th><th>Standard</th><th>Beschreibung</th></tr></thead>
             <tbody>
@@ -56,7 +61,7 @@
         </table>
         <hr>
         <h2><code>generate_pin()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate_pin(config: PinConfig | None = None, **kwargs) -> str</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def generate_pin(config: PinConfig | None = None, **kwargs) -> str</code></pre></div>
         <table class="param-table">
             <thead><tr><th>Parameter</th><th>Typ</th><th>Standard</th><th>Beschreibung</th></tr></thead>
             <tbody>
@@ -67,7 +72,7 @@
         </table>
         <hr>
         <h2><code>analyze()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def analyze(password: str) -> StrengthReport</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def analyze(password: str) -> StrengthReport</code></pre></div>
         <h3>StrengthReport Felder</h3>
         <table class="param-table">
             <thead><tr><th>Feld</th><th>Typ</th><th>Beschreibung</th></tr></thead>
@@ -83,17 +88,17 @@
         </table>
         <hr>
         <h2><code>copy_to_clipboard()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool</code></pre></div>
         <hr>
         <h2><code>clear_clipboard()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def clear_clipboard() -> bool</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def clear_clipboard() -> bool</code></pre></div>
         <hr>
         <h2><code>calculate_entropy()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator.generator import calculate_entropy
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator.generator import calculate_entropy
 entropy = calculate_entropy(pool_size=26, length=8)  # ~37 Bits</code></pre></div>
         <hr>
         <h2><code>passphrase_entropy()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator.passphrase import passphrase_entropy
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator.passphrase import passphrase_entropy
 entropy = passphrase_entropy(word_count=4)  # ~44 Bits</code></pre></div>
         <div class="chapter-nav"><a href="cli.html">← CLI-Anleitung</a><a href="usecases.html">Anwendungsfälle →</a></div>
     </main>

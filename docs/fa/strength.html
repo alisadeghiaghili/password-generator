@@ -2,6 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>تحلیل قوت — پسورد ساز</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,7 +26,7 @@
         <h1>تحلیل قوت</h1>
         <p class="lead">تحلیل قوت رمز عبور با امتیازدهی آنتروپی، برآورد زمان شکستن و تشخیص الگو.</p>
         <h2>استفاده پایه</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import analyze
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import analyze
 report = analyze("MyP@ssw0rd123!")
 print(f"امتیاز: {report.score}/4")
 print(f"آنتروپی: {report.entropy:.0f} بیت")</code></pre></div>
@@ -48,7 +53,7 @@ print(f"آنتروپی: {report.entropy:.0f} بیت")</code></pre></div>
             </tbody>
         </table>
         <h2>گزارش کامل</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>report = analyze("k8#Qx!2mNp@Lw9Rz")
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">report = analyze("k8#Qx!2mNp@Lw9Rz")
 print(report.password)         # "****************" (مخفی)
 print(report.score)            # 4
 print(report.crack_times)      # دیکشنری زمان شکستن

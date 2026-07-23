@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Installation — Password Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">`n        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">?????</a><a href="../de/index.html">DE</a></div>
@@ -51,14 +56,14 @@
         <p>The easiest way to install:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
-            <pre><code>pip install password-generator</code></pre>
+            <pre><code class="language-bash">pip install password-generator</code></pre>
         </div>
 
         <h2>From Source</h2>
         <p>Install directly from GitHub:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
-            <pre><code>git clone https://github.com/alisadeghiaghili/password-generator.git
+            <pre><code class="language-bash">git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
 pip install -e .</code></pre>
         </div>
@@ -67,7 +72,7 @@ pip install -e .</code></pre>
         <p>For contributing or running tests:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
-            <pre><code># Clone and enter the repo
+            <pre><code class="language-bash"># Clone and enter the repo
 git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
 
@@ -86,14 +91,14 @@ pytest</code></pre>
         <h2>Verify It Works</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate
+            <pre><code class="language-python">from password_generator import generate
 print(generate(length=16))  # e.g. "k8#Qx!2mNp@Lw9Rz"</code></pre>
         </div>
 
         <h2>CLI Verification</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
-            <pre><code># Interactive mode
+            <pre><code class="language-bash"># Interactive mode
 python cli.py
 
 # Quick generation

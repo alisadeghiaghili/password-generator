@@ -2,6 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>عبارت عبور — پسورد ساز</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,21 +26,21 @@
         <h1>عبارت عبور</h1>
         <p class="lead">تولید عبارات عبور XKCD از لیست 2048 کلمه‌ای. به یادماندنی و امن.</p>
         <h2>استفاده پایه</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_passphrase
 phrase = generate_passphrase()  # 4 کلمه، خط تیره
 print(phrase)  # مثلاً: "correct-horse-battery-staple"</code></pre></div>
         <h2>تعداد کلمات</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(words=3)   # ~33 بیت
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_passphrase(words=3)   # ~33 بیت
 generate_passphrase(words=4)   # ~44 بیت (پیش‌فرض)
 generate_passphrase(words=6)   # ~66 بیت</code></pre></div>
         <h2>جداکننده سفارشی</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(separator=" ")   # فاصله
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_passphrase(separator=" ")   # فاصله
 generate_passphrase(separator=".")   # نقطه
 generate_passphrase(separator="")    # بدون جداکننده</code></pre></div>
         <h2>بزرگ‌نویسی</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(capitalize=True, separator=" ")</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_passphrase(capitalize=True, separator=" ")</code></pre></div>
         <h2>لیست کلمات سفارشی</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase, PassphraseConfig
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_passphrase, PassphraseConfig
 config = PassphraseConfig(words=4, wordlist_path="wordlist.txt")
 print(generate_passphrase(config))</code></pre></div>
         <h2>آنتروپی</h2>

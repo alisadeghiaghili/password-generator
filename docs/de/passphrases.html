@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Passphrasen — Passwort-Generator</title>
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -34,26 +39,26 @@
         <h1>Passphrasen</h1>
         <p class="lead">Generieren Sie einprägsame XKCD-style Passphrasen aus einer 2048-Wörter-Liste. Leicht zu merken, schwer zu knacken.</p>
         <h2>Grundlegende Verwendung</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_passphrase
 
 # Standard: 4 Wörter, mit Bindestrich getrennt
 passphrase = generate_passphrase()
 print(passphrase)  # z.B. "correct-horse-battery-staple"</code></pre></div>
         <h2>Benutzerdefinierte Wortanzahl</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(words=3)   # ~33 Bits
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_passphrase(words=3)   # ~33 Bits
 generate_passphrase(words=4)   # ~44 Bits (Standard)
 generate_passphrase(words=5)   # ~55 Bits
 generate_passphrase(words=6)   # ~66 Bits</code></pre></div>
         <h2>Benutzerdefiniertes Trennzeichen</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(separator="-")   # correct-horse-battery-staple
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_passphrase(separator="-")   # correct-horse-battery-staple
 generate_passphrase(separator=" ")   # correct horse battery staple
 generate_passphrase(separator=".")   # correct.horse.battery.staple
 generate_passphrase(separator="")    # correcthorsebatterystaple</code></pre></div>
         <h2>Großschreibung</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_passphrase(capitalize=True, separator=" ")
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_passphrase(capitalize=True, separator=" ")
 # z.B. "Correct Horse Battery Staple"</code></pre></div>
         <h2>Benutzerdefinierte Wortliste</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase, PassphraseConfig
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_passphrase, PassphraseConfig
 
 config = PassphraseConfig(words=4, wordlist_path="/pfad/zur/wortliste.txt")
 passphrase = generate_passphrase(config)</code></pre></div>

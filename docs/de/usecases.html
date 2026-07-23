@@ -2,6 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Anwendungsfälle — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,48 +26,48 @@
         <h1>Anwendungsfälle</h1>
         <p class="lead">Praxisbeispiele für die Verwendung in Anwendungen, Skripten und Workflows.</p>
         <h2>1. Passwortspeicherung in Anwendungen</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate
 for name in ["email", "bank", "social"]:
     print(f"{name}: {generate(length=20)}")</code></pre></div>
         <h2>2. Verschlüsselungs-Passphrasen</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_passphrase
 phrase = generate_passphrase(words=6, capitalize=True, separator=" ")
 print(f"Verschlüsselungsschlüssel: {phrase}")</code></pre></div>
         <h2>3. 2FA-Backup-Codes</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_pin
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_pin
 for i in range(10):
     print(f"Code {i+1}: {generate_pin(length=6, avoid_repeats=True)}")</code></pre></div>
         <h2>4. DevOps-Infrastruktur</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, generate_pin
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate, generate_pin
 config = {
     "db_password": generate(length=32, exclude_ambiguous=True),
     "api_key": generate(length=48, symbols=False),
     "admin_pin": generate_pin(length=8, avoid_sequential=True),
 }</code></pre></div>
         <h2>5. Passwort-Stärke-Audit</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import analyze
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import analyze
 for pwd in ["password123", "Tr0ub4dor&3", "k8#Qx!2mNp@Lw9Rz"]:
     r = analyze(pwd)
     print(f"[Score {r.score}] {r.feedback[0] if r.feedback else 'OK'}")</code></pre></div>
         <h2>6. Passwort-Manager-Export</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate
 import json
 entries = [{"service": s, "password": generate(length=20)} for s in ["github", "aws"]]
 with open("passwords.json", "w") as f:
     json.dump(entries, f, indent=2)</code></pre></div>
         <h2>7. CI/CD-Secrets</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>export SECRET_KEY=$(python cli.py --length 48 --json | jq -r '.passwords[0]')</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">export SECRET_KEY=$(python cli.py --length 48 --json | jq -r '.passwords[0]')</code></pre></div>
         <h2>8. Sichere Clipboard-Workflow</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, analyze, copy_to_clipboard
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate, analyze, copy_to_clipboard
 pwd = generate(length=24)
 if analyze(pwd).score >= 3:
     copy_to_clipboard(pwd, auto_clear_seconds=30)</code></pre></div>
         <h2>9. Benutzerdefinierte Wortliste</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_passphrase, PassphraseConfig
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_passphrase, PassphraseConfig
 config = PassphraseConfig(words=4, wordlist_path="meine_wortliste.txt")
 print(generate_passphrase(config))</code></pre></div>
         <h2>10. Stapelgenerierung mit Bericht</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, analyze
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate, analyze
 results = [(generate(length=20), analyze(generate(length=20))) for _ in range(10)]
 avg = sum(r.score for _, r in results) / len(results)
 print(f"Durchschnittliche Bewertung: {avg:.1f}/4")</code></pre></div>

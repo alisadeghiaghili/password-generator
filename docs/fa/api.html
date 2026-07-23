@@ -2,6 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>مرجع API — پسورد ساز</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,14 +26,14 @@
         <h1>مرجع API</h1>
         <p class="lead">مرجع کامل تمام توابع، کلاس‌ها و گزینه‌های پیکربندی عمومی.</p>
         <h2>ایمپورت‌ها</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import (
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import (
     generate, generate_passphrase, generate_pin, analyze,
     copy_to_clipboard, clear_clipboard,
     GeneratorConfig, PassphraseConfig, PinConfig, StrengthReport,
 )</code></pre></div>
         <hr>
         <h2><code>generate()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate(config: GeneratorConfig | None = None, **kwargs) -> str</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def generate(config: GeneratorConfig | None = None, **kwargs) -> str</code></pre></div>
         <table class="param-table">
             <thead><tr><th>پارامتر</th><th>نوع</th><th>پیش‌فرض</th><th>توضیح</th></tr></thead>
             <tbody>
@@ -43,7 +48,7 @@
         </table>
         <hr>
         <h2><code>generate_passphrase()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate_passphrase(config=None, **kwargs) -> str</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def generate_passphrase(config=None, **kwargs) -> str</code></pre></div>
         <table class="param-table">
             <thead><tr><th>پارامتر</th><th>نوع</th><th>پیش‌فرض</th><th>توضیح</th></tr></thead>
             <tbody>
@@ -55,7 +60,7 @@
         </table>
         <hr>
         <h2><code>generate_pin()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def generate_pin(config=None, **kwargs) -> str</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def generate_pin(config=None, **kwargs) -> str</code></pre></div>
         <table class="param-table">
             <thead><tr><th>پارامتر</th><th>نوع</th><th>پیش‌فرض</th><th>توضیح</th></tr></thead>
             <tbody>
@@ -66,7 +71,7 @@
         </table>
         <hr>
         <h2><code>analyze()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def analyze(password: str) -> StrengthReport</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def analyze(password: str) -> StrengthReport</code></pre></div>
         <h3>فیلدهای StrengthReport</h3>
         <table class="param-table">
             <thead><tr><th>فیلد</th><th>نوع</th><th>توضیح</th></tr></thead>
@@ -82,10 +87,10 @@
         </table>
         <hr>
         <h2><code>copy_to_clipboard()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool</code></pre></div>
         <hr>
         <h2><code>clear_clipboard()</code></h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>def clear_clipboard() -> bool</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">def clear_clipboard() -> bool</code></pre></div>
         <div class="chapter-nav"><a href="cli.html">راهنمای CLI ←</a><a href="usecases.html">موارد استفاده →</a></div>
     </main>
 </body>

@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clipboard — Password Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">`n        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">?????</a><a href="../de/index.html">DE</a></div>
@@ -47,7 +52,7 @@
         <h2>Basic Usage</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate, copy_to_clipboard
+            <pre><code class="language-python">from password_generator import generate, copy_to_clipboard
 
 # Generate and copy
 password = generate(length=24)
@@ -59,7 +64,7 @@ print("Password copied to clipboard!")</code></pre>
         <p>Automatically clear the clipboard after a timeout to prevent password exposure:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate, copy_to_clipboard
+            <pre><code class="language-python">from password_generator import generate, copy_to_clipboard
 
 password = generate(length=24)
 
@@ -74,7 +79,7 @@ copy_to_clipboard(password, auto_clear_seconds=120)  # 2 minutes</code></pre>
         <h2>Manual Clear</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import clear_clipboard
+            <pre><code class="language-python">from password_generator import clear_clipboard
 
 # Clear clipboard immediately
 clear_clipboard()
@@ -84,7 +89,7 @@ print("Clipboard cleared.")</code></pre>
         <h2>Full Workflow</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate, analyze, copy_to_clipboard
+            <pre><code class="language-python">from password_generator import generate, analyze, copy_to_clipboard
 
 # Generate
 password = generate(length=24)

@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Use Cases — Password Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">`n        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">?????</a><a href="../de/index.html">DE</a></div>
@@ -48,7 +53,7 @@
         <p>Generate unique passwords for each account:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate
+            <pre><code class="language-python">from password_generator import generate
 
 accounts = {
     "email": "user@gmail.com",
@@ -67,7 +72,7 @@ for name, username in accounts.items():
         <p>Generate memorable passphrases for disk encryption or GPG keys:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_passphrase
+            <pre><code class="language-python">from password_generator import generate_passphrase
 
 # LUKS disk encryption passphrase (6 words = ~66 bits)
 phrase = generate_passphrase(words=6, capitalize=True, separator=" ")
@@ -83,7 +88,7 @@ print(f"GPG passphrase: {gpg_pass}")</code></pre>
         <p>Generate secure backup codes for two-factor authentication:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_pin
+            <pre><code class="language-python">from password_generator import generate_pin
 
 # Generate 10 backup codes (6 digits each)
 print("=== 2FA Backup Codes ===")
@@ -106,7 +111,7 @@ for i in range(10):
         <p>Generate credentials for databases, APIs, and services:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate, generate_pin
+            <pre><code class="language-python">from password_generator import generate, generate_pin
 import json
 
 # Generate infrastructure credentials
@@ -139,7 +144,7 @@ print(json.dumps(config, indent=2))</code></pre>
         <p>Audit existing passwords in your application:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import analyze, generate
+            <pre><code class="language-python">from password_generator import analyze, generate
 
 # Test common passwords
 test_passwords = [
@@ -164,7 +169,7 @@ for pwd in test_passwords:
         <p>Export generated passwords as JSON for import into password managers:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate
+            <pre><code class="language-python">from password_generator import generate
 import json
 
 services = [
@@ -197,7 +202,7 @@ print(f"Exported {len(entries)} passwords to passwords_export.json")</code></pre
         <p>Generate secrets in deployment scripts:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
-            <pre><code># Generate a secret and set as environment variable
+            <pre><code class="language-bash"># Generate a secret and set as environment variable
 export SECRET_KEY=$(python cli.py --length 48 --no-symbols --json | jq -r '.passwords[0]')
 
 # Generate database password for Docker
@@ -214,7 +219,7 @@ aws secretsmanager create-secret \
         <p>Generate, copy, and auto-clear for maximum security:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate, analyze, copy_to_clipboard
+            <pre><code class="language-python">from password_generator import generate, analyze, copy_to_clipboard
 import time
 
 def secure_password_workflow():
@@ -245,7 +250,7 @@ secure_password_workflow()</code></pre>
         <p>Use a domain-specific wordlist:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_passphrase, PassphraseConfig
+            <pre><code class="language-python">from password_generator import generate_passphrase, PassphraseConfig
 
 # Create a themed wordlist (e.g., for a game)
 with open("fantasy_words.txt", "w") as f:
@@ -270,7 +275,7 @@ print(passphrase)  # e.g. "dragon-crystal-thunder-flame"</code></pre>
         <p>Generate multiple passwords with a summary report:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate, analyze
+            <pre><code class="language-python">from password_generator import generate, analyze
 
 def generate_batch(count=10, length=20):
     """Generate passwords with strength report."""

@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PINs — Password Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">`n        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">?????</a><a href="../de/index.html">DE</a></div>
@@ -47,7 +52,7 @@
         <h2>Basic Usage</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_pin
+            <pre><code class="language-python">from password_generator import generate_pin
 
 # Default: 4-digit PIN
 pin = generate_pin()
@@ -57,7 +62,7 @@ print(pin)  # e.g. "8492"</code></pre>
         <h2>Custom Length</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># Standard 6-digit PIN
+            <pre><code class="language-python"># Standard 6-digit PIN
 pin = generate_pin(length=6)
 
 # 8-digit strong PIN
@@ -71,7 +76,7 @@ digit = generate_pin(length=1)</code></pre>
         <p>Prevent 3+ identical digits in a row (no "1111", "000999"):</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># No repeated digits
+            <pre><code class="language-python"># No repeated digits
 pin = generate_pin(length=6, avoid_repeats=True)
 # Never: 111234, 999888, 000111</code></pre>
         </div>
@@ -80,7 +85,7 @@ pin = generate_pin(length=6, avoid_repeats=True)
         <p>Prevent ascending or descending sequences (no "1234", "4321"):</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># No sequential digits
+            <pre><code class="language-python"># No sequential digits
 pin = generate_pin(length=4, avoid_sequential=True)
 # Never: 1234, 4321, 5678, 8765</code></pre>
         </div>
@@ -88,7 +93,7 @@ pin = generate_pin(length=4, avoid_sequential=True)
         <h2>Combine Both Restrictions</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># Maximum security: no repeats AND no sequences
+            <pre><code class="language-python"># Maximum security: no repeats AND no sequences
 pin = generate_pin(
     length=6,
     avoid_repeats=True,
@@ -99,7 +104,7 @@ pin = generate_pin(
         <h2>Using PinConfig</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import generate_pin, PinConfig
+            <pre><code class="language-python">from password_generator import generate_pin, PinConfig
 
 # Reusable config for 2FA backup codes
 backup_config = PinConfig(

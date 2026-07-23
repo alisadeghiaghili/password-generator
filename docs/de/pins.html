@@ -2,6 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>PINs — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,20 +26,20 @@
         <h1>PINs</h1>
         <p class="lead">Generieren Sie zufällige numerische PINs mit optionaler Wiederholungs- und Sequenzvermeidung. Perfekt für 2FA-Backup-Codes.</p>
         <h2>Grundlegende Verwendung</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate_pin
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate_pin
 pin = generate_pin()  # Standard: 4-stellig
 print(pin)  # z.B. "8492"</code></pre></div>
         <h2>Benutzerdefinierte Länge</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=6)  # 6-stellig
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_pin(length=6)  # 6-stellig
 generate_pin(length=8)  # 8-stellig</code></pre></div>
         <h2>Wiederholungen vermeiden</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=6, avoid_repeats=True)
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_pin(length=6, avoid_repeats=True)
 # Nie: 111234, 999888</code></pre></div>
         <h2>Sequenzen vermeiden</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=4, avoid_sequential=True)
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_pin(length=4, avoid_sequential=True)
 # Nie: 1234, 4321, 5678</code></pre></div>
         <h2>Beide Einschränkungen kombinieren</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>generate_pin(length=6, avoid_repeats=True, avoid_sequential=True)</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">generate_pin(length=6, avoid_repeats=True, avoid_sequential=True)</code></pre></div>
         <h2>Parameter</h2>
         <table class="param-table">
             <thead><tr><th>Parameter</th><th>Typ</th><th>Standard</th><th>Beschreibung</th></tr></thead>

@@ -2,6 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>کلیپ‌بورد — پسورد ساز</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,14 +26,14 @@
         <h1>کلیپ‌بورد</h1>
         <p class="lead">پشتیبانی کلیپ‌بورد چندپلتفرمی با پاکسازی خودکار.</p>
         <h2>استفاده پایه</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate, copy_to_clipboard
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate, copy_to_clipboard
 password = generate(length=24)
 copy_to_clipboard(password)</code></pre></div>
         <h2>پاکسازی خودکار</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>copy_to_clipboard(password, auto_clear_seconds=30)
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">copy_to_clipboard(password, auto_clear_seconds=30)
 copy_to_clipboard(password, auto_clear_seconds=120)</code></pre></div>
         <h2>پاکسازی دستی</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import clear_clipboard
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import clear_clipboard
 clear_clipboard()</code></pre></div>
         <h2>پشتیبانی پلتفرم</h2>
         <table>

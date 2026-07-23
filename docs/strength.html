@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strength Analysis — Password Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">`n        <div class="lang-switcher"><a href="../index.html">EN</a><a href="../fa/index.html">?????</a><a href="../de/index.html">DE</a></div>
@@ -47,7 +52,7 @@
         <h2>Basic Usage</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>from password_generator import analyze
+            <pre><code class="language-python">from password_generator import analyze
 
 report = analyze("MyP@ssw0rd123!")
 print(f"Score: {report.score}/4")       # 0=Very Weak ... 4=Very Strong
@@ -73,7 +78,7 @@ print(f"Feedback: {report.feedback}")</code></pre>
         <p>The analyzer estimates crack times for four attack scenarios:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>report = analyze("correct-horse-battery-staple")
+            <pre><code class="language-python">report = analyze("correct-horse-battery-staple")
 
 for scenario, time_str in report.crack_times.items():
     print(f"{scenario}: {time_str}")
@@ -102,7 +107,7 @@ for scenario, time_str in report.crack_times.items():
         <p>The analyzer detects five types of weak patterns:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code># Common passwords
+            <pre><code class="language-python"># Common passwords
 report = analyze("password")
 print(report.patterns)  # ["common_password"]
 
@@ -141,7 +146,7 @@ print(report.patterns)  # ["date"]</code></pre>
         <p>Actionable feedback to help users improve their passwords:</p>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>report = analyze("abc")
+            <pre><code class="language-python">report = analyze("abc")
 for feedback in report.feedback:
     print(f"- {feedback}")
 # - Contains sequential characters (e.g., abc, 123)
@@ -154,7 +159,7 @@ print(report.feedback)  # ["Good password!"]</code></pre>
         <h2>Full Report</h2>
         <div class="code-block">
             <div class="code-header"><span class="lang">Python</span></div>
-            <pre><code>report = analyze("k8#Qx!2mNp@Lw9Rz")
+            <pre><code class="language-python">report = analyze("k8#Qx!2mNp@Lw9Rz")
 
 # All available fields
 print(report.password)              # "****************" (masked)

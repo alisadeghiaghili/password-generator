@@ -2,6 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>راهنمای CLI — پسورد ساز</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,19 +26,19 @@
         <h1>راهنمای CLI</h1>
         <p class="lead">راهنمای تعاملی و آرگومان‌های خط فرمان برای اسکریپت‌نویسی و اتوماسیون.</p>
         <h2>حالت تعاملی</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py</code></pre></div>
         <h2>تولید پسورد</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --length 16
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --length 16
 python cli.py --length 20 --count 5
 python cli.py --length 12 --no-lowercase --no-symbols</code></pre></div>
         <h2>تولید عبارت عبور</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --passphrase
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --passphrase
 python cli.py --passphrase --words 6 --separator " " --capitalize</code></pre></div>
         <h2>تولید PIN</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --pin
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --pin
 python cli.py --pin --pin-length 6 --avoid-repeats --avoid-sequential</code></pre></div>
         <h2>تحلیل</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --analyze "MyP@ssw0rd"
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --analyze "MyP@ssw0rd"
 python cli.py --analyze "Tr0ub4dor&3" --json</code></pre></div>
         <h2>مرجع کامل</h2>
         <table class="param-table">

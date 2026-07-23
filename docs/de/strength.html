@@ -2,6 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Stärkeanalyse — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,7 +26,7 @@
         <h1>Stärkeanalyse</h1>
         <p class="lead">Analysieren Sie Passwortstärke mit Entropie-Bewertung, Knackzeit-Schätzungen und Mustererkennung.</p>
         <h2>Grundlegende Verwendung</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import analyze
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import analyze
 report = analyze("MyP@ssw0rd123!")
 print(f"Bewertung: {report.score}/4")
 print(f"Entropie: {report.entropy:.0f} Bits")</code></pre></div>
@@ -58,7 +63,7 @@ print(f"Entropie: {report.entropy:.0f} Bits")</code></pre></div>
             </tbody>
         </table>
         <h2>Vollständiger Bericht</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>report = analyze("k8#Qx!2mNp@Lw9Rz")
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">report = analyze("k8#Qx!2mNp@Lw9Rz")
 print(report.password)         # "****************" (maskiert)
 print(report.score)            # 4
 print(report.entropy)          # ~106

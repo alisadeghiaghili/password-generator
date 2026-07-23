@@ -2,6 +2,11 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>نصب — پسورد ساز</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -26,16 +31,16 @@
             <li>کلیپ‌بورد لینوکس نیاز به <code>xclip</code> دارد</li>
         </ul>
         <h2>از PyPI</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>pip install password-generator</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">pip install password-generator</code></pre></div>
         <h2>از سورس</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>git clone https://github.com/alisadeghiaghili/password-generator.git
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">git clone https://github.com/alisadeghiaghili/password-generator.git
 cd password-generator
 pip install -e .</code></pre></div>
         <h2>نصب توسعه</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>pip install -e ".[dev]"
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">pip install -e ".[dev]"
 pytest</code></pre></div>
         <h2>بررسی</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code>from password_generator import generate
+        <div class="code-block"><div class="code-header"><span class="lang">Python</span></div><pre><code class="language-python">from password_generator import generate
 print(generate(length=16))</code></pre></div>
         <div class="info-box"><strong>نکته:</strong> برای کلیپ‌بورد لینوکس: <code>sudo apt install xclip</code></div>
         <div class="chapter-nav"><a href="index.html">خانه ←</a><a href="passwords.html">پسورد تصادفی →</a></div>

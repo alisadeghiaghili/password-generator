@@ -2,6 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>CLI-Anleitung — Passwort-Generator</title><link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </head>
 <body>
     <nav class="sidebar" id="sidebar">
@@ -21,24 +26,24 @@
         <h1>CLI-Anleitung</h1>
         <p class="lead">Interaktiver Assistent für technische Laien und leistungsstarke Kommandozeilen-Argumente für Skripting und Automatisierung.</p>
         <h2>Interaktiver Modus</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py</code></pre></div>
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py</code></pre></div>
         <h2>Passwörter generieren</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --length 16
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --length 16
 python cli.py --length 20 --count 5
 python cli.py --length 12 --no-lowercase --no-symbols
 python cli.py --length 20 --exclude-ambiguous</code></pre></div>
         <h2>Passphrasen generieren</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --passphrase
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --passphrase
 python cli.py --passphrase --words 6 --separator " " --capitalize</code></pre></div>
         <h2>PINs generieren</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --pin
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --pin
 python cli.py --pin --pin-length 6
 python cli.py --pin --pin-length 8 --avoid-repeats --avoid-sequential</code></pre></div>
         <h2>Analysieren</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --analyze "MyP@ssw0rd"
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --analyze "MyP@ssw0rd"
 python cli.py --analyze "Tr0ub4dor&3" --json</code></pre></div>
         <h2>JSON-Ausgabe</h2>
-        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code>python cli.py --length 20 --json
+        <div class="code-block"><div class="code-header"><span class="lang">bash</span></div><pre><code class="language-bash">python cli.py --length 20 --json
 python cli.py --passphrase --words 4 --json</code></pre></div>
         <h2>Vollständige Referenz</h2>
         <table class="param-table">
