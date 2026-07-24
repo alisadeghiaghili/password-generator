@@ -3,7 +3,8 @@
 import platform
 import subprocess
 import threading
-import time
+
+__all__ = ["copy_to_clipboard", "clear_clipboard"]
 
 
 def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool:
@@ -20,10 +21,10 @@ def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool:
         >>> copy_to_clipboard("my_password")
         >>> copy_to_clipboard("my_password", auto_clear_seconds=30)
     """
-    system = platform.system()
+    system: str = platform.system()
     try:
         if system == "Windows":
-            process = subprocess.Popen(["clip"], stdin=subprocess.PIPE)
+            process: subprocess.Popen[bytes] = subprocess.Popen(["clip"], stdin=subprocess.PIPE)
             process.communicate(text.encode("utf-16-le"))
         elif system == "Darwin":
             process = subprocess.Popen(["pbcopy"], stdin=subprocess.PIPE)
@@ -45,7 +46,7 @@ def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool:
             return False
 
         if auto_clear_seconds > 0:
-            timer = threading.Timer(
+            timer: threading.Timer = threading.Timer(
                 auto_clear_seconds, _clear_clipboard_thread, args=(system,)
             )
             timer.daemon = True
@@ -61,12 +62,23 @@ def clear_clipboard() -> bool:
 
     Returns:
         True if successful, False otherwise.
+
+    Examples:
+        >>> clear_clipboard()
+        True
     """
     return _clear_clipboard_thread(platform.system())
 
 
 def _clear_clipboard_thread(system: str) -> bool:
-    """Clear clipboard (used by timer thread)."""
+    """Clear clipboard (used by timer thread).
+
+    Args:
+        system: Operating system name from platform.system().
+
+    Returns:
+        True if successful, False otherwise.
+    """
     try:
         if system == "Windows":
             process = subprocess.Popen(["clip"], stdin=subprocess.PIPE)

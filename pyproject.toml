@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "password-generator"
@@ -16,7 +16,6 @@ keywords = ["password", "generator", "security", "passphrase", "pin", "cli"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -29,21 +28,58 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/alisadeghiaghili/password-generator"
+Documentation = "https://github.com/alisadeghiaghili/password-generator#readme"
 Repository = "https://github.com/alisadeghiaghili/password-generator"
 Issues = "https://github.com/alisadeghiaghili/password-generator/issues"
+Changelog = "https://github.com/alisadeghiaghili/password-generator/blob/master/CHANGELOG.md"
 
 [project.scripts]
 password-gen = "cli:main"
 
 [project.optional-dependencies]
 cli = ["rich>=13.0"]
-dev = ["pytest>=7.0"]
+dev = ["pytest>=7.0", "black>=24.0", "pylint>=3.0"]
 
 [tool.setuptools.packages.find]
 include = ["password_generator*"]
 
 [tool.setuptools.package-data]
-password_generator = ["*.txt"]
+password_generator = ["*.txt", "py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.pylint.master]
+jobs = 0
+load-plugins = []
+
+[tool.pylint."messages control"]
+disable = [
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "line-too-long",
+    "invalid-name",
+    "import-error",
+    "no-member",
+    "too-few-public-methods",
+    "too-many-instance-attributes",
+    "too-many-arguments",
+    "too-many-locals",
+    "too-many-branches",
+    "too-many-return-statements",
+    "duplicate-code",
+    "unspecified-encoding",
+    "consider-using-f-string",
+    "broad-except",
+    "bare-except",
+    "consider-using-with",
+    "protected-access",
+]
+
+[tool.pylint.format]
+max-line-length = 100

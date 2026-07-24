@@ -55,6 +55,7 @@ SCORE_STYLES = {
 # Rich-based output helpers
 # ---------------------------------------------------------------------------
 
+
 def _console():
     return Console()
 
@@ -118,11 +119,13 @@ def _print_passwords_rich(passwords, label):
         table.add_row(str(i), pwd)
 
     count = len(passwords)
-    console.print(Panel(
-        table,
-        title=f"[bold green]Generated {count} {label}[/bold green]",
-        border_style="green",
-    ))
+    console.print(
+        Panel(
+            table,
+            title=f"[bold green]Generated {count} {label}[/bold green]",
+            border_style="green",
+        )
+    )
 
 
 def _print_passwords_plain(passwords, label):
@@ -155,6 +158,7 @@ def _print_strength_plain(report, show_password=False):
 # Interactive mode
 # ---------------------------------------------------------------------------
 
+
 def interactive_mode():
     """Run interactive password generation."""
     if RICH_AVAILABLE:
@@ -166,12 +170,14 @@ def interactive_mode():
 def _interactive_rich():
     """Interactive mode with rich output."""
     console = _console()
-    console.print(Panel(
-        "[bold]Secure Password Generator[/bold]\n"
-        "[dim]Cryptographically secure • Configurable • Beautiful[/dim]",
-        border_style="bright_blue",
-        padding=(1, 2),
-    ))
+    console.print(
+        Panel(
+            "[bold]Secure Password Generator[/bold]\n"
+            "[dim]Cryptographically secure • Configurable • Beautiful[/dim]",
+            border_style="bright_blue",
+            padding=(1, 2),
+        )
+    )
 
     while True:
         console.print()
@@ -224,7 +230,9 @@ def _interactive_random_password_rich():
         console.print(f"[bold red]Error:[/bold red] {e}")
         return
 
-    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+    with Progress(
+        SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console
+    ) as progress:
         task = progress.add_task("Generating...", total=None)
         passwords = [generate(config) for _ in range(count)]
         progress.update(task, completed=True)
@@ -254,7 +262,9 @@ def _interactive_passphrase_rich():
         console.print(f"[bold red]Error:[/bold red] {e}")
         return
 
-    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+    with Progress(
+        SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console
+    ) as progress:
         task = progress.add_task("Generating...", total=None)
         passphrases = [generate_passphrase(config) for _ in range(count)]
         progress.update(task, completed=True)
@@ -276,12 +286,16 @@ def _interactive_pin_rich():
     count = int(Prompt.ask("How many PINs?", default="1"))
 
     try:
-        config = PinConfig(length=length, avoid_repeats=avoid_repeats, avoid_sequential=avoid_sequential)
+        config = PinConfig(
+            length=length, avoid_repeats=avoid_repeats, avoid_sequential=avoid_sequential
+        )
     except ValueError as e:
         console.print(f"[bold red]Error:[/bold red] {e}")
         return
 
-    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+    with Progress(
+        SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console
+    ) as progress:
         task = progress.add_task("Generating...", total=None)
         pins = [generate_pin(config) for _ in range(count)]
         progress.update(task, completed=True)
@@ -324,6 +338,7 @@ def _offer_clipboard_rich(passwords):
 # Plain (fallback) interactive mode
 # ---------------------------------------------------------------------------
 
+
 def _interactive_plain():
     """Interactive mode without rich."""
     print("=" * 45)
@@ -364,12 +379,18 @@ def _interactive_random_password_plain():
     digits = _input_yes_no("Include digits (0-9)?", True)
     symbols = _input_yes_no("Include symbols (!@#...)?", True)
     exclude_ambiguous = _input_yes_no("Exclude ambiguous chars (l, I, 1, O, 0)?", False)
-    count = _input_int("How many passwords? (1-100, default 1): ", default=1, min_val=1, max_val=100)
+    count = _input_int(
+        "How many passwords? (1-100, default 1): ", default=1, min_val=1, max_val=100
+    )
 
     try:
         config = GeneratorConfig(
-            length=length, uppercase=uppercase, lowercase=lowercase,
-            digits=digits, symbols=symbols, exclude_ambiguous=exclude_ambiguous,
+            length=length,
+            uppercase=uppercase,
+            lowercase=lowercase,
+            digits=digits,
+            symbols=symbols,
+            exclude_ambiguous=exclude_ambiguous,
         )
     except ValueError as e:
         print(f"\nError: {e}\n")
@@ -387,7 +408,9 @@ def _interactive_passphrase_plain():
     sep_choice = input("Choice (1-4, default 1): ").strip()
     separator = {"1": "-", "2": " ", "3": ".", "4": "_"}.get(sep_choice, "-")
     capitalize = _input_yes_no("Capitalize words?", False)
-    count = _input_int("How many passphrases? (1-100, default 1): ", default=1, min_val=1, max_val=100)
+    count = _input_int(
+        "How many passphrases? (1-100, default 1): ", default=1, min_val=1, max_val=100
+    )
 
     try:
         config = PassphraseConfig(words=words, separator=separator, capitalize=capitalize)
@@ -408,7 +431,9 @@ def _interactive_pin_plain():
     count = _input_int("How many PINs? (1-100, default 1): ", default=1, min_val=1, max_val=100)
 
     try:
-        config = PinConfig(length=length, avoid_repeats=avoid_repeats, avoid_sequential=avoid_sequential)
+        config = PinConfig(
+            length=length, avoid_repeats=avoid_repeats, avoid_sequential=avoid_sequential
+        )
     except ValueError as e:
         print(f"\nError: {e}\n")
         return
@@ -473,6 +498,7 @@ def _input_yes_no(prompt, default=True):
 # CLI mode (argparse)
 # ---------------------------------------------------------------------------
 
+
 def cli_mode(args):
     """Run CLI mode with arguments."""
     console = _console() if RICH_AVAILABLE else None
@@ -480,14 +506,19 @@ def cli_mode(args):
     if args.analyze:
         report = analyze(args.analyze)
         if args.json:
-            print(json.dumps({
-                "score": report.score,
-                "entropy": report.entropy,
-                "guesses": report.guesses,
-                "crack_times": report.crack_times,
-                "feedback": report.feedback,
-                "patterns": report.patterns,
-            }, indent=2))
+            print(
+                json.dumps(
+                    {
+                        "score": report.score,
+                        "entropy": report.entropy,
+                        "guesses": report.guesses,
+                        "crack_times": report.crack_times,
+                        "feedback": report.feedback,
+                        "patterns": report.patterns,
+                    },
+                    indent=2,
+                )
+            )
         elif RICH_AVAILABLE:
             _print_strength_rich(report, show_password=True)
         else:
@@ -496,21 +527,27 @@ def cli_mode(args):
 
     if args.passphrase:
         config = PassphraseConfig(
-            words=args.words, separator=args.separator, capitalize=args.capitalize,
+            words=args.words,
+            separator=args.separator,
+            capitalize=args.capitalize,
         )
         passwords = [generate_passphrase(config) for _ in range(args.count)]
         label = f"passphrase(s) ({args.words} words)"
     elif args.pin:
         config = PinConfig(
-            length=args.pin_length, avoid_repeats=args.avoid_repeats,
+            length=args.pin_length,
+            avoid_repeats=args.avoid_repeats,
             avoid_sequential=args.avoid_sequential,
         )
         passwords = [generate_pin(config) for _ in range(args.count)]
         label = f"PIN(s) ({args.pin_length} digits)"
     else:
         config = GeneratorConfig(
-            length=args.length, uppercase=args.uppercase, lowercase=args.lowercase,
-            digits=args.digits, symbols=not args.no_symbols,
+            length=args.length,
+            uppercase=args.uppercase,
+            lowercase=args.lowercase,
+            digits=args.digits,
+            symbols=not args.no_symbols,
             exclude_ambiguous=args.exclude_ambiguous,
         )
         passwords = [generate(config) for _ in range(args.count)]
@@ -548,6 +585,7 @@ def cli_mode(args):
 # Entry point
 # ---------------------------------------------------------------------------
 
+
 def main():
     parser = argparse.ArgumentParser(
         description="[Rich] Secure Password Generator",
@@ -565,29 +603,55 @@ Examples:
 
     parser.add_argument("--length", type=int, default=16, help="Password length (default: 16)")
     parser.add_argument("--count", type=int, default=1, help="Number of passwords (default: 1)")
-    parser.add_argument("--uppercase", action="store_true", default=True, help="Include uppercase (default: True)")
-    parser.add_argument("--no-uppercase", dest="uppercase", action="store_false", help="Exclude uppercase")
-    parser.add_argument("--lowercase", action="store_true", default=True, help="Include lowercase (default: True)")
-    parser.add_argument("--no-lowercase", dest="lowercase", action="store_false", help="Exclude lowercase")
-    parser.add_argument("--digits", action="store_true", default=True, help="Include digits (default: True)")
+    parser.add_argument(
+        "--uppercase", action="store_true", default=True, help="Include uppercase (default: True)"
+    )
+    parser.add_argument(
+        "--no-uppercase", dest="uppercase", action="store_false", help="Exclude uppercase"
+    )
+    parser.add_argument(
+        "--lowercase", action="store_true", default=True, help="Include lowercase (default: True)"
+    )
+    parser.add_argument(
+        "--no-lowercase", dest="lowercase", action="store_false", help="Exclude lowercase"
+    )
+    parser.add_argument(
+        "--digits", action="store_true", default=True, help="Include digits (default: True)"
+    )
     parser.add_argument("--no-digits", dest="digits", action="store_false", help="Exclude digits")
-    parser.add_argument("--no-symbols", dest="no_symbols", action="store_true", help="Exclude symbols")
-    parser.add_argument("--exclude-ambiguous", action="store_true", help="Exclude ambiguous chars (l, I, 1, O, 0)")
+    parser.add_argument(
+        "--no-symbols", dest="no_symbols", action="store_true", help="Exclude symbols"
+    )
+    parser.add_argument(
+        "--exclude-ambiguous", action="store_true", help="Exclude ambiguous chars (l, I, 1, O, 0)"
+    )
 
-    parser.add_argument("--passphrase", action="store_true", help="Generate passphrase instead of password")
-    parser.add_argument("--words", type=int, default=4, help="Number of words for passphrase (default: 4)")
-    parser.add_argument("--separator", default="-", help="Word separator for passphrase (default: -)")
+    parser.add_argument(
+        "--passphrase", action="store_true", help="Generate passphrase instead of password"
+    )
+    parser.add_argument(
+        "--words", type=int, default=4, help="Number of words for passphrase (default: 4)"
+    )
+    parser.add_argument(
+        "--separator", default="-", help="Word separator for passphrase (default: -)"
+    )
     parser.add_argument("--capitalize", action="store_true", help="Capitalize passphrase words")
 
     parser.add_argument("--pin", action="store_true", help="Generate PIN instead of password")
     parser.add_argument("--pin-length", type=int, default=4, help="PIN length (default: 4)")
     parser.add_argument("--avoid-repeats", action="store_true", help="Avoid repeated digits in PIN")
-    parser.add_argument("--avoid-sequential", action="store_true", help="Avoid sequential digits in PIN")
+    parser.add_argument(
+        "--avoid-sequential", action="store_true", help="Avoid sequential digits in PIN"
+    )
 
-    parser.add_argument("--analyze", type=str, metavar="PASSWORD", help="Analyze a password's strength")
+    parser.add_argument(
+        "--analyze", type=str, metavar="PASSWORD", help="Analyze a password's strength"
+    )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     parser.add_argument("--clipboard", action="store_true", help="Copy to clipboard")
-    parser.add_argument("--clipboard-clear", type=int, default=30, help="Clipboard auto-clear seconds (default: 30)")
+    parser.add_argument(
+        "--clipboard-clear", type=int, default=30, help="Clipboard auto-clear seconds (default: 30)"
+    )
 
     args = parser.parse_args()
 

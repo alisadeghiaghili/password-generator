@@ -20,8 +20,10 @@ Usage:
 from password_generator.generator import generate, GeneratorConfig
 from password_generator.passphrase import generate_passphrase, PassphraseConfig
 from password_generator.pin import generate_pin, PinConfig
-from password_generator.strength import analyze, StrengthReport
+from password_generator.strength import analyze, StrengthReport, PasswordPolicy, PolicyResult
 from password_generator.clipboard import copy_to_clipboard, clear_clipboard
+from password_generator.breach import check_breach, BreachResult
+from password_generator.export import export_json, export_csv, export_keepass, PasswordEntry
 
 __version__ = "2.0.0"
 __all__ = [
@@ -31,8 +33,16 @@ __all__ = [
     "analyze",
     "copy_to_clipboard",
     "clear_clipboard",
+    "check_breach",
+    "BreachResult",
+    "export_json",
+    "export_csv",
+    "export_keepass",
+    "PasswordEntry",
     "GeneratorConfig",
     "PassphraseConfig",
     "PinConfig",
     "StrengthReport",
+    "PasswordPolicy",
+    "PolicyResult",
 ]

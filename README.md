@@ -1,5 +1,10 @@
 # Password Generator
 
+[![PyPI version](https://img.shields.io/pypi/v/password-generator.svg)](https://pypi.org/project/password-generator/)
+[![Python versions](https://img.shields.io/pypi/pyversions/password-generator.svg)](https://pypi.org/project/password-generator/)
+[![Downloads](https://img.shields.io/pypi/dm/password-generator.svg)](https://pypi.org/project/password-generator/)
+[![License](https://img.shields.io/pypi/l/password-generator.svg)](https://github.com/alisadeghiaghili/password-generator/blob/master/LICENSE)
+
 [English](README.md) | [فارسی](README-fa.md) | [Deutsch](README-de.md)
 
 A secure, configurable password generation toolkit for Python. Generate random passwords, XKCD-style passphrases, numeric PINs, and analyze password strength — all from a simple API or an interactive CLI.

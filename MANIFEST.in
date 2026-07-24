@@ -1,0 +1,9 @@
+include README.md
+include README-de.md
+include README-fa.md
+include LICENSE
+include CHANGELOG.md
+include password_generator/wordlist.txt
+include password_generator/common_passwords.txt
+include password_generator/py.typed
+recursive-include docs *.html *.css *.js

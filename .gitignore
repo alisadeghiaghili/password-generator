@@ -35,6 +35,14 @@ ENV/
 .pytest_cache/
 .coverage
 htmlcov/
+coverage.xml
+
+# Distribution
+*.whl
+*.tar.gz
+dist/
+build/
+*.egg-info/
 
 # Project specific
 .mimicode/

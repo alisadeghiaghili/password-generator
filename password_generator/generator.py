@@ -3,7 +3,9 @@
 import math
 import secrets
 import string
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+__all__ = ["generate", "GeneratorConfig", "calculate_entropy", "AMBIGUOUS_CHARS"]
 
 
 AMBIGUOUS_CHARS = set("lI1O0o")
@@ -11,7 +13,24 @@ AMBIGUOUS_CHARS = set("lI1O0o")
 
 @dataclass
 class GeneratorConfig:
-    """Configuration for password generation."""
+    """Configuration for password generation.
+
+    Attributes:
+        length: Password length in characters (4-256).
+        uppercase: Include uppercase letters (A-Z).
+        lowercase: Include lowercase letters (a-z).
+        digits: Include digits (0-9).
+        symbols: Include special symbols.
+        symbol_chars: Custom symbol characters to use.
+        exclude_ambiguous: Exclude ambiguous chars (l, I, 1, O, 0, o).
+
+    Raises:
+        ValueError: If length is out of range or no categories enabled.
+
+    Examples:
+        >>> config = GeneratorConfig(length=20, uppercase=True, symbols=False)
+        >>> config = GeneratorConfig(length=32, exclude_ambiguous=True)
+    """
 
     length: int = 16
     uppercase: bool = True
@@ -21,7 +40,7 @@ class GeneratorConfig:
     symbol_chars: str = "!@#$%^&*()_+-=[]{}|;:,.<>?"
     exclude_ambiguous: bool = False
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if not 4 <= self.length <= 256:
             raise ValueError("Length must be between 4 and 256")
         pools = self._get_pools()
@@ -34,7 +53,11 @@ class GeneratorConfig:
             )
 
     def _get_pools(self) -> dict[str, list[str]]:
-        """Build character pools based on config."""
+        """Build character pools based on config.
+
+        Returns:
+            Dictionary mapping pool name to list of allowed characters.
+        """
         pools = {}
         if self.lowercase:
             pools["lowercase"] = list(string.ascii_lowercase)
@@ -94,7 +117,23 @@ def generate(config: GeneratorConfig | None = None, **kwargs) -> str:
 
 
 def calculate_entropy(pool_size: int, length: int) -> int:
-    """Calculate password entropy in bits."""
+    """Calculate password entropy in bits.
+
+    Args:
+        pool_size: Number of unique characters in the pool.
+        length: Password length.
+
+    Returns:
+        Entropy in bits (rounded to nearest integer).
+
+    Examples:
+        >>> calculate_entropy(26, 8)  # 8 lowercase letters
+        37
+        >>> calculate_entropy(62, 12)  # 12 alphanumeric chars
+        71
+        >>> calculate_entropy(0, 10)
+        0
+    """
     if pool_size <= 0 or length <= 0:
         return 0
     return round(length * math.log2(pool_size))
