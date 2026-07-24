@@ -4,6 +4,9 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/password-generator.svg)](https://pypi.org/project/password-generator/)
 [![Downloads](https://img.shields.io/pypi/dm/password-generator.svg)](https://pypi.org/project/password-generator/)
 [![License](https://img.shields.io/pypi/l/password-generator.svg)](https://github.com/alisadeghiaghili/password-generator/blob/master/LICENSE)
+[![Tests](https://github.com/alisadeghiaghili/password-generator/actions/workflows/tests.yml/badge.svg)](https://github.com/alisadeghiaghili/password-generator/actions/workflows/tests.yml)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Pylint](https://img.shields.io/badge/pylint-9.88%2F10-brightgreen.svg)](https://github.com/pylint-dev/pylint)
 
 [English](README.md) | [فارسی](README-fa.md) | [Deutsch](README-de.md)
 
