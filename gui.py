@@ -208,13 +208,6 @@ class PasswordGeneratorGUI(QMainWindow):
 
         sidebar_layout.addStretch()
 
-        # Theme toggle
-        self.theme_btn = QPushButton("  Light Mode")
-        self.theme_btn.setFixedHeight(36)
-        self.theme_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.theme_btn.clicked.connect(self._toggle_theme)
-        sidebar_layout.addWidget(self.theme_btn)
-
         # Version
         ver = QLabel("v2.0.0")
         ver.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -228,6 +221,22 @@ class PasswordGeneratorGUI(QMainWindow):
         right_layout = QVBoxLayout(right)
         right_layout.setContentsMargins(0, 0, 0, 0)
         right_layout.setSpacing(0)
+
+        # Title bar with theme toggle
+        title_bar = QFrame()
+        title_bar.setFixedHeight(48)
+        title_bar_layout = QHBoxLayout(title_bar)
+        title_bar_layout.setContentsMargins(24, 0, 16, 0)
+        title_bar_label = QLabel("Password Generator")
+        title_bar_label.setFont(QFont("", 14, QFont.Weight.Bold))
+        title_bar_layout.addWidget(title_bar_label)
+        title_bar_layout.addStretch()
+        self.theme_btn = QPushButton("\u2600  Light Mode")
+        self.theme_btn.setFixedHeight(32)
+        self.theme_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.theme_btn.clicked.connect(self._toggle_theme)
+        title_bar_layout.addWidget(self.theme_btn)
+        right_layout.addWidget(title_bar)
 
         # Stacked widget for tabs
         self.stack = QStackedWidget()
@@ -538,6 +547,10 @@ class PasswordGeneratorGUI(QMainWindow):
 
     def _toggle_theme(self):
         self.dark_mode = not self.dark_mode
+        if self.dark_mode:
+            self.theme_btn.setText("\u2600  Light Mode")
+        else:
+            self.theme_btn.setText("\U0001F319  Dark Mode")
         self._apply_theme()
 
     def _apply_theme(self):
