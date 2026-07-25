@@ -35,9 +35,11 @@ Changelog = "https://github.com/alisadeghiaghili/password-generator/blob/master/
 
 [project.scripts]
 password-gen = "cli:main"
+password-gen-gui = "gui:main"
 
 [project.optional-dependencies]
 cli = ["rich>=13.0"]
+gui = ["PySide6>=6.6"]
 dev = ["pytest>=7.0", "black>=24.0", "pylint>=3.0"]
 
 [tool.setuptools.packages.find]
