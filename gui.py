@@ -304,7 +304,7 @@ class PasswordGeneratorGUI(QMainWindow):
         eye_row = QHBoxLayout()
         eye_row.addStretch()
         self.pw_eye_btn = QPushButton("Show")
-        self.pw_eye_btn.setFixedWidth(60)
+        self.pw_eye_btn.setFixedWidth(80)
         self.pw_eye_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.pw_eye_btn.clicked.connect(self._toggle_pw_eye)
         eye_row.addWidget(self.pw_eye_btn)
@@ -421,7 +421,7 @@ class PasswordGeneratorGUI(QMainWindow):
         input_row.addWidget(self.strength_input, 1)
 
         self.strength_eye_btn = QPushButton("Show")
-        self.strength_eye_btn.setFixedWidth(60)
+        self.strength_eye_btn.setFixedWidth(80)
         self.strength_eye_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.strength_eye_btn.clicked.connect(self._toggle_strength_eye)
         input_row.addWidget(self.strength_eye_btn)
