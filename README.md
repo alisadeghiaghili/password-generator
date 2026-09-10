@@ -4,14 +4,14 @@
 
 A secure, configurable password generation toolkit for Python. Generate random passwords, XKCD-style passphrases, numeric PINs, and analyze password strength — all from a simple API or an interactive CLI.
 
-**Version:** 2.1.0 | **License:** Apache 2.0 | **Python:** 3.10+
+**Version:** 2.1.1 | **License:** Apache 2.0 | **Python:** 3.10+
 
 ---
 
 ## Features
 
 - **Random Passwords** — Cryptographically secure, fully customizable character sets
-- **Passphrases** — XKCD-style memorable passphrases from a 2048-word list
+- **Passphrases** — XKCD-style memorable passphrases from a ~1060-word bundled list
 - **PINs** — Numeric codes with repeat/sequence avoidance
 - **Strength Analysis** — Entropy scoring, crack-time estimates, pattern detection
 - **Clipboard Integration** — Auto-copy with timed auto-clear (cross-platform)

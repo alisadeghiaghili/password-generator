@@ -4,14 +4,14 @@
 
 ابزار جامع و قابل تنظیم برای تولید رمز عبور در پایتون. رمزهای عبور تصادفی، عبارات عبور XKCD، کدهای PIN عددی و تحلیل قوت رمز عبور — همه از یک API ساده یا CLI تعاملی.
 
-**نسخه:** 2.0.0 | **لایسنس:** Apache 2.0 | **پایتون:** 3.10+
+**نسخه:** 2.1.1 | **لایسنس:** Apache 2.0 | **پایتون:** 3.10+
 
 ---
 
 ## قابلیت‌ها
 
 - **رمزهای عبور تصادفی** — تولید رمزنگارانه ایمن با مجموعه کاراکترهای کاملاً قابل تنظیم
-- **عبارات عبور** — عبارات عبور به یادماندنی XKCD از لیست 2048 کلمه‌ای
+- **عبارات عبور** — عبارات عبور به یادماندنی XKCD از لیست ~1060 کلمه‌ای بسته‌بندی‌شده
 - **کدهای PIN** — کدهای عددی با جلوگیری از تکرار و توالی
 - **تحلیل قوت** — امتیازدهی آنتروپی، برآورد زمان شکستن، تشخیص الگو
 - **ادغام کلیپ‌بورد** — کپی خودکار با پاکسازی زمان‌بندی‌شده (چندپلتفرمی)
@@ -91,15 +91,20 @@ python cli.py --passphrase --words 4 --separator " "
 # تولید کد PIN 6 رقمی
 python cli.py --pin --pin-length 6 --avoid-repeats
 
-# تحلیل رمز عبور
-python cli.py --analyze "MyP@ssw0rd"
+# تحلیل رمز عبور (stdin امن — رمز را در argv نگذارید)
+echo -n 'MyP@ssw0rd' | python cli.py --analyze
+
+# تحلیل با پرامپت مخفی
+python cli.py --analyze
 
 # خروجی JSON
 python cli.py --length 24 --json
 
-# کپی در کلیپ‌بورد
+# کپی در کلیپ‌بورد (منتظر می‌ماند تا پاکسازی کامل شود)
 python cli.py --length 16 --clipboard
 ```
+
+بعد از نصب: `password-gen --length 20`
 
 ---
 
@@ -239,18 +244,18 @@ from password_generator.generator import calculate_entropy
 entropy = calculate_entropy(26, 8)  # ~37 بیت
 ```
 
-### `passphrase_entropy(word_count, wordlist_size=2048) -> int`
+### `passphrase_entropy(word_count, wordlist_size=None) -> int`
 
-محاسبه آنتروپی عبارت عبور بر حسب بیت.
+محاسبه آنتروپی عبارت عبور بر حسب بیت. اگر `wordlist_size` داده نشود، اندازهٔ واقعی لیست بسته‌بندی‌شده (~1060 کلمه، حدود 10 بیت برای هر کلمه) استفاده می‌شود — نه یک مقدار تئوری hardcode‌شده.
 
 ```python
 from password_generator.passphrase import passphrase_entropy
 
-# 4 کلمه از لیست 2048 کلمه‌ای
-entropy = passphrase_entropy(4)  # ~44 بیت
+# 4 کلمه از لیست بسته‌بندی‌شده (اندازه واقعی)
+entropy = passphrase_entropy(4)  # ~40 بیت
 
-# 6 کلمه
-entropy = passphrase_entropy(6)  # ~66 بیت
+# اندازه صریح
+entropy = passphrase_entropy(6, wordlist_size=7776)  # ~77 بیت
 ```
 
 ---
@@ -290,10 +295,10 @@ python cli.py
 | `--pin-length N` | طول PIN (1–12) | `4` |
 | `--avoid-repeats` | جلوگیری از ارقام تکراری در PIN | `False` |
 | `--avoid-sequential` | جلوگیری از ارقام توالی‌دار در PIN | `False` |
-| `--analyze PASSWORD` | تحلیل یک رمز عبور | — |
+| `--analyze` | تحلیل رمز عبور (stdin در صورت pipe، وگرنه پرامپت مخفی — هرگز از argv) | — |
 | `--json` | خروجی به صورت JSON | `False` |
 | `--clipboard` | کپی نتیجه در کلیپ‌بورد | `False` |
-| `--clipboard-clear N` | ثانیه‌های پاکسازی خودکار کلیپ‌بورد | `30` |
+| `--clipboard-clear N` | ثانیه‌های پاکسازی خودکار کلیپ‌بورد (CLI منتظر پاکسازی می‌ماند) | `30` |
 
 ### مثال‌ها
 
@@ -307,8 +312,8 @@ python cli.py --passphrase --words 5 --separator " " --capitalize
 # PIN 8 رقمی، جلوگیری از تکرار و توالی
 python cli.py --pin --pin-length 8 --avoid-repeats --avoid-sequential
 
-# تحلیل و خروجی JSON
-python cli.py --analyze "Tr0ub4dor&3" --json
+# تحلیل و خروجی JSON (رمز هرگز روی argv نیست)
+echo -n 'Tr0ub4dor&3' | python cli.py --analyze --json
 
 # تولید و کپی در کلیپ‌بورد
 python cli.py --length 24 --clipboard --clipboard-clear 60
@@ -440,10 +445,16 @@ print("رمز عبور کپی شد — کلیپ‌بورد در 30 ثانیه پ
 
 - از ماژول `secrets` پایتون برای تولید تصادفی رمزنگارانه ایمن استفاده می‌کند
 - شافل Fisher-Yates توزیع یکنواخت را تضمین می‌کند
-- تولید PIN تا 10,000 بار تلاش می‌کند تا محدودیت‌ها را رعایت کند
-- تحلیلگر قوت علیه پایگاه داده 157 رمز عبور رایج/نشت‌شده بررسی می‌کند
-- الگوهای صفحه کلید، توالی‌ها، تکرارها و الگوهای تاریخی را تشخیص می‌دهد
-- پاکسازی خودکار کلیپ‌بورد از افشای رمز عبور پس از استفاده جلوگیری می‌کند
+- اعتبارسنجی استخر کاراکتر **بعد از** فیلتر `exclude_ambiguous` انجام می‌شود
+- محدودیت‌های PIN اجباری‌اند؛ شکست `RuntimeError` می‌دهد (هرگز PIN خلاف قید خاموش برنمی‌گرداند)
+- تشخیص توالی PIN، runهای توکار ۴+ رقمی را رد می‌کند
+- تحلیل قوت در فضای log10 انجام می‌شود — بدون overflow روی رمزهای بلند
+- بررسی رمز رایج شامل match دقیق، leet-speak و substring (≥5 کاراکتر) است
+- تحلیلگر قوت یک **heuristic** (الهام‌گرفته از zxcvbn) است، نه مدل کامل zxcvbn
+- لیست کلمهٔ بسته‌بندی‌شده ~1060 کلمه دارد؛ entropy بر اساس اندازه واقعی محاسبه می‌شود
+- `--analyze` در CLI از stdin یا پرامپت مخفی می‌خواند — هرگز از argv
+- پاکسازی خودکار کلیپ‌بورد در CLI **تا پایان پاکسازی block می‌کند**
+- موفقیت کلیپ‌بورد بر اساس exit code فرآیند است
 - رمزهای عبور در خروجی `StrengthReport` پنهان می‌شوند (هرگز فاش نمی‌شوند)
 
 ---
@@ -459,12 +470,15 @@ password-generator/
 │   ├── pin.py                   # تولید کد PIN عددی
 │   ├── strength.py              # تحلیلگر قوت رمز عبور
 │   ├── clipboard.py             # عملیات کلیپ‌بورد چندپلتفرمی
-│   ├── wordlist.txt             # لیست 2048 کلمه‌ای برای عبارات عبور
-│   └── common_passwords.txt     # 157 رمز عبور رایج/نشت‌شده
+│   ├── cli.py                   # CLI (نصب‌شده به‌عنوان password-gen)
+│   ├── wordlist.txt             # لیست ~1060 کلمه‌ای برای عبارات عبور
+│   └── common_passwords.txt     # رمزهای عبور رایج/نشت‌شده
 ├── tests/
-│   └── test_all.py              # مجموعه تست جامع
-├── cli.py                       # CLI تعاملی و argparse
-├── PasswordGenerator.py         # نقطه ورود wrapper
+│   ├── test_all.py              # مجموعه تست اصلی
+│   └── test_regression.py       # مجموعه regression امنیت/صحت
+├── .github/workflows/ci.yml    # CI چندسیستمی/چندپایتونی
+├── cli.py                       # wrapper برای `python cli.py`
+├── PasswordGenerator.py         # wrapper سازگاری عقب‌رو
 ├── pyproject.toml               # پیکربندی ساخت
 └── README.md                    # این فایل
 ```
