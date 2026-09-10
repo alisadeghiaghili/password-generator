@@ -38,3 +38,5 @@ htmlcov/
 
 # Project specific
 .mimicode/
+
+.venv-test/
