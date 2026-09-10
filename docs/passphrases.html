@@ -18,7 +18,7 @@
             <a href="fa/index.html">فارسی</a>
             <a href="de/index.html">DE</a>
         </div>
-        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.1.1</p></div>
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.3.0</p></div>
         <ul class="nav-list">
             <li class="nav-section">Getting Started</li>
             <li><a href="index.html">Welcome</a></li>
@@ -51,7 +51,7 @@
         <h1>Passphrases</h1>
 
         <p class="lead">
-            Generate memorable XKCD-style passphrases from a ~1060-word bundled list.
+            Generate memorable XKCD-style passphrases from a 7772-word EFF large list.
             Easy to remember, hard to crack.
         </p>
 
@@ -70,7 +70,7 @@ print(passphrase)  # e.g. "correct-horse-battery-staple"</code></pre>
             <div class="code-header"><span class="lang">Python</span></div>
             <pre><code class="language-python"># More words = more entropy
 three = generate_passphrase(words=3)   # ~33 bits
-four = generate_passphrase(words=4)    # ~40 bits (bundled list)
+four = generate_passphrase(words=4)    # ~52 bits (EFF large list)
 five = generate_passphrase(words=5)    # ~55 bits
 six = generate_passphrase(words=6)     # ~66 bits</code></pre>
         </div>
@@ -166,7 +166,7 @@ for i in range(3):
             <tbody>
                 <tr><td>2</td><td>~22 bits</td><td>correct-horse</td></tr>
                 <tr><td>3</td><td>~33 bits</td><td>correct-horse-battery</td></tr>
-                <tr><td>4</td><td>~40 bits</td><td>correct-horse-battery-staple</td></tr>
+                <tr><td>4</td><td>~52 bits</td><td>correct-horse-battery-staple</td></tr>
                 <tr><td>5</td><td>~55 bits</td><td>correct-horse-battery-staple-moon</td></tr>
                 <tr><td>6</td><td>~66 bits</td><td>correct-horse-battery-staple-moon-river</td></tr>
                 <tr><td>8</td><td>~88 bits</td><td>8 words</td></tr>
@@ -175,7 +175,7 @@ for i in range(3):
         </table>
 
         <div class="info-box">
-            <strong>Recommendation:</strong> Use at least 4 words (~40 bits) for general use, or 6+ words (~60 bits) for high-security applications like encryption keys.
+            <strong>Recommendation:</strong> Use at least 4 words (~52 bits) for general use, or 6+ words (~78 bits) for high-security applications like encryption keys.
         </div>
 
         <div class="chapter-nav">

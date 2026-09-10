@@ -21,7 +21,7 @@ from password_generator.pin import PinConfig, generate_pin
 from password_generator.strength import StrengthReport, analyze
 from password_generator.zxcvbn_backend import zxcvbn_available
 
-__version__ = "2.2.0"
+__version__ = "2.3.0"
 __all__ = [
     "generate",
     "generate_passphrase",

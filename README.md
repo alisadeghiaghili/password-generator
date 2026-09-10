@@ -4,14 +4,14 @@
 
 A secure, configurable password generation toolkit for Python. Generate random passwords, XKCD-style passphrases, numeric PINs, and analyze password strength — all from a simple API or an interactive CLI.
 
-**Version:** 2.2.0 | **License:** Apache 2.0 | **Python:** 3.10+
+**Version:** 2.3.0 | **License:** Apache 2.0 | **Python:** 3.10+
 
 ---
 
 ## Features
 
 - **Random Passwords** — Cryptographically secure, fully customizable character sets
-- **Passphrases** — XKCD-style memorable passphrases from a ~1060-word bundled list
+- **Passphrases** — XKCD-style memorable passphrases from a 7772-word EFF large list
 - **PINs** — Numeric codes with repeat/sequence avoidance
 - **Strength Analysis** — Entropy scoring, crack-time estimates, pattern detection
 - **Clipboard Integration** — Auto-copy with timed auto-clear (cross-platform)
@@ -277,14 +277,14 @@ entropy = calculate_entropy(26, 8)  # ~37 bits
 ### `passphrase_entropy(word_count, wordlist_size=None) -> int`
 
 Calculate passphrase entropy in bits. When `wordlist_size` is omitted, the
-bundled wordlist size is used (currently ~1060 words ≈ 10 bits each) — not a
+bundled wordlist size is used (currently 7772 words ≈ 10 bits each) — not a
 hardcoded theoretical value.
 
 ```python
 from password_generator.passphrase import passphrase_entropy, _load_wordlist
 
 # 4 words from the bundled list (honest size)
-entropy = passphrase_entropy(4)  # ~40 bits
+entropy = passphrase_entropy(4)  # ~52 bits
 
 # Explicit size (e.g. EFF large list)
 entropy = passphrase_entropy(6, wordlist_size=7776)  # ~77 bits
@@ -485,7 +485,7 @@ print("Password copied — clipboard clears in 30 seconds")
 - Common-password checks include exact match, leet-speak normalization, and substrings (≥5 chars)
 - Strength analyzer is a **heuristic** (zxcvbn-inspired), not a full zxcvbn model — treat scores as guidance
 - Optional `password-generator[zxcvbn]` enables the Dropbox zxcvbn backend via `analyze(..., backend="zxcvbn")`
-- Bundled wordlist has ~1060 words; entropy helpers use the real size
+- Bundled wordlist has 7772 words; entropy helpers use the real size
 - CLI `--analyze` reads from stdin or a hidden prompt — never from argv
 - CLI clipboard auto-clear **blocks until clear completes** (daemon timers die with short-lived processes)
 - Clipboard success is based on process exit code
@@ -505,7 +505,7 @@ password-generator/
 │   ├── strength.py              # Password strength analyzer
 │   ├── clipboard.py             # Cross-platform clipboard ops
 │   ├── cli.py                   # CLI (installed as password-gen)
-│   ├── wordlist.txt             # ~1060-word list for passphrases
+│   ├── wordlist.txt             # 7772-word EFF large list for passphrases
 │   └── common_passwords.txt     # Common/breached passwords
 ├── tests/
 │   ├── test_all.py              # Core test suite

@@ -11,7 +11,7 @@ Ein sicheres, konfigurierbares Passwort-Generierungs-Toolkit für Python. Erstel
 ## Funktionen
 
 - **Zufällige Passwörter** — Kryptographisch sicher, vollständig anpassbare Zeichensätze
-- **Passphrasen** — XKCD-style einprägsame Passphrasen aus einer ~1060-Wörter-Liste
+- **Passphrasen** — XKCD-style einprägsame Passphrasen aus einer 7772-Wörter-Liste (EFF large)
 - **PINs** — Numerische Codes mit Wiederholungs-/Sequenzvermeidung
 - **Stärkeanalyse** — Entropie-Bewertung, Knackzeit-Schätzungen, Mustererkennung
 - **Zwischenablage** — Automatisches Kopieren mit zeitgesteuerter Löschung (plattformübergreifend)
@@ -31,6 +31,9 @@ pip install password-generator
 
 # Mit schöner CLI-Ausgabe (Rich Terminal UI)
 pip install password-generator[cli]
+
+# Optionales zxcvbn-Modell
+pip install password-generator[zxcvbn]
 ```
 
 ### Aus Quellcode
@@ -246,13 +249,13 @@ entropy = calculate_entropy(26, 8)  # ~37 Bits
 
 ### `passphrase_entropy(word_count, wordlist_size=None) -> int`
 
-Berechnet die Passphrase-Entropie in Bits. Ohne `wordlist_size` wird die echte Größe der mitgelieferten Liste (~1060 Wörter, ca. 10 Bits pro Wort) verwendet — kein hardcodierter theoretischer Wert.
+Berechnet die Passphrase-Entropie in Bits. Ohne `wordlist_size` wird die echte Größe der mitgelieferten Liste (7772 Wörter (EFF large), ca. 13 Bits pro Wort) verwendet — kein hardcodierter theoretischer Wert.
 
 ```python
 from password_generator.passphrase import passphrase_entropy
 
 # 4 Wörter aus der mitgelieferten Liste (echte Größe)
-entropy = passphrase_entropy(4)  # ~40 Bits
+entropy = passphrase_entropy(4)  # ~52 Bits
 
 # Explizite Größe
 entropy = passphrase_entropy(6, wordlist_size=7776)  # ~77 Bits
@@ -450,8 +453,8 @@ print("Passwort kopiert — Zwischenablage wird in 30 Sekunden gelöscht")
 - Sequenz-Erkennung lehnt eingebettete Läufe von 4+ Ziffern ab
 - Stärkeanalyse läuft im log10-Raum — kein Overflow bei langen Passwörtern
 - Häufige Passwörter: exakter Match, Leet-Speak und Substrings (≥5 Zeichen)
-- Stärkeanalysator ist ein **Heuristik** (zxcvbn-inspiriert), kein volles zxcvbn
-- Mitgelieferte Wortliste hat ~1060 Wörter; Entropie nutzt die echte Größe
+- Stärkeanalysator ist ein **Heuristik** (zxcvbn-inspiriert); optional `password-generator[zxcvbn]` für das echte Modell (`analyze(..., backend="zxcvbn")`)
+- Mitgelieferte Wortliste hat 7772 Wörter (EFF large); Entropie nutzt die echte Größe
 - CLI `--analyze` liest stdin oder versteckte Eingabe — nie argv
 - CLI-Zwischenablage-Autolöschung **blockt bis die Löschung fertig ist**
 - Zwischenablage-Erfolg basiert auf Exit-Code
@@ -471,7 +474,7 @@ password-generator/
 │   ├── strength.py              # Passwort-Stärkeanalysator
 │   ├── clipboard.py             # Plattformübergreifende Zwischenablagen-Operationen
 │   ├── cli.py                   # CLI (installiert als password-gen)
-│   ├── wordlist.txt             # ~1060-Wörter-Liste für Passphrasen
+│   ├── wordlist.txt             # 7772-Wörter-Liste (EFF large) für Passphrasen
 │   └── common_passwords.txt     # Häufige/geleckte Passwörter
 ├── tests/
 │   ├── test_all.py              # Kern-Testsuite
