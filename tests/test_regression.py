@@ -71,12 +71,11 @@ class TestPassphraseEntropyHonesty:
         expected = round(4 * math.log2(size))
         assert passphrase_entropy(4) == expected
 
-    def test_wordlist_not_claimed_2048(self) -> None:
+    def test_wordlist_is_eff_sized(self) -> None:
         size = len(_load_wordlist())
-        if size != 2048:
-            claimed = round(4 * math.log2(2048))
-            actual = passphrase_entropy(4)
-            assert actual != claimed
+        assert size >= 7000
+        # 4 words from EFF-scale list: ~13 bits each
+        assert passphrase_entropy(4) >= 50
 
     def test_passphrase_config_wordlist_respected(self) -> None:
         phrase = generate_passphrase(PassphraseConfig(words=4))
