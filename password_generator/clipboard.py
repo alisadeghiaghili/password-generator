@@ -1,94 +1,108 @@
-"""Cross-platform clipboard operations with auto-clear."""
+"""Cross-platform clipboard operations with optional explicit clear."""
+
+from __future__ import annotations
 
 import platform
 import subprocess
 import threading
-import time
 
 
-def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool:
-    """Copy text to clipboard.
+def _run_clip(system: str, data: bytes) -> bool:
+    """Write bytes to the system clipboard.
 
     Args:
-        text: Text to copy.
-        auto_clear_seconds: If > 0, clear clipboard after this many seconds.
+        system: ``platform.system()`` value.
+        data: Raw bytes to place on the clipboard.
 
     Returns:
-        True if successful, False otherwise.
-
-    Examples:
-        >>> copy_to_clipboard("my_password")
-        >>> copy_to_clipboard("my_password", auto_clear_seconds=30)
+        True if the clipboard tool exited successfully.
     """
-    system = platform.system()
     try:
         if system == "Windows":
-            process = subprocess.Popen(["clip"], stdin=subprocess.PIPE)
-            process.communicate(text.encode("utf-16-le"))
+            # `clip` accepts UTF-16LE on modern Windows consoles.
+            process = subprocess.Popen(
+                ["clip"],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
         elif system == "Darwin":
-            process = subprocess.Popen(["pbcopy"], stdin=subprocess.PIPE)
-            process.communicate(text.encode("utf-8"))
+            process = subprocess.Popen(
+                ["pbcopy"],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
         elif system == "Linux":
             try:
                 process = subprocess.Popen(
                     ["xclip", "-selection", "clipboard"],
                     stdin=subprocess.PIPE,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
                 )
-                process.communicate(text.encode("utf-8"))
             except FileNotFoundError:
                 process = subprocess.Popen(
                     ["xsel", "--clipboard", "--input"],
                     stdin=subprocess.PIPE,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
                 )
-                process.communicate(text.encode("utf-8"))
         else:
             return False
-
-        if auto_clear_seconds > 0:
-            timer = threading.Timer(
-                auto_clear_seconds, _clear_clipboard_thread, args=(system,)
-            )
-            timer.daemon = True
-            timer.start()
-
-        return True
+        process.communicate(data)
+        return process.returncode == 0
     except FileNotFoundError:
         return False
+
+
+def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool:
+    """Copy text to the system clipboard.
+
+    Note:
+        ``auto_clear_seconds`` uses a daemon thread. In short-lived CLI
+        processes the thread is killed at exit and the clear never runs.
+        Long-running apps may use this; CLIs should block and call
+        :func:`clear_clipboard` explicitly.
+
+    Args:
+        text: Text to copy.
+        auto_clear_seconds: If > 0, schedule a clear after this many seconds.
+
+    Returns:
+        True if the copy succeeded, False otherwise.
+
+    Examples:
+        >>> copy_to_clipboard("secret")  # doctest: +SKIP
+        True
+        >>> copy_to_clipboard("secret", auto_clear_seconds=30)  # doctest: +SKIP
+        True
+    """
+    system = platform.system()
+    if system == "Windows":
+        payload = text.encode("utf-16-le")
+    else:
+        payload = text.encode("utf-8")
+
+    if not _run_clip(system, payload):
+        return False
+
+    if auto_clear_seconds > 0:
+        timer = threading.Timer(auto_clear_seconds, clear_clipboard)
+        timer.daemon = True
+        timer.start()
+
+    return True
 
 
 def clear_clipboard() -> bool:
     """Clear the clipboard immediately.
 
     Returns:
-        True if successful, False otherwise.
+        True if the clipboard tool succeeded.
+
+    Examples:
+        >>> clear_clipboard()  # doctest: +SKIP
+        True
     """
-    return _clear_clipboard_thread(platform.system())
-
-
-def _clear_clipboard_thread(system: str) -> bool:
-    """Clear clipboard (used by timer thread)."""
-    try:
-        if system == "Windows":
-            process = subprocess.Popen(["clip"], stdin=subprocess.PIPE)
-            process.communicate(b"")
-        elif system == "Darwin":
-            process = subprocess.Popen(["pbcopy"], stdin=subprocess.PIPE)
-            process.communicate(b"")
-        elif system == "Linux":
-            try:
-                process = subprocess.Popen(
-                    ["xclip", "-selection", "clipboard"],
-                    stdin=subprocess.PIPE,
-                )
-                process.communicate(b"")
-            except FileNotFoundError:
-                process = subprocess.Popen(
-                    ["xsel", "--clipboard", "--input"],
-                    stdin=subprocess.PIPE,
-                )
-                process.communicate(b"")
-        else:
-            return False
-        return True
-    except FileNotFoundError:
-        return False
+    return _run_clip(platform.system(), b"")
