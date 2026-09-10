@@ -90,6 +90,7 @@ def _load_common_passwords() -> set[str]:
 
 COMMON_PASSWORDS: set[str] = _load_common_passwords()
 
+
 # Precompute keyboard n-grams (length 4+) for O(1) membership checks
 def _build_keyboard_ngrams(min_len: int = 4) -> frozenset[str]:
     ngrams: set[str] = set()
@@ -145,10 +146,7 @@ def _detect_sequence(password: str) -> bool:
         True if a known sequential n-gram appears.
     """
     lower = password.lower()
-    for i in range(len(lower) - 2):
-        if lower[i : i + 3] in _SEQUENCE_NGRAMS:
-            return True
-    return False
+    return any(lower[i : i + 3] in _SEQUENCE_NGRAMS for i in range(len(lower) - 2))
 
 
 def _detect_repeats(password: str) -> bool:
@@ -160,10 +158,7 @@ def _detect_repeats(password: str) -> bool:
     Returns:
         True if any character repeats 3+ consecutive times.
     """
-    for i in range(len(password) - 2):
-        if password[i] == password[i + 1] == password[i + 2]:
-            return True
-    return False
+    return any(password[i] == password[i + 1] == password[i + 2] for i in range(len(password) - 2))
 
 
 def _detect_dates(password: str) -> bool:
@@ -179,10 +174,7 @@ def _detect_dates(password: str) -> bool:
         return False
     if _YEAR_PATTERN.search(password):
         return True
-    for pattern in _DATE_PATTERNS:
-        if pattern.search(password):
-            return True
-    return False
+    return any(pattern.search(password) for pattern in _DATE_PATTERNS)
 
 
 def _normalize_leet(password: str) -> str:
@@ -353,10 +345,7 @@ def analyze(password: str) -> StrengthReport:
         )
 
     log10_guesses = _estimate_log10_guesses(password)
-    if log10_guesses > _MAX_FLOAT_LOG10:
-        guesses = float("inf")
-    else:
-        guesses = 10.0**log10_guesses
+    guesses = float("inf") if log10_guesses > _MAX_FLOAT_LOG10 else 10.0**log10_guesses
     entropy = log10_guesses * math.log2(10)
 
     rates: dict[str, float] = {
@@ -373,10 +362,7 @@ def analyze(password: str) -> StrengthReport:
         crack_times_seconds[scenario] = seconds
         crack_times[scenario] = _format_time(seconds)
 
-    if _is_common_password(password):
-        score = 0
-    else:
-        score = _score_from_log10(log10_guesses)
+    score = 0 if _is_common_password(password) else _score_from_log10(log10_guesses)
 
     patterns: list[str] = []
     if _is_common_password(password):

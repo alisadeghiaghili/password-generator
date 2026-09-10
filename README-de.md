@@ -4,14 +4,14 @@
 
 Ein sicheres, konfigurierbares Passwort-Generierungs-Toolkit für Python. Erstellen Sie zufällige Passwörter, XKCD-style Passphrasen, numerische PINs und analysieren Sie Passwortstärke — alles über eine einfache API oder ein interaktives CLI.
 
-**Version:** 2.0.0 | **Lizenz:** Apache 2.0 | **Python:** 3.10+
+**Version:** 2.1.1 | **Lizenz:** Apache 2.0 | **Python:** 3.10+
 
 ---
 
 ## Funktionen
 
 - **Zufällige Passwörter** — Kryptographisch sicher, vollständig anpassbare Zeichensätze
-- **Passphrasen** — XKCD-style einprägsame Passphrasen aus einer 2048-Wörter-Liste
+- **Passphrasen** — XKCD-style einprägsame Passphrasen aus einer ~1060-Wörter-Liste
 - **PINs** — Numerische Codes mit Wiederholungs-/Sequenzvermeidung
 - **Stärkeanalyse** — Entropie-Bewertung, Knackzeit-Schätzungen, Mustererkennung
 - **Zwischenablage** — Automatisches Kopieren mit zeitgesteuerter Löschung (plattformübergreifend)
@@ -91,15 +91,20 @@ python cli.py --passphrase --words 4 --separator " "
 # 6-stellige PIN generieren
 python cli.py --pin --pin-length 6 --avoid-repeats
 
-# Passwort analysieren
-python cli.py --analyze "MyP@ssw0rd"
+# Passwort analysieren (sicher über stdin — nie in argv)
+echo -n 'MyP@ssw0rd' | python cli.py --analyze
+
+# Analyse über versteckte Eingabe
+python cli.py --analyze
 
 # JSON-Ausgabe
 python cli.py --length 24 --json
 
-# In Zwischenablage kopieren
+# In Zwischenablage kopieren (blockt bis Autolöschung fertig ist)
 python cli.py --length 16 --clipboard
 ```
+
+Nach Installation: `password-gen --length 20`
 
 ---
 
@@ -239,18 +244,18 @@ from password_generator.generator import calculate_entropy
 entropy = calculate_entropy(26, 8)  # ~37 Bits
 ```
 
-### `passphrase_entropy(word_count, wordlist_size=2048) -> int`
+### `passphrase_entropy(word_count, wordlist_size=None) -> int`
 
-Berechnet die Passphrase-Entropie in Bits.
+Berechnet die Passphrase-Entropie in Bits. Ohne `wordlist_size` wird die echte Größe der mitgelieferten Liste (~1060 Wörter, ca. 10 Bits pro Wort) verwendet — kein hardcodierter theoretischer Wert.
 
 ```python
 from password_generator.passphrase import passphrase_entropy
 
-# 4 Wörter aus einer 2048-Wörter-Liste
-entropy = passphrase_entropy(4)  # ~44 Bits
+# 4 Wörter aus der mitgelieferten Liste (echte Größe)
+entropy = passphrase_entropy(4)  # ~40 Bits
 
-# 6 Wörter
-entropy = passphrase_entropy(6)  # ~66 Bits
+# Explizite Größe
+entropy = passphrase_entropy(6, wordlist_size=7776)  # ~77 Bits
 ```
 
 ---
@@ -290,10 +295,10 @@ Der Assistent führt Sie durch:
 | `--pin-length N` | PIN-Länge (1–12) | `4` |
 | `--avoid-repeats` | Wiederholte Ziffern in PIN vermeiden | `False` |
 | `--avoid-sequential` | Sequenzielle Ziffern in PIN vermeiden | `False` |
-| `--analyze PASSWORD` | Ein Passwort analysieren | — |
+| `--analyze` | Passwort analysieren (stdin per Pipe, sonst versteckte Eingabe — nie argv) | — |
 | `--json` | Als JSON ausgeben | `False` |
 | `--clipboard` | Ergebnis in Zwischenablage kopieren | `False` |
-| `--clipboard-clear N` | Sekunden bis zur Autolöschung der Zwischenablage | `30` |
+| `--clipboard-clear N` | Sekunden bis zur Autolöschung (CLI blockt bis Löschung) | `30` |
 
 ### Beispiele
 
@@ -307,8 +312,8 @@ python cli.py --passphrase --words 5 --separator " " --capitalize
 # 8-stellige PIN, Wiederholungen und Sequenzen vermeiden
 python cli.py --pin --pin-length 8 --avoid-repeats --avoid-sequential
 
-# Analysieren und als JSON ausgeben
-python cli.py --analyze "Tr0ub4dor&3" --json
+# Analysieren und als JSON ausgeben (Passwort nie in argv)
+echo -n 'Tr0ub4dor&3' | python cli.py --analyze --json
 
 # Generieren und in Zwischenablage kopieren
 python cli.py --length 24 --clipboard --clipboard-clear 60
@@ -440,11 +445,17 @@ print("Passwort kopiert — Zwischenablage wird in 30 Sekunden gelöscht")
 
 - Verwendet Pythons `secrets`-Modul für kryptographisch sichere Zufallsgenerierung
 - Fisher-Yates-Shuffle gewährleistet gleichmäßige Verteilung
-- PIN-Generierung versucht bis zu 10.000 Male, um Einschränkungen einzuhalten
-- Stärkeanalyse prüft gegen eine Datenbank von 157 häufigen/geleckten Passwörtern
-- Erkennt Tastaturmuster, Sequenzen, Wiederholungen und Datumsformate
-- Zwischenablage-Autolöschung verhindert Passwortoffenlegung nach Gebrauch
-- Passwörter werden in `StrengthReport`-Ausgabe maskiert (nie offengelegt)
+- Zeichenpool-Validierung läuft **nach** `exclude_ambiguous`-Filterung
+- PIN-Constraints sind erzwungen; Scheitern wirft `RuntimeError`
+- Sequenz-Erkennung lehnt eingebettete Läufe von 4+ Ziffern ab
+- Stärkeanalyse läuft im log10-Raum — kein Overflow bei langen Passwörtern
+- Häufige Passwörter: exakter Match, Leet-Speak und Substrings (≥5 Zeichen)
+- Stärkeanalysator ist ein **Heuristik** (zxcvbn-inspiriert), kein volles zxcvbn
+- Mitgelieferte Wortliste hat ~1060 Wörter; Entropie nutzt die echte Größe
+- CLI `--analyze` liest stdin oder versteckte Eingabe — nie argv
+- CLI-Zwischenablage-Autolöschung **blockt bis die Löschung fertig ist**
+- Zwischenablage-Erfolg basiert auf Exit-Code
+- Passwörter werden in `StrengthReport` maskiert (nie offengelegt)
 
 ---
 
@@ -459,12 +470,15 @@ password-generator/
 │   ├── pin.py                   # Numerische PIN-Generierung
 │   ├── strength.py              # Passwort-Stärkeanalysator
 │   ├── clipboard.py             # Plattformübergreifende Zwischenablagen-Operationen
-│   ├── wordlist.txt             # 2048-Wörter-Liste für Passphrasen
-│   └── common_passwords.txt     # 157 häufige/geleckte Passwörter
+│   ├── cli.py                   # CLI (installiert als password-gen)
+│   ├── wordlist.txt             # ~1060-Wörter-Liste für Passphrasen
+│   └── common_passwords.txt     # Häufige/geleckte Passwörter
 ├── tests/
-│   └── test_all.py              # Umfassende TestSuite
-├── cli.py                       # Interaktives CLI & argparse
-├── PasswordGenerator.py         # Einstiegspunkt-Wrapper
+│   ├── test_all.py              # Kern-Testsuite
+│   └── test_regression.py       # Regressionssuite für Sicherheit/Korrektheit
+├── .github/workflows/ci.yml    # Multi-OS / Multi-Python CI
+├── cli.py                       # Dünner Wrapper für `python cli.py`
+├── PasswordGenerator.py         # Abwärtskompatibler Einstiegspunkt
 ├── pyproject.toml               # Build-Konfiguration
 └── README.md                    # Diese Datei
 ```

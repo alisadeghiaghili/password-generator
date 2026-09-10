@@ -79,10 +79,7 @@ def copy_to_clipboard(text: str, auto_clear_seconds: int = 0) -> bool:
         True
     """
     system = platform.system()
-    if system == "Windows":
-        payload = text.encode("utf-16-le")
-    else:
-        payload = text.encode("utf-8")
+    payload = text.encode("utf-16-le") if system == "Windows" else text.encode("utf-8")
 
     if not _run_clip(system, payload):
         return False

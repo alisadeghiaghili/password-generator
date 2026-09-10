@@ -10,6 +10,7 @@ Usage:
     report = analyze("not-on-argv")
 """
 
+from password_generator.clipboard import clear_clipboard, copy_to_clipboard
 from password_generator.generator import GeneratorConfig, calculate_entropy, generate
 from password_generator.passphrase import (
     PassphraseConfig,
@@ -18,9 +19,8 @@ from password_generator.passphrase import (
 )
 from password_generator.pin import PinConfig, generate_pin
 from password_generator.strength import StrengthReport, analyze
-from password_generator.clipboard import clear_clipboard, copy_to_clipboard
 
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 __all__ = [
     "generate",
     "generate_passphrase",

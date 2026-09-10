@@ -65,9 +65,7 @@ def _load_wordlist(path: str | None = None) -> list[str]:
     return words
 
 
-def generate_passphrase(
-    config: PassphraseConfig | None = None, **kwargs: object
-) -> str:
+def generate_passphrase(config: PassphraseConfig | None = None, **kwargs: object) -> str:
     """Generate a memorable XKCD-style passphrase.
 
     Args:
@@ -101,9 +99,7 @@ def generate_passphrase(
     return config.separator.join(selected)
 
 
-def passphrase_entropy(
-    word_count: int, wordlist_size: int | None = None
-) -> int:
+def passphrase_entropy(word_count: int, wordlist_size: int | None = None) -> int:
     """Calculate passphrase entropy in bits.
 
     Args:

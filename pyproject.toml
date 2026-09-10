@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "password-generator"
-version = "2.1.0"
+version = "2.1.1"
 description = "A secure, configurable password generation toolkit for Python"
 readme = "README.md"
 license = "Apache-2.0"
@@ -37,7 +37,12 @@ password-gen = "password_generator.cli:main"
 
 [project.optional-dependencies]
 cli = ["rich>=13.0"]
-dev = ["pytest>=7.0"]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.6.0",
+    "pyright>=1.1.380",
+]
 
 [tool.setuptools.packages.find]
 include = ["password_generator*"]
@@ -47,3 +52,48 @@ password_generator = ["*.txt"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "-q --cov=password_generator --cov-report=term-missing"
+
+[tool.coverage.run]
+branch = true
+source = ["password_generator"]
+omit = [
+    "password_generator/cli.py",
+    "password_generator/clipboard.py",
+]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["password_generator", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # bugbear
+    "UP",  # pyupgrade
+    "SIM", # simplify
+]
+ignore = [
+    "E501", # line length handled by formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]
+
+[tool.pyright]
+include = ["password_generator"]
+exclude = ["**/__pycache__"]
+pythonVersion = "3.10"
+typeCheckingMode = "standard"
+reportMissingImports = true
+reportUnusedImport = true
+

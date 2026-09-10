@@ -8,11 +8,9 @@ from __future__ import annotations
 import math
 
 import pytest
-
 from password_generator import analyze, generate, generate_passphrase, generate_pin
 from password_generator.generator import GeneratorConfig
-from password_generator.passphrase import PassphraseConfig, passphrase_entropy, _load_wordlist
-from password_generator.pin import PinConfig, generate_pin as pin_generate
+from password_generator.passphrase import PassphraseConfig, _load_wordlist, passphrase_entropy
 from password_generator.strength import _detect_dates, _detect_repeats, _estimate_guesses
 
 

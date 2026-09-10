@@ -1,5 +1,5 @@
 # Common English words for passphrase generation
-# ~2000 words, approximately 11 bits of entropy each
+# ~1060 words, approximately 10 bits of entropy each
 # Source: Common English word frequency lists
 about
 above

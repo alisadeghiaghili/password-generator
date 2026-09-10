@@ -7,11 +7,13 @@ never from argv (avoids shell history and process-list leaks).
 from __future__ import annotations
 
 import argparse
+import contextlib
 import getpass
 import json
 import sys
 import time
-from typing import Any, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 from password_generator import (
     GeneratorConfig,
@@ -29,8 +31,8 @@ try:
     from rich import box
     from rich.console import Console
     from rich.panel import Panel
+    from rich.progress import Progress, SpinnerColumn, TextColumn
     from rich.prompt import Confirm, Prompt
-    from rich.progress import SpinnerColumn, TextColumn, Progress
     from rich.table import Table
     from rich.text import Text
 
@@ -203,10 +205,8 @@ def _copy_and_clear(text: str, clear_seconds: int, console: Any = None) -> None:
         console.print(f"[green]{msg}[/green]")
     else:
         print(f"  {msg}")
-    try:
+    with contextlib.suppress(KeyboardInterrupt):
         time.sleep(clear_seconds)
-    except KeyboardInterrupt:
-        pass
     clear_clipboard()
     done = "Clipboard cleared."
     if console:
@@ -221,9 +221,7 @@ def _offer_clipboard_rich(passwords: list[str], clear_seconds: int = 30) -> None
         if Confirm.ask("\n[bold]Copy to clipboard?[/bold]", default=True):
             _copy_and_clear(passwords[0], clear_seconds, console=console)
     else:
-        if Confirm.ask(
-            "\n[bold]Copy all (newline-separated) to clipboard?[/bold]", default=False
-        ):
+        if Confirm.ask("\n[bold]Copy all (newline-separated) to clipboard?[/bold]", default=False):
             _copy_and_clear("\n".join(passwords), clear_seconds, console=console)
     console.print()
 
@@ -268,9 +266,7 @@ def _interactive_rich() -> None:
         table.add_row("5", "Exit")
         console.print(table)
 
-        choice = Prompt.ask(
-            "\n[bold cyan]Choice[/bold cyan]", choices=["1", "2", "3", "4", "5"]
-        )
+        choice = Prompt.ask("\n[bold cyan]Choice[/bold cyan]", choices=["1", "2", "3", "4", "5"])
         if choice == "1":
             _interactive_random_password_rich()
         elif choice == "2":
@@ -304,9 +300,7 @@ def _interactive_random_password_rich() -> None:
     lowercase = Confirm.ask("Include lowercase (a-z)?", default=True)
     digits = Confirm.ask("Include digits (0-9)?", default=True)
     symbols = Confirm.ask("Include symbols (!@#...)?", default=True)
-    exclude_ambiguous = Confirm.ask(
-        "Exclude ambiguous chars (l, I, 1, O, 0)?", default=False
-    )
+    exclude_ambiguous = Confirm.ask("Exclude ambiguous chars (l, I, 1, O, 0)?", default=False)
     count = _ask_int_rich("How many passwords?", 1, 1, 100, console)
     if count is None:
         return
@@ -343,9 +337,7 @@ def _interactive_passphrase_rich() -> None:
     words = _ask_int_rich("Number of words", 4, 2, 10, console)
     if words is None:
         return
-    console.print(
-        "  [dim]1. Hyphen (-)   2. Space   3. Period (.)   4. Underscore (_)[/dim]"
-    )
+    console.print("  [dim]1. Hyphen (-)   2. Space   3. Period (.)   4. Underscore (_)[/dim]")
     sep_choice = Prompt.ask("Separator", choices=["1", "2", "3", "4"], default="1")
     separator = {"1": "-", "2": " ", "3": ".", "4": "_"}[sep_choice]
     capitalize = Confirm.ask("Capitalize words?", default=False)
@@ -354,9 +346,7 @@ def _interactive_passphrase_rich() -> None:
         return
 
     try:
-        config = PassphraseConfig(
-            words=words, separator=separator, capitalize=capitalize
-        )
+        config = PassphraseConfig(words=words, separator=separator, capitalize=capitalize)
     except ValueError as exc:
         console.print(f"[bold red]Error:[/bold red] {exc}")
         return
@@ -381,9 +371,7 @@ def _interactive_pin_rich() -> None:
     if length is None:
         return
     avoid_repeats = Confirm.ask("Avoid repeated digits (no 1111)?", default=False)
-    avoid_sequential = Confirm.ask(
-        "Avoid sequential runs (no 1234)?", default=False
-    )
+    avoid_sequential = Confirm.ask("Avoid sequential runs (no 1234)?", default=False)
     count = _ask_int_rich("How many PINs?", 1, 1, 100, console)
     if count is None:
         return
@@ -447,16 +435,12 @@ def _interactive_plain() -> None:
 
 
 def _interactive_random_password_plain() -> None:
-    length = _input_int(
-        "Password length (4-256, default 16): ", default=16, min_val=4, max_val=256
-    )
+    length = _input_int("Password length (4-256, default 16): ", default=16, min_val=4, max_val=256)
     uppercase = _input_yes_no("Include uppercase (A-Z)?", True)
     lowercase = _input_yes_no("Include lowercase (a-z)?", True)
     digits = _input_yes_no("Include digits (0-9)?", True)
     symbols = _input_yes_no("Include symbols (!@#...)?", True)
-    exclude_ambiguous = _input_yes_no(
-        "Exclude ambiguous chars (l, I, 1, O, 0)?", False
-    )
+    exclude_ambiguous = _input_yes_no("Exclude ambiguous chars (l, I, 1, O, 0)?", False)
     count = _input_int(
         "How many passwords? (1-100, default 1): ", default=1, min_val=1, max_val=100
     )
@@ -488,9 +472,7 @@ def _interactive_passphrase_plain() -> None:
         "How many passphrases? (1-100, default 1): ", default=1, min_val=1, max_val=100
     )
     try:
-        config = PassphraseConfig(
-            words=words, separator=separator, capitalize=capitalize
-        )
+        config = PassphraseConfig(words=words, separator=separator, capitalize=capitalize)
     except ValueError as exc:
         print(f"\nError: {exc}\n")
         return
@@ -694,7 +676,9 @@ Examples:
         "--digits", action="store_true", default=True, help="Include digits (default: True)"
     )
     parser.add_argument("--no-digits", dest="digits", action="store_false", help="Exclude digits")
-    parser.add_argument("--no-symbols", dest="no_symbols", action="store_true", help="Exclude symbols")
+    parser.add_argument(
+        "--no-symbols", dest="no_symbols", action="store_true", help="Exclude symbols"
+    )
     parser.add_argument(
         "--exclude-ambiguous",
         action="store_true",
@@ -710,17 +694,11 @@ Examples:
     parser.add_argument(
         "--separator", default="-", help="Word separator for passphrase (default: -)"
     )
-    parser.add_argument(
-        "--capitalize", action="store_true", help="Capitalize passphrase words"
-    )
+    parser.add_argument("--capitalize", action="store_true", help="Capitalize passphrase words")
 
     parser.add_argument("--pin", action="store_true", help="Generate PIN instead of password")
-    parser.add_argument(
-        "--pin-length", type=int, default=4, help="PIN length (default: 4)"
-    )
-    parser.add_argument(
-        "--avoid-repeats", action="store_true", help="Avoid repeated digits in PIN"
-    )
+    parser.add_argument("--pin-length", type=int, default=4, help="PIN length (default: 4)")
+    parser.add_argument("--avoid-repeats", action="store_true", help="Avoid repeated digits in PIN")
     parser.add_argument(
         "--avoid-sequential", action="store_true", help="Avoid sequential digit runs in PIN"
     )
@@ -751,11 +729,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     parser = build_parser()
     args = parser.parse_args(argv)
 
-    # Interactive when no meaningful generation/analyze flags are given.
-    if argv is None:
-        raw_args = sys.argv[1:]
-    else:
-        raw_args = list(argv)
+    raw_args = sys.argv[1:] if argv is None else list(argv)
 
     if not raw_args:
         interactive_mode()
