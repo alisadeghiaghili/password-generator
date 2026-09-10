@@ -7,6 +7,28 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dev tools
+        run: pip install -e ".[dev,cli]"
+
+      - name: Ruff check
+        run: ruff check password_generator tests cli.py
+
+      - name: Ruff format check
+        run: ruff format --check password_generator tests cli.py
+
+      - name: Pyright
+        run: pyright password_generator
+
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -26,7 +48,7 @@ jobs:
       - name: Install package
         run: pip install -e ".[dev,cli]"
 
-      - name: Run tests
+      - name: Run tests with coverage
         run: pytest -q
 
       - name: Smoke CLI
