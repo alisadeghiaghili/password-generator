@@ -18,7 +18,7 @@
             <a href="fa/index.html">فارسی</a>
             <a href="de/index.html">DE</a>
         </div>
-        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.0.0</p></div>
+        <div class="sidebar-header"><h2>Password Generator</h2><p class="version">v2.1.1</p></div>
         <ul class="nav-list">
             <li class="nav-section">Getting Started</li>
             <li><a href="index.html">Welcome</a></li>
@@ -108,7 +108,7 @@ pip install -e ".[cli]"</code></pre>
 python cli.py --length 20 --count 3
 
 # Analyze a password — shown with colored strength bar and crack time table
-python cli.py --analyze "MyP@ssw0rd123!"
+echo -n 'MyP@ssw0rd123!' | python cli.py --analyze
 
 # Generate a passphrase — shown in a green panel
 python cli.py --passphrase --words 4</code></pre>
@@ -163,10 +163,10 @@ python cli.py --pin --pin-length 6 --avoid-repeats --count 5</code></pre>
         <div class="code-block">
             <div class="code-header"><span class="lang">bash</span></div>
             <pre><code class="language-bash"># Analyze a password
-python cli.py --analyze "MyP@ssw0rd"
+echo -n 'MyP@ssw0rd' | python cli.py --analyze
 
 # Analyze with JSON output
-python cli.py --analyze "Tr0ub4dor&3" --json</code></pre>
+echo -n 'Tr0ub4dor&3' | python cli.py --analyze --json</code></pre>
         </div>
 
         <h2>JSON Output</h2>
@@ -219,7 +219,7 @@ python cli.py --length 24 --clipboard --clipboard-clear 60</code></pre>
                 <tr><td>--pin-length N</td><td>PIN length (1–12)</td><td>4</td></tr>
                 <tr><td>--avoid-repeats</td><td>Avoid repeated digits</td><td>False</td></tr>
                 <tr><td>--avoid-sequential</td><td>Avoid sequential digits</td><td>False</td></tr>
-                <tr><td>--analyze PASSWORD</td><td>Analyze a password</td><td>—</td></tr>
+                <tr><td>--analyze (stdin/prompt)</td><td>Analyze a password</td><td>—</td></tr>
                 <tr><td>--json</td><td>JSON output</td><td>False</td></tr>
                 <tr><td>--clipboard</td><td>Copy to clipboard</td><td>False</td></tr>
                 <tr><td>--clipboard-clear N</td><td>Auto-clear seconds</td><td>30</td></tr>
