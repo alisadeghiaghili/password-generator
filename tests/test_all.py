@@ -71,7 +71,7 @@ class TestGeneratorConfig:
 
     def test_pools_built_correctly(self):
         config = GeneratorConfig(uppercase=True, lowercase=False, digits=False, symbols=False)
-        pools = config._get_pools()
+        pools = config.get_pools()
         assert "uppercase" in pools
         assert "lowercase" not in pools
 
