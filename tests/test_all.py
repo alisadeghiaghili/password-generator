@@ -1,14 +1,13 @@
 """Tests for password_generator package."""
 
 import pytest
-from password_generator import generate, generate_passphrase, generate_pin, analyze
+from password_generator import analyze, generate, generate_passphrase, generate_pin
 from password_generator.generator import GeneratorConfig, calculate_entropy
-from password_generator.passphrase import PassphraseConfig, passphrase_entropy
+from password_generator.passphrase import passphrase_entropy
 from password_generator.pin import PinConfig
-from password_generator.strength import StrengthReport
-
 
 # ===== Generator Tests =====
+
 
 class TestGenerate:
     def test_default_length(self):
@@ -78,6 +77,7 @@ class TestGeneratorConfig:
 
 # ===== Passphrase Tests =====
 
+
 class TestGeneratePassphrase:
     def test_default_words(self):
         phrase = generate_passphrase()
@@ -120,6 +120,7 @@ class TestPassphraseEntropy:
 
 # ===== PIN Tests =====
 
+
 class TestGeneratePin:
     def test_default_length(self):
         pin = generate_pin()
@@ -135,15 +136,15 @@ class TestGeneratePin:
             pin = generate_pin(length=4, avoid_repeats=True)
             # Should not have 3+ same digits in a row
             for i in range(len(pin) - 2):
-                assert not (pin[i] == pin[i+1] == pin[i+2])
+                assert not (pin[i] == pin[i + 1] == pin[i + 2])
 
     def test_avoid_sequential(self):
         for _ in range(100):
             pin = generate_pin(length=4, avoid_sequential=True)
             digits = [int(d) for d in pin]
             # Check no ascending/descending sequence
-            ascending = all(digits[i] == digits[i-1] + 1 for i in range(1, len(digits)))
-            descending = all(digits[i] == digits[i-1] - 1 for i in range(1, len(digits)))
+            ascending = all(digits[i] == digits[i - 1] + 1 for i in range(1, len(digits)))
+            descending = all(digits[i] == digits[i - 1] - 1 for i in range(1, len(digits)))
             assert not (ascending or descending)
 
 
@@ -160,6 +161,7 @@ class TestPinConfig:
 
 
 # ===== Strength Analyzer Tests =====
+
 
 class TestAnalyze:
     def test_empty_password(self):
@@ -223,6 +225,7 @@ class TestStrengthReport:
 
 
 # ===== Entropy Tests =====
+
 
 class TestCalculateEntropy:
     def test_basic_entropy(self):

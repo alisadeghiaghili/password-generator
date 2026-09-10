@@ -32,8 +32,7 @@ class PinConfig:
     def __post_init__(self) -> None:
         if not _MIN_LENGTH <= self.length <= _MAX_LENGTH:
             raise ValueError(
-                f"PIN length must be between {_MIN_LENGTH} and {_MAX_LENGTH}, "
-                f"got {self.length}"
+                f"PIN length must be between {_MIN_LENGTH} and {_MAX_LENGTH}, got {self.length}"
             )
         if self.sequence_run < 2:
             raise ValueError("sequence_run must be at least 2")
@@ -57,10 +56,7 @@ def _has_repeats(digits: list[int], threshold: int = 3) -> bool:
     """
     if len(digits) < threshold:
         return False
-    for i in range(len(digits) - threshold + 1):
-        if len(set(digits[i : i + threshold])) == 1:
-            return True
-    return False
+    return any(len(set(digits[i : i + threshold])) == 1 for i in range(len(digits) - threshold + 1))
 
 
 def _has_sequential_run(digits: list[int], min_len: int = 4) -> bool:
@@ -129,9 +125,7 @@ def generate_pin(config: PinConfig | None = None, **kwargs: object) -> str:
 
         if config.avoid_repeats and _has_repeats(digits):
             continue
-        if config.avoid_sequential and _has_sequential_run(
-            digits, config.sequence_run
-        ):
+        if config.avoid_sequential and _has_sequential_run(digits, config.sequence_run):
             continue
 
         return "".join(str(d) for d in digits)
