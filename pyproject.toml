@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "password-generator"
-version = "2.1.1"
+version = "2.2.0"
 description = "A secure, configurable password generation toolkit for Python"
 readme = "README.md"
 license = "Apache-2.0"
@@ -37,6 +37,7 @@ password-gen = "password_generator.cli:main"
 
 [project.optional-dependencies]
 cli = ["rich>=13.0"]
+zxcvbn = ["zxcvbn>=4.4.28"]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
