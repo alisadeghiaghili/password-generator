@@ -313,37 +313,27 @@ def _score_from_log10(log10_guesses: float) -> int:
     return 4
 
 
-def analyze(password: str) -> StrengthReport:
-    """Analyze password strength.
+def _zxcvbn_is_available() -> bool:
+    from password_generator.zxcvbn_backend import zxcvbn_available
 
-    Args:
-        password: The password to analyze. Never stored in the report.
+    return zxcvbn_available()
 
-    Returns:
-        StrengthReport with score, crack times, patterns, and feedback.
 
-    Examples:
-        >>> report = analyze("password")
-        >>> report.score
-        0
-        >>> "common_password" in report.patterns
-        True
-        >>> report = analyze("")
-        >>> report.score
-        0
-    """
-    if not password:
-        return StrengthReport(
-            password="",
-            score=0,
-            guesses=0.0,
-            entropy=0.0,
-            crack_times={},
-            crack_times_seconds={},
-            feedback=["Password is empty"],
-            patterns=[],
-        )
+def _empty_report(message: str) -> StrengthReport:
+    return StrengthReport(
+        password="",
+        score=0,
+        guesses=0.0,
+        entropy=0.0,
+        crack_times={},
+        crack_times_seconds={},
+        feedback=[message],
+        patterns=[],
+    )
 
+
+def _analyze_heuristic(password: str) -> StrengthReport:
+    """Built-in heuristic analyzer (zero dependencies, log-space safe)."""
     log10_guesses = _estimate_log10_guesses(password)
     guesses = float("inf") if log10_guesses > _MAX_FLOAT_LOG10 else 10.0**log10_guesses
     entropy = log10_guesses * math.log2(10)
@@ -402,6 +392,55 @@ def analyze(password: str) -> StrengthReport:
         feedback=feedback,
         patterns=patterns,
     )
+
+
+def analyze(password: str, *, backend: str = "heuristic") -> StrengthReport:
+    """Analyze password strength.
+
+    Args:
+        password: The password to analyze. Never stored in the report.
+        backend: ``"heuristic"`` (default, zero deps), ``"zxcvbn"`` (requires
+            optional extra), or ``"auto"`` (zxcvbn if installed, else heuristic).
+
+    Returns:
+        StrengthReport with score, crack times, patterns, and feedback.
+
+    Raises:
+        ValueError: If ``backend`` is unknown.
+        RuntimeError: If ``backend="zxcvbn"`` and the optional package is missing.
+
+    Examples:
+        >>> report = analyze("password")
+        >>> report.score
+        0
+        >>> "common_password" in report.patterns
+        True
+        >>> report = analyze("")
+        >>> report.score
+        0
+    """
+    if backend not in {"heuristic", "zxcvbn", "auto"}:
+        raise ValueError(f"Unknown backend {backend!r}; expected 'heuristic', 'zxcvbn', or 'auto'")
+
+    if not password:
+        return _empty_report("Password is empty")
+
+    if backend == "zxcvbn" or (backend == "auto" and _zxcvbn_is_available()):
+        from password_generator.zxcvbn_backend import analyze_with_zxcvbn
+
+        data = analyze_with_zxcvbn(password)
+        return StrengthReport(
+            password="*" * len(password),
+            score=int(data["score"]),
+            guesses=float(data["guesses"]),
+            entropy=float(data["entropy"]),
+            crack_times=dict(data["crack_times"]),
+            crack_times_seconds=dict(data["crack_times_seconds"]),
+            feedback=list(data["feedback"]),
+            patterns=list(data["patterns"]),
+        )
+
+    return _analyze_heuristic(password)
 
 
 def _format_time(seconds: float) -> str:

@@ -4,7 +4,7 @@
 
 A secure, configurable password generation toolkit for Python. Generate random passwords, XKCD-style passphrases, numeric PINs, and analyze password strength — all from a simple API or an interactive CLI.
 
-**Version:** 2.1.1 | **License:** Apache 2.0 | **Python:** 3.10+
+**Version:** 2.2.0 | **License:** Apache 2.0 | **Python:** 3.10+
 
 ---
 
@@ -31,6 +31,9 @@ pip install password-generator
 
 # With beautiful CLI output (rich terminal UI)
 pip install password-generator[cli]
+
+# Optional Dropbox zxcvbn model for analyze()
+pip install password-generator[zxcvbn]
 
 # Installed command
 password-gen --length 20
@@ -187,9 +190,24 @@ config = PinConfig(length=8, avoid_sequential=True)
 pin = generate_pin(config)
 ```
 
-### `analyze(password: str) -> StrengthReport`
+### `analyze(password: str, *, backend: str = "heuristic") -> StrengthReport`
 
 Analyze password strength with detailed feedback.
+
+Backends:
+- `heuristic` (default) — built-in zxcvbn-inspired estimator, zero dependencies
+- `zxcvbn` — Dropbox zxcvbn model (`pip install password-generator[zxcvbn]`)
+- `auto` — use zxcvbn when installed, else heuristic
+
+```python
+from password_generator import analyze, zxcvbn_available
+
+report = analyze("MyP@ssw0rd123!")
+print(report.score)
+
+if zxcvbn_available():
+    report = analyze("MyP@ssw0rd123!", backend="zxcvbn")
+```
 
 ```python
 from password_generator import analyze
@@ -310,6 +328,7 @@ The wizard guides you through:
 | `--avoid-repeats` | Avoid repeated digits in PIN | `False` |
 | `--avoid-sequential` | Avoid sequential digits in PIN | `False` |
 | `--analyze` | Analyze a password (stdin if piped, else hidden prompt) | — |
+| `--backend` | Strength backend: `heuristic` / `zxcvbn` / `auto` | `heuristic` |
 | `--json` | Output as JSON | `False` |
 | `--clipboard` | Copy result to clipboard | `False` |
 | `--clipboard-clear N` | Clipboard auto-clear seconds (CLI blocks until cleared) | `30` |
@@ -465,6 +484,7 @@ print("Password copied — clipboard clears in 30 seconds")
 - Strength analysis is done in log10 space — no overflow on long passwords
 - Common-password checks include exact match, leet-speak normalization, and substrings (≥5 chars)
 - Strength analyzer is a **heuristic** (zxcvbn-inspired), not a full zxcvbn model — treat scores as guidance
+- Optional `password-generator[zxcvbn]` enables the Dropbox zxcvbn backend via `analyze(..., backend="zxcvbn")`
 - Bundled wordlist has ~1060 words; entropy helpers use the real size
 - CLI `--analyze` reads from stdin or a hidden prompt — never from argv
 - CLI clipboard auto-clear **blocks until clear completes** (daemon timers die with short-lived processes)

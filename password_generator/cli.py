@@ -548,7 +548,7 @@ def cli_mode(args: argparse.Namespace) -> None:
             else:
                 print(msg)
             sys.exit(1)
-        report = analyze(password)
+        report = analyze(password, backend=args.backend)
         if args.json:
             print(
                 json.dumps(
@@ -707,6 +707,12 @@ Examples:
         "--analyze",
         action="store_true",
         help="Analyze a password (reads from stdin if piped, else hidden prompt; never from argv)",
+    )
+    parser.add_argument(
+        "--backend",
+        choices=["heuristic", "zxcvbn", "auto"],
+        default="heuristic",
+        help="Strength analyzer backend (default: heuristic; zxcvbn requires optional extra)",
     )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     parser.add_argument("--clipboard", action="store_true", help="Copy to clipboard")
