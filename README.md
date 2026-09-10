@@ -4,7 +4,7 @@
 
 A secure, configurable password generation toolkit for Python. Generate random passwords, XKCD-style passphrases, numeric PINs, and analyze password strength — all from a simple API or an interactive CLI.
 
-**Version:** 2.0.0 | **License:** Apache 2.0 | **Python:** 3.10+
+**Version:** 2.1.0 | **License:** Apache 2.0 | **Python:** 3.10+
 
 ---
 
@@ -31,6 +31,9 @@ pip install password-generator
 
 # With beautiful CLI output (rich terminal UI)
 pip install password-generator[cli]
+
+# Installed command
+password-gen --length 20
 ```
 
 ### From Source
@@ -91,13 +94,16 @@ python cli.py --passphrase --words 4 --separator " "
 # Generate a 6-digit PIN
 python cli.py --pin --pin-length 6 --avoid-repeats
 
-# Analyze a password
-python cli.py --analyze "MyP@ssw0rd"
+# Analyze password strength (stdin — never put secrets in argv)
+echo -n 'MyP@ssw0rd' | python cli.py --analyze
+
+# Analyze via hidden prompt
+python cli.py --analyze
 
 # JSON output
 python cli.py --length 24 --json
 
-# Copy to clipboard
+# Copy to clipboard (blocks until auto-clear completes)
 python cli.py --length 16 --clipboard
 ```
 
@@ -250,18 +256,20 @@ from password_generator.generator import calculate_entropy
 entropy = calculate_entropy(26, 8)  # ~37 bits
 ```
 
-### `passphrase_entropy(word_count, wordlist_size=2048) -> int`
+### `passphrase_entropy(word_count, wordlist_size=None) -> int`
 
-Calculate passphrase entropy in bits.
+Calculate passphrase entropy in bits. When `wordlist_size` is omitted, the
+bundled wordlist size is used (currently ~1060 words ≈ 10 bits each) — not a
+hardcoded theoretical value.
 
 ```python
-from password_generator.passphrase import passphrase_entropy
+from password_generator.passphrase import passphrase_entropy, _load_wordlist
 
-# 4 words from 2048-word list
-entropy = passphrase_entropy(4)  # ~44 bits
+# 4 words from the bundled list (honest size)
+entropy = passphrase_entropy(4)  # ~40 bits
 
-# 6 words
-entropy = passphrase_entropy(6)  # ~66 bits
+# Explicit size (e.g. EFF large list)
+entropy = passphrase_entropy(6, wordlist_size=7776)  # ~77 bits
 ```
 
 ---
@@ -301,10 +309,10 @@ The wizard guides you through:
 | `--pin-length N` | PIN length (1–12) | `4` |
 | `--avoid-repeats` | Avoid repeated digits in PIN | `False` |
 | `--avoid-sequential` | Avoid sequential digits in PIN | `False` |
-| `--analyze PASSWORD` | Analyze a password | — |
+| `--analyze` | Analyze a password (stdin if piped, else hidden prompt) | — |
 | `--json` | Output as JSON | `False` |
 | `--clipboard` | Copy result to clipboard | `False` |
-| `--clipboard-clear N` | Clipboard auto-clear seconds | `30` |
+| `--clipboard-clear N` | Clipboard auto-clear seconds (CLI blocks until cleared) | `30` |
 
 ### Examples
 
@@ -318,8 +326,8 @@ python cli.py --passphrase --words 5 --separator " " --capitalize
 # 8-digit PIN, avoid repeats and sequences
 python cli.py --pin --pin-length 8 --avoid-repeats --avoid-sequential
 
-# Analyze and output as JSON
-python cli.py --analyze "Tr0ub4dor&3" --json
+# Analyze and output as JSON (password never on argv)
+echo -n 'Tr0ub4dor&3' | python cli.py --analyze --json
 
 # Generate and copy to clipboard
 python cli.py --length 24 --clipboard --clipboard-clear 60
@@ -451,10 +459,16 @@ print("Password copied — clipboard clears in 30 seconds")
 
 - Uses Python's `secrets` module for cryptographically secure random generation
 - Fisher-Yates shuffle ensures uniform distribution
-- PIN generation retries up to 10,000 times to satisfy constraints
-- Strength analyzer checks against a database of 157 common/breached passwords
-- Detects keyboard patterns, sequences, repetitions, and date patterns
-- Clipboard auto-clear prevents password exposure after use
+- Character-pool validation runs **after** `exclude_ambiguous` filtering (empty pools raise `ValueError`)
+- PIN constraints are enforced; failure raises `RuntimeError` (never silently returns a violating PIN)
+- Sequential PIN detection rejects embedded runs of 4+ digits (not only full-string sequences)
+- Strength analysis is done in log10 space — no overflow on long passwords
+- Common-password checks include exact match, leet-speak normalization, and substrings (≥5 chars)
+- Strength analyzer is a **heuristic** (zxcvbn-inspired), not a full zxcvbn model — treat scores as guidance
+- Bundled wordlist has ~1060 words; entropy helpers use the real size
+- CLI `--analyze` reads from stdin or a hidden prompt — never from argv
+- CLI clipboard auto-clear **blocks until clear completes** (daemon timers die with short-lived processes)
+- Clipboard success is based on process exit code
 - Passwords are masked in `StrengthReport` output (never exposed)
 
 ---
@@ -470,12 +484,15 @@ password-generator/
 │   ├── pin.py                   # Numeric PIN generation
 │   ├── strength.py              # Password strength analyzer
 │   ├── clipboard.py             # Cross-platform clipboard ops
-│   ├── wordlist.txt             # 2048-word list for passphrases
-│   └── common_passwords.txt     # 157 common/breached passwords
+│   ├── cli.py                   # CLI (installed as password-gen)
+│   ├── wordlist.txt             # ~1060-word list for passphrases
+│   └── common_passwords.txt     # Common/breached passwords
 ├── tests/
-│   └── test_all.py              # Comprehensive test suite
-├── cli.py                       # Interactive CLI & argparse
-├── PasswordGenerator.py         # Entry point wrapper
+│   ├── test_all.py              # Core test suite
+│   └── test_regression.py       # Regression suite for security/correctness
+├── .github/workflows/ci.yml    # Multi-OS / multi-Python CI
+├── cli.py                       # Thin wrapper for `python cli.py`
+├── PasswordGenerator.py         # Backward-compatible entry wrapper
 ├── pyproject.toml               # Build configuration
 └── README.md                    # This file
 ```
