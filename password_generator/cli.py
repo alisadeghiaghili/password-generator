@@ -685,7 +685,8 @@ Examples:
         help="Exclude ambiguous chars (l, I, 1, O, 0)",
     )
 
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
         "--passphrase", action="store_true", help="Generate passphrase instead of password"
     )
     parser.add_argument(
@@ -696,7 +697,7 @@ Examples:
     )
     parser.add_argument("--capitalize", action="store_true", help="Capitalize passphrase words")
 
-    parser.add_argument("--pin", action="store_true", help="Generate PIN instead of password")
+    mode.add_argument("--pin", action="store_true", help="Generate PIN instead of password")
     parser.add_argument("--pin-length", type=int, default=4, help="PIN length (default: 4)")
     parser.add_argument("--avoid-repeats", action="store_true", help="Avoid repeated digits in PIN")
     parser.add_argument(
